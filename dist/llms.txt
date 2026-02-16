@@ -1,0 +1,23 @@
+# XIVIX Brand Directory
+
+> XIVIX가 관리하는 병원, 매장, 브랜드의 공식 정보 디렉토리입니다.
+> 각 브랜드의 상세 정보는 개별 llms.txt 파일에서 확인할 수 있습니다.
+
+## 관리 브랜드 목록
+
+### 강남스마일치과 (Gangnam Smile Dental)
+- 업종: 병원
+- 위치: 강남구, 서울특별시
+- 상세정보: https://brands.studioaibotbot.com/brands/gangnam-smile-dental/llms.txt
+- 웹사이트: https://gangnam-smile.co.kr
+
+### 역삼숯불바베큐 (Yeoksam Charcoal BBQ)
+- 업종: 음식점
+- 위치: 강남구, 서울특별시
+- 상세정보: https://brands.studioaibotbot.com/brands/yeoksam-bbq/llms.txt
+- 웹사이트: https://yeoksam-bbq.kr
+
+---
+Total active brands: 2
+Directory managed by: XIVIX (https://studioaibotbot.com)
+Last updated: 2026-02-16

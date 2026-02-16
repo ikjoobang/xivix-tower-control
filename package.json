@@ -1,0 +1,14 @@
+{
+  "name": "xivix-tower-control",
+  "version": "1.0.0",
+  "description": "XIVIX 타워 컨트롤 - 매장/병원/브랜드 SEO·AEO·GEO·C-RANK 중앙 관리 시스템",
+  "main": "scripts/build.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "node scripts/build.js && npx serve dist",
+    "add-business": "echo 'Edit _data/businesses.json and run npm run build'"
+  },
+  "author": "XIVIX (https://studioaibotbot.com)",
+  "license": "MIT",
+  "keywords": ["seo", "aeo", "geo", "c-rank", "schema.org", "llms.txt"]
+}

@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "updated": "2026-02-16",
+    "managed_by": "XIVIX Tower Control",
+    "domain": "brands.studioaibotbot.com"
+  },
+  "businesses": [
+    {
+      "id": "gangnam-smile-dental",
+      "name": "강남스마일치과",
+      "name_en": "Gangnam Smile Dental",
+      "type": "Dentist",
+      "category": "병원",
+      "description": "강남역 3번출구 도보 2분, 임플란트·교정·심미치료 전문 치과. 야간진료(월~금 21시), 주말진료(토 14시).",
+      "description_en": "Dental clinic specializing in implants, orthodontics, and cosmetic dentistry near Gangnam Station Exit 3.",
+      "address": {
+        "street": "강남대로 396",
+        "district": "강남구",
+        "city": "서울특별시",
+        "postalCode": "06232",
+        "country": "KR"
+      },
+      "phone": "+82-2-555-1234",
+      "url": "https://gangnam-smile.co.kr",
+      "naverPlaceId": "",
+      "googlePlaceId": "",
+      "openingHours": [
+        "Mo-Fr 09:00-21:00",
+        "Sa 09:00-14:00"
+      ],
+      "geo": {
+        "lat": 37.4979,
+        "lng": 127.0276
+      },
+      "priceRange": "₩₩₩",
+      "specialties": ["임플란트", "치아교정", "라미네이트", "충치치료", "스케일링"],
+      "keywords": ["강남 치과", "강남역 임플란트", "강남 교정 치과", "야간진료 치과"],
+      "faq": [
+        {
+          "question": "임플란트 비용은 얼마인가요?",
+          "answer": "임플란트는 브랜드와 시술 범위에 따라 80만원~180만원이며, 정확한 비용은 내원 상담 후 안내드립니다."
+        },
+        {
+          "question": "야간진료가 가능한가요?",
+          "answer": "월요일~금요일 저녁 9시까지 야간진료 가능합니다. 네이버 예약 또는 전화로 사전 예약해주세요."
+        },
+        {
+          "question": "주차가 가능한가요?",
+          "answer": "건물 지하 주차장 이용 가능하며, 2시간 무료 주차를 지원합니다."
+        }
+      ],
+      "images": {
+        "logo": "/assets/gangnam-smile-dental/logo.png",
+        "exterior": "/assets/gangnam-smile-dental/exterior.jpg",
+        "interior": "/assets/gangnam-smile-dental/interior.jpg"
+      },
+      "reviews": {
+        "rating": 4.8,
+        "count": 324,
+        "source": "Google"
+      },
+      "socialLinks": {
+        "naverBlog": "https://blog.naver.com/gangnam-smile",
+        "instagram": "https://instagram.com/gangnam_smile_dental"
+      },
+      "crank": {
+        "naverCafeEnabled": true,
+        "blogAutoPost": true,
+        "cafeAutoPostTopics": ["임플란트 후기", "교정 과정", "치과 상식"]
+      },
+      "status": "active",
+      "onboardedAt": "2026-01-15"
+    },
+    {
+      "id": "yeoksam-bbq",
+      "name": "역삼숯불바베큐",
+      "name_en": "Yeoksam Charcoal BBQ",
+      "type": "Restaurant",
+      "category": "음식점",
+      "description": "역삼동 직화 숯불구이 전문점. 한우 등심, 갈비, 삼겹살. 단체석 최대 40명. 회식·모임 예약 가능.",
+      "description_en": "Premium charcoal BBQ restaurant in Yeoksam-dong, specializing in Korean beef.",
+      "address": {
+        "street": "테헤란로 134",
+        "district": "강남구",
+        "city": "서울특별시",
+        "postalCode": "06236",
+        "country": "KR"
+      },
+      "phone": "+82-2-555-5678",
+      "url": "https://yeoksam-bbq.kr",
+      "naverPlaceId": "",
+      "googlePlaceId": "",
+      "openingHours": [
+        "Mo-Su 11:30-23:00"
+      ],
+      "geo": {
+        "lat": 37.5012,
+        "lng": 127.0365
+      },
+      "priceRange": "₩₩",
+      "specialties": ["한우등심", "숯불갈비", "삼겹살", "회식장소"],
+      "keywords": ["역삼 고기집", "강남 회식 맛집", "역삼동 한우", "숯불구이 맛집"],
+      "faq": [
+        {
+          "question": "단체 예약이 가능한가요?",
+          "answer": "최대 40명까지 단체석 이용 가능합니다. 전화 또는 네이버 예약으로 사전 예약해주세요."
+        },
+        {
+          "question": "주차가 가능한가요?",
+          "answer": "건물 내 지하주차장 이용 가능하며, 식사 시 2시간 무료입니다."
+        }
+      ],
+      "images": {
+        "logo": "/assets/yeoksam-bbq/logo.png",
+        "exterior": "/assets/yeoksam-bbq/exterior.jpg",
+        "interior": "/assets/yeoksam-bbq/interior.jpg"
+      },
+      "reviews": {
+        "rating": 4.6,
+        "count": 189,
+        "source": "Google"
+      },
+      "socialLinks": {
+        "naverBlog": "https://blog.naver.com/yeoksam-bbq",
+        "instagram": "https://instagram.com/yeoksam_bbq"
+      },
+      "crank": {
+        "naverCafeEnabled": true,
+        "blogAutoPost": true,
+        "cafeAutoPostTopics": ["한우 맛집 후기", "회식 장소 추천", "숯불구이 꿀팁"]
+      },
+      "status": "active",
+      "onboardedAt": "2026-02-01"
+    }
+  ]
+}
