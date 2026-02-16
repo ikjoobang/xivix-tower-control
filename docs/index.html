@@ -1,99 +1,47 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XIVIX Brand Directory | 브랜드 검색 최적화 관리</title>
-  <meta name="description" content="XIVIX가 관리하는 병원, 매장, 브랜드의 공식 정보 디렉토리. SEO, AEO, GEO, C-RANK 최적화.">
-  <link rel="canonical" href="https://brands.studioaibotbot.com/">
-
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "XIVIX",
-  "alternateName": "지빅스",
-  "url": "https://brands.studioaibotbot.com",
-  "description": "병원·매장·브랜드의 검색엔진 및 AI 검색 최적화 관리 서비스",
-  "logo": "https://brands.studioaibotbot.com/assets/xivix-logo.png",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "customer service",
-    "availableLanguage": [
-      "Korean",
-      "English"
-    ]
-  }
-}
-  </script>
-
-  <style>
-    :root { --primary: #2563eb; --text: #1f2937; --bg: #0f172a; --card: #1e293b; }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Pretendard', -apple-system, sans-serif; color: #e2e8f0; background: var(--bg); }
-    .header { text-align: center; padding: 3rem 1rem 2rem; }
-    .header h1 { font-size: 2rem; color: white; }
-    .header p { color: #94a3b8; margin-top: 0.5rem; }
-    .stats { display: flex; justify-content: center; gap: 2rem; margin: 1.5rem 0; }
-    .stat { text-align: center; }
-    .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
-    .stat-label { font-size: 0.85rem; color: #64748b; }
-    .grid { max-width: 900px; margin: 0 auto; padding: 0 1rem 3rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-    .biz-card { background: var(--card); border-radius: 12px; padding: 1.5rem; text-decoration: none; color: #e2e8f0; transition: transform 0.2s, box-shadow 0.2s; display: block; }
-    .biz-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,99,235,0.15); }
-    .biz-category { display: inline-block; background: rgba(37,99,235,0.2); color: var(--primary); padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.8rem; margin-bottom: 0.5rem; }
-    .biz-card h3 { font-size: 1.15rem; margin-bottom: 0.3rem; color: white; }
-    .biz-location { color: #94a3b8; font-size: 0.85rem; }
-    .biz-desc { color: #64748b; font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.5; }
-    .biz-rating { color: #f59e0b; margin-top: 0.5rem; font-size: 0.9rem; }
-    .footer { text-align: center; padding: 2rem; color: #475569; font-size: 0.8rem; }
-    .opt-badges { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
-    .opt-badge { background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.3); color: var(--primary); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XIVIX Brand Directory</title>
+<meta name="description" content="XIVIX Tower Control이 관리하는 매장/프리랜서 디렉토리">
+<link rel="canonical" href="https://ikjoobang.github.io/xivix-tower-control/">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Malgun Gothic',sans-serif;background:#fafafa;color:#1f2937;line-height:1.6}
+.container{max-width:720px;margin:0 auto;padding:1.5rem}
+h1{font-size:1.3rem;margin-bottom:1rem}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem;margin-bottom:.6rem;text-decoration:none;color:inherit;display:block;transition:box-shadow .15s}
+.card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card h2{font-size:1rem;margin-bottom:.2rem}
+.card .cat{color:#2563eb;font-size:.75rem;font-weight:600}
+.card .addr{color:#6b7280;font-size:.82rem}
+.card .kws{margin-top:.3rem;display:flex;flex-wrap:wrap;gap:.2rem}
+.card .kw{background:#f3f4f6;padding:.1rem .35rem;border-radius:3px;font-size:.68rem;color:#374151}
+.footer{text-align:center;padding:2rem;font-size:.72rem;color:#9ca3af}
+</style>
 </head>
 <body>
-  <div class="header">
-    <h1>XIVIX Brand Directory</h1>
-    <p>병원 · 매장 · 브랜드 검색 최적화 관리</p>
-    <div class="opt-badges">
-      <span class="opt-badge">SEO</span>
-      <span class="opt-badge">AEO</span>
-      <span class="opt-badge">GEO</span>
-      <span class="opt-badge">C-RANK</span>
-    </div>
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-num">2</div>
-        <div class="stat-label">관리 브랜드</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">4</div>
-        <div class="stat-label">최적화 영역</div>
-      </div>
-    </div>
-  </div>
+<div class="container">
+<h1>XIVIX Brand Directory</h1>
+<p style="color:#6b7280;font-size:.85rem;margin-bottom:1rem">2개 매장이 등록되어 있습니다.</p>
 
-  <div class="grid">
-    
-        <a href="/brands/gangnam-smile-dental/" class="biz-card">
-          <div class="biz-category">병원</div>
-          <h3>강남스마일치과</h3>
-          <p class="biz-location">강남구, 서울특별시</p>
-          <p class="biz-desc">강남역 3번출구 도보 2분, 임플란트·교정·심미치료 전문 치과. 야간진료(월~금 21시), 주말진료(토 14시)....</p>
-          <p class="biz-rating">★ 4.8 (324)</p>
-        </a>
-
-        <a href="/brands/yeoksam-bbq/" class="biz-card">
-          <div class="biz-category">음식점</div>
-          <h3>역삼숯불바베큐</h3>
-          <p class="biz-location">강남구, 서울특별시</p>
-          <p class="biz-desc">역삼동 직화 숯불구이 전문점. 한우 등심, 갈비, 삼겹살. 단체석 최대 40명. 회식·모임 예약 가능....</p>
-          <p class="biz-rating">★ 4.6 (189)</p>
-        </a>
-  </div>
-
-  <div class="footer">
-    <p>© 2026 XIVIX Tower Control | <a href="/llms.txt" style="color:#64748b;">llms.txt</a> · <a href="/sitemap.xml" style="color:#64748b;">sitemap.xml</a></p>
-  </div>
+<a href="brands/raon-beauty/" class="card">
+<span class="cat">피부/미용</span>
+<h2>라온뷰티</h2>
+<div class="addr">📍 경기 화성시 병점구 용주로 91층 | 📞 031-235-5726</div>
+<div class="kws"><span class="kw">라온뷰티</span><span class="kw">안녕동피부</span><span class="kw">병점피부관리</span><span class="kw">병점모공각화증</span><span class="kw">병점여드름</span></div>
+</a>
+<a href="brands/gangnam-dental/" class="card">
+<span class="cat">치과</span>
+<h2>강남스마일치과</h2>
+<div class="addr">📍 서울 강남구 강남대로 396 | 📞 02-555-1234</div>
+<div class="kws"><span class="kw">강남 치과</span><span class="kw">강남역 치과</span><span class="kw">임플란트</span><span class="kw">교정</span><span class="kw">강남 임플란트</span></div>
+</a>
+<div class="footer">
+<p>Managed by XIVIX Tower Control</p>
+<p><a href="llms.txt" style="color:#6b7280">llms.txt</a> | <a href="sitemap.xml" style="color:#6b7280">sitemap.xml</a></p>
+</div>
+</div>
 </body>
 </html>

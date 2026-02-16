@@ -1,46 +1,16 @@
-# XIVIX Tower Control - robots.txt
-# SEO + AEO 최적화: 모든 검색엔진 및 LLM 크롤러 허용
-
 User-agent: *
 Allow: /
-Disallow: /_data/
 
-# Google
-User-agent: Googlebot
-Allow: /
-
-# Google AI (Gemini, AI Overview)
-User-agent: Google-Extended
-Allow: /
-
-# OpenAI (ChatGPT)
 User-agent: GPTBot
 Allow: /
 
-# OpenAI (ChatGPT browsing)
-User-agent: ChatGPT-User
+User-agent: Claude-Web
 Allow: /
 
-# Anthropic (Claude)
-User-agent: ClaudeBot
-Allow: /
-User-agent: anthropic-ai
-Allow: /
-
-# Microsoft (Bing, Copilot)
-User-agent: bingbot
-Allow: /
-
-# Perplexity
 User-agent: PerplexityBot
 Allow: /
 
-# Naver
-User-agent: Yeti
+User-agent: Google-Extended
 Allow: /
 
-# Common Crawl
-User-agent: CCBot
-Allow: /
-
-Sitemap: https://brands.studioaibotbot.com/sitemap.xml
+Sitemap: https://ikjoobang.github.io/xivix-tower-control/sitemap.xml

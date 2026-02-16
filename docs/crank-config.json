@@ -1,40 +1,37 @@
 {
-  "_comment": "C-RANK 자동화 설정 - cafe-auto-v2 연동용",
-  "generated": "2026-02-16",
+  "version": "1.0.0",
+  "updated": "2026-02-16T10:09:37.869Z",
   "businesses": [
     {
-      "id": "gangnam-smile-dental",
-      "name": "강남스마일치과",
-      "blogAutoPost": true,
-      "cafeAutoPostTopics": [
-        "임플란트 후기",
-        "교정 과정",
-        "치과 상식"
-      ],
+      "id": "raon-beauty",
+      "name": "라온뷰티",
+      "category": "피부/미용",
       "keywords": [
-        "강남 치과",
-        "강남역 임플란트",
-        "강남 교정 치과",
-        "야간진료 치과"
+        "라온뷰티",
+        "안녕동피부",
+        "병점피부관리",
+        "병점모공각화증",
+        "병점여드름",
+        "동탄여드름",
+        "병점여드름관리",
+        "화성피부",
+        "안녕동피부관리",
+        "안녕동눈썹"
       ],
-      "location": "강남구 서울특별시"
+      "crankEnabled": true
     },
     {
-      "id": "yeoksam-bbq",
-      "name": "역삼숯불바베큐",
-      "blogAutoPost": true,
-      "cafeAutoPostTopics": [
-        "한우 맛집 후기",
-        "회식 장소 추천",
-        "숯불구이 꿀팁"
-      ],
+      "id": "gangnam-dental",
+      "name": "강남스마일치과",
+      "category": "치과",
       "keywords": [
-        "역삼 고기집",
-        "강남 회식 맛집",
-        "역삼동 한우",
-        "숯불구이 맛집"
+        "강남 치과",
+        "강남역 치과",
+        "임플란트",
+        "교정",
+        "강남 임플란트"
       ],
-      "location": "강남구 서울특별시"
+      "crankEnabled": true
     }
   ]
 }

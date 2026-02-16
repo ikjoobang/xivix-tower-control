@@ -1,603 +1,397 @@
-#!/usr/bin/env node
-/**
- * XIVIX Tower Control - Build Script
- * 
- * businesses.json → SEO + AEO + GEO + C-RANK 최적화 페이지 자동 생성
- * 
- * 생성물:
- *   /brands/{id}/index.html    → SEO (Schema.org JSON-LD) + GEO (AI Overview 인용)
- *   /brands/{id}/llms.txt      → AEO (LLM 크롤러 최적화)
- *   /brands/{id}/faq.html      → SEO FAQ 리치스니펫
- *   /sitemap.xml               → 검색엔진 사이트맵
- *   /llms.txt                  → 사이트 전체 LLM 디렉토리
- *   /robots.txt                → 크롤러 허용 설정
- *   /index.html                → 브랜드 디렉토리 메인
- */
-
 const fs = require('fs');
 const path = require('path');
 
-// ─── Config ───
-const DATA_PATH = './_data/businesses.json';
-const OUTPUT_DIR = './docs';
-const data = JSON.parse(fs.readFileSync(DATA_PATH, 'utf8'));
-const DOMAIN = data.meta.domain || 'brands.studioaibotbot.com';
-const BASE_URL = `https://${DOMAIN}`;
-const BUILD_DATE = new Date().toISOString().split('T')[0];
+const DOCS = path.join(__dirname, '..', 'docs');
+const DOMAIN = 'https://ikjoobang.github.io/xivix-tower-control';
 
-console.log(`🏗️  XIVIX Tower Control Build`);
-console.log(`   Domain: ${DOMAIN}`);
-console.log(`   Businesses: ${data.businesses.length}`);
-console.log(`   Date: ${BUILD_DATE}\n`);
-
-// ─── Clean & Create Output ───
-if (fs.existsSync(OUTPUT_DIR)) {
-  fs.rmSync(OUTPUT_DIR, { recursive: true });
-}
-fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-
-// ═══════════════════════════════════════════
-// 1. Schema.org JSON-LD Generator (SEO + GEO)
-// ═══════════════════════════════════════════
-function generateJsonLd(biz) {
-  const base = {
-    "@context": "https://schema.org",
-    "@type": biz.type,
-    "name": biz.name,
-    "alternateName": biz.name_en,
-    "description": biz.description,
-    "url": biz.url,
-    "telephone": biz.phone,
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": biz.address.street,
-      "addressLocality": biz.address.city,
-      "addressRegion": biz.address.district,
-      "postalCode": biz.address.postalCode,
-      "addressCountry": biz.address.country
+// ─── DATA ───
+const businesses = [
+  {
+    id: 'raon-beauty',
+    name: '라온뷰티',
+    nameEn: 'Raon Beauty',
+    type: 'BeautySalon',
+    category: '피부/미용',
+    description: '병점 피부관리 전문점. 여드름, 모공각화증, 눈썹 관리, 피부 트러블 케어. 안녕동 위치.',
+    address: '경기 화성시 병점구 용주로 91층',
+    phone: '031-235-5726',
+    url: 'https://naver.me/Fwj3TxKy',
+    lat: 37.1847,
+    lng: 126.9927,
+    hours: '',
+    sns: {
+      instagram: '',
+      youtube: '',
+      blog: '',
+      kakao: '',
+      other: ''
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": biz.geo.lat,
-      "longitude": biz.geo.lng
-    },
-    "openingHoursSpecification": parseOpeningHours(biz.openingHours),
-    "priceRange": biz.priceRange
-  };
-
-  // 리뷰 데이터
-  if (biz.reviews && biz.reviews.rating) {
-    base.aggregateRating = {
-      "@type": "AggregateRating",
-      "ratingValue": biz.reviews.rating,
-      "reviewCount": biz.reviews.count,
-      "bestRating": 5
-    };
+    keywords: [
+      '라온뷰티','안녕동피부','병점피부관리','병점모공각화증',
+      '병점여드름','동탄여드름','병점여드름관리','화성피부',
+      '안녕동피부관리','안녕동눈썹'
+    ],
+    faq: [
+      { q: '병점 피부관리 어디가 좋나요?', a: '라온뷰티는 병점 안녕동에 위치한 피부관리 전문점으로, 여드름/모공각화증/눈썹 관리를 전문으로 합니다.' },
+      { q: '모공각화증 관리 가능한가요?', a: '네, 모공각화증 전문 관리 프로그램을 운영하고 있습니다. 상담 후 맞춤 케어를 제공합니다.' },
+      { q: '예약은 어떻게 하나요?', a: '전화(031-235-5726) 또는 네이버 예약으로 가능합니다.' },
+      { q: '동탄에서도 가까운가요?', a: '병점역 인근 안녕동에 위치하여 동탄에서도 10분 거리입니다.' }
+    ],
+    maps: ['google','naver','kakao']
+  },
+  {
+    id: 'gangnam-dental',
+    name: '강남스마일치과',
+    nameEn: 'Gangnam Smile Dental',
+    type: 'Dentist',
+    category: '치과',
+    description: '강남역 3번출구, 임플란트/교정 전문 치과. 20년 경력 원장 직접 진료.',
+    address: '서울 강남구 강남대로 396',
+    phone: '02-555-1234',
+    url: 'https://gangnam-smile.co.kr',
+    lat: 37.4979,
+    lng: 127.0276,
+    hours: '월~금 09:00-21:00, 토 09:00-15:00',
+    sns: { instagram: 'https://instagram.com/gangnam_smile', blog: 'https://blog.naver.com/gangnam_smile' },
+    keywords: ['강남 치과','강남역 치과','임플란트','교정','강남 임플란트'],
+    faq: [
+      { q: '임플란트 비용이 얼마인가요?', a: '80만~180만원이며, 정확한 비용은 CT 촬영 후 상담 시 안내드립니다.' },
+      { q: '교정 기간은 얼마나 걸리나요?', a: '일반 교정 1~2년, 부분 교정 6개월~1년 정도 소요됩니다.' }
+    ],
+    maps: ['google','naver','kakao']
   }
+];
 
-  // 이미지
-  if (biz.images) {
-    base.image = Object.values(biz.images).filter(v => v);
-  }
+// ─── HELPERS ───
+function ensureDir(d) { fs.mkdirSync(d, { recursive: true }); }
+function writeF(p, c) { fs.writeFileSync(p, c, 'utf8'); console.log('  [OK] ' + p.replace(DOCS+'/', '')); }
 
-  // 소셜 링크
+// ─── SCHEMA.ORG JSON-LD ───
+function buildSchema(b) {
   const sameAs = [];
-  if (biz.socialLinks) {
-    Object.values(biz.socialLinks).forEach(link => {
-      if (link) sameAs.push(link);
-    });
+  if (b.sns) {
+    Object.values(b.sns).forEach(v => { if (v) sameAs.push(v); });
   }
-  if (sameAs.length > 0) base.sameAs = sameAs;
+  if (b.url) sameAs.push(b.url);
 
-  return base;
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': b.type || 'LocalBusiness',
+    name: b.name,
+    description: b.description,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: b.address,
+      addressCountry: 'KR'
+    },
+    telephone: b.phone,
+    url: b.url || `${DOMAIN}/brands/${b.id}/`,
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: b.lat,
+      longitude: b.lng
+    },
+    sameAs: sameAs
+  };
+  if (b.hours) schema.openingHours = b.hours;
+  if (b.faq && b.faq.length) {
+    schema.mainEntity = b.faq.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a }
+    }));
+  }
+  return schema;
 }
 
-// FAQ Schema (SEO 리치스니펫)
-function generateFaqJsonLd(biz) {
-  if (!biz.faq || biz.faq.length === 0) return null;
-
+// ─── FAQ SCHEMA ───
+function buildFaqSchema(b) {
+  if (!b.faq || !b.faq.length) return null;
   return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": biz.faq.map(item => ({
-      "@type": "Question",
-      "name": item.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": item.answer
-      }
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: b.faq.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a }
     }))
   };
 }
 
-// Organization Schema (브랜드 전체)
-function generateOrgJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "XIVIX",
-    "alternateName": "지빅스",
-    "url": BASE_URL,
-    "description": "병원·매장·브랜드의 검색엔진 및 AI 검색 최적화 관리 서비스",
-    "logo": `${BASE_URL}/assets/xivix-logo.png`,
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "customer service",
-      "availableLanguage": ["Korean", "English"]
-    }
-  };
-}
-
-// 영업시간 파싱
-function parseOpeningHours(hours) {
-  const dayMap = {
-    'Mo': 'Monday', 'Tu': 'Tuesday', 'We': 'Wednesday',
-    'Th': 'Thursday', 'Fr': 'Friday', 'Sa': 'Saturday', 'Su': 'Sunday'
-  };
-
-  return hours.map(h => {
-    const match = h.match(/^([A-Za-z,-]+)\s+(\d{2}:\d{2})-(\d{2}:\d{2})$/);
-    if (!match) return null;
-
-    const [, dayRange, opens, closes] = match;
-    const days = expandDayRange(dayRange);
-
-    return days.map(day => ({
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": dayMap[day] || day,
-      "opens": opens,
-      "closes": closes
-    }));
-  }).flat().filter(Boolean);
-}
-
-function expandDayRange(range) {
-  const allDays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-  const parts = range.split(',');
-  const result = [];
-
-  parts.forEach(part => {
-    if (part.includes('-')) {
-      const [start, end] = part.split('-');
-      const si = allDays.indexOf(start);
-      const ei = allDays.indexOf(end);
-      if (si >= 0 && ei >= 0) {
-        for (let i = si; i <= ei; i++) result.push(allDays[i]);
-      }
-    } else {
-      result.push(part.trim());
-    }
-  });
-
-  return result;
-}
-
-
-// ═══════════════════════════════════════
-// 2. HTML Page Generator (SEO + GEO)
-// ═══════════════════════════════════════
-function generateHTML(biz) {
-  const jsonLd = generateJsonLd(biz);
-  const faqJsonLd = generateFaqJsonLd(biz);
-
-  const faqSection = biz.faq ? biz.faq.map(f => `
-      <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-        <h3 itemprop="name">${f.question}</h3>
-        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-          <p itemprop="text">${f.answer}</p>
-        </div>
-      </div>`).join('\n') : '';
-
-  const specialtiesText = biz.specialties ? biz.specialties.join(', ') : '';
+// ─── HTML PAGE ───
+function buildPage(b) {
+  const schema = buildSchema(b);
+  const faqSchema = buildFaqSchema(b);
+  const snsLinks = [];
+  if (b.sns) {
+    const labels = { instagram: '인스타그램', youtube: '유튜브', blog: '네이버블로그', kakao: '카카오채널', other: '링크' };
+    Object.entries(b.sns).forEach(([k, v]) => {
+      if (v) snsLinks.push(`<a href="${v}" target="_blank" rel="noopener" class="sns-btn">${labels[k] || k}</a>`);
+    });
+  }
 
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${biz.name} | ${biz.address.district} ${biz.category}</title>
-  <meta name="description" content="${biz.description}">
-  <meta name="keywords" content="${(biz.keywords || []).join(', ')}">
-  <link rel="canonical" href="${BASE_URL}/brands/${biz.id}/">
-
-  <!-- Open Graph (소셜 공유) -->
-  <meta property="og:title" content="${biz.name}">
-  <meta property="og:description" content="${biz.description}">
-  <meta property="og:type" content="business.business">
-  <meta property="og:url" content="${BASE_URL}/brands/${biz.id}/">
-  ${biz.images?.exterior ? `<meta property="og:image" content="${biz.images.exterior}">` : ''}
-
-  <!-- 네이버 서치어드바이저 인증 (매장별 필요시 교체) -->
-  <!-- <meta name="naver-site-verification" content="YOUR_CODE_HERE"> -->
-
-  <!-- SEO: Schema.org JSON-LD -->
-  <script type="application/ld+json">
-${JSON.stringify(jsonLd, null, 2)}
-  </script>
-
-  <!-- SEO: FAQ Rich Snippet -->
-  ${faqJsonLd ? `<script type="application/ld+json">
-${JSON.stringify(faqJsonLd, null, 2)}
-  </script>` : ''}
-
-  <style>
-    :root { --primary: #2563eb; --text: #1f2937; --bg: #f9fafb; --card: #ffffff; }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); background: var(--bg); line-height: 1.7; }
-    .container { max-width: 720px; margin: 0 auto; padding: 2rem 1rem; }
-    .card { background: var(--card); border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-    h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-    h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 0.3rem; }
-    h3 { font-size: 1.05rem; margin-bottom: 0.3rem; }
-    .badge { display: inline-block; background: var(--primary); color: white; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.85rem; margin-right: 0.3rem; margin-bottom: 0.3rem; }
-    .info-row { padding: 0.5rem 0; border-bottom: 1px solid #f0f0f0; }
-    .info-label { font-weight: 600; color: #6b7280; font-size: 0.9rem; }
-    .rating { color: #f59e0b; font-size: 1.2rem; }
-    .faq-item { padding: 1rem 0; border-bottom: 1px solid #f0f0f0; }
-    .faq-item:last-child { border-bottom: none; }
-    .faq-item h3 { color: var(--primary); }
-    .footer { text-align: center; padding: 2rem; color: #9ca3af; font-size: 0.8rem; }
-    a { color: var(--primary); text-decoration: none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${b.name} - ${b.category} | ${b.address}</title>
+<meta name="description" content="${b.description}">
+<meta name="keywords" content="${b.keywords.join(', ')}">
+<meta property="og:title" content="${b.name} - ${b.category}">
+<meta property="og:description" content="${b.description}">
+<meta property="og:type" content="business.business">
+<meta property="og:url" content="${DOMAIN}/brands/${b.id}/">
+<meta property="og:locale" content="ko_KR">
+<meta property="business:contact_data:street_address" content="${b.address}">
+<meta property="business:contact_data:phone_number" content="${b.phone}">
+<meta name="naver-site-verification" content="">
+<link rel="canonical" href="${DOMAIN}/brands/${b.id}/">
+<script type="application/ld+json">${JSON.stringify(schema)}</script>
+${faqSchema ? `<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>` : ''}
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Malgun Gothic',sans-serif;background:#fafafa;color:#1f2937;line-height:1.6}
+.container{max-width:640px;margin:0 auto;padding:1rem}
+.hero{background:#fff;border-radius:12px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.1);margin-bottom:1rem}
+.hero h1{font-size:1.4rem;margin-bottom:.3rem}
+.category{display:inline-block;background:#eff6ff;color:#2563eb;padding:.15rem .5rem;border-radius:4px;font-size:.75rem;font-weight:600;margin-bottom:.5rem}
+.desc{color:#4b5563;font-size:.9rem;margin:.5rem 0}
+.info-row{display:flex;gap:.5rem;align-items:center;font-size:.85rem;color:#6b7280;margin:.3rem 0}
+.info-row a{color:#2563eb;text-decoration:none}
+.keywords{display:flex;flex-wrap:wrap;gap:.3rem;margin:1rem 0}
+.kw{background:#f3f4f6;color:#374151;padding:.2rem .5rem;border-radius:4px;font-size:.75rem}
+.sns-section{margin:1rem 0}
+.sns-btn{display:inline-block;padding:.4rem .8rem;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;font-size:.8rem;color:#1f2937;text-decoration:none;margin:.2rem}
+.sns-btn:hover{border-color:#2563eb;color:#2563eb}
+.faq{background:#fff;border-radius:12px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.1);margin-bottom:1rem}
+.faq h2{font-size:1.1rem;margin-bottom:.8rem}
+.faq-item{margin-bottom:.8rem;padding-bottom:.8rem;border-bottom:1px solid #f3f4f6}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-weight:600;font-size:.9rem;margin-bottom:.2rem}
+.faq-a{color:#4b5563;font-size:.85rem}
+.maps{background:#fff;border-radius:12px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.1);margin-bottom:1rem}
+.maps h2{font-size:1.1rem;margin-bottom:.6rem}
+.map-links{display:flex;flex-wrap:wrap;gap:.4rem}
+.map-link{display:inline-flex;align-items:center;gap:.3rem;padding:.5rem .8rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;font-size:.82rem;color:#166534;text-decoration:none}
+.map-link:hover{background:#dcfce7}
+.footer{text-align:center;padding:1.5rem;font-size:.7rem;color:#9ca3af}
+.footer a{color:#6b7280}
+</style>
 </head>
 <body>
-  <div class="container">
-    <!-- 기본 정보 -->
-    <div class="card">
-      <h1>${biz.name}</h1>
-      <p style="color:#6b7280; margin-bottom:1rem;">${biz.name_en} · ${biz.category}</p>
-      <p>${biz.description}</p>
-      ${biz.reviews ? `<p style="margin-top:0.8rem;"><span class="rating">★ ${biz.reviews.rating}</span> <span style="color:#6b7280;">(${biz.reviews.count}개 리뷰)</span></p>` : ''}
-    </div>
+<div class="container">
+<div class="hero">
+<span class="category">${b.category}</span>
+<h1>${b.name}</h1>
+<p class="desc">${b.description}</p>
+<div class="info-row">📍 ${b.address}</div>
+<div class="info-row">📞 <a href="tel:${b.phone.replace(/-/g,'')}">${b.phone}</a></div>
+${b.hours ? `<div class="info-row">🕐 ${b.hours}</div>` : ''}
+${b.url ? `<div class="info-row">🔗 <a href="${b.url}" target="_blank">${b.url}</a></div>` : ''}
+${snsLinks.length ? `<div class="sns-section">${snsLinks.join('')}</div>` : ''}
+<div class="keywords">${b.keywords.map(k => `<span class="kw">${k}</span>`).join('')}</div>
+</div>
 
-    <!-- 상세 정보 (GEO: AI가 인용하기 좋은 명확한 텍스트) -->
-    <div class="card">
-      <h2>기본 정보</h2>
-      <div class="info-row">
-        <span class="info-label">주소</span><br>
-        ${biz.address.street}, ${biz.address.district}, ${biz.address.city} ${biz.address.postalCode}
-      </div>
-      <div class="info-row">
-        <span class="info-label">전화번호</span><br>
-        <a href="tel:${biz.phone}">${biz.phone}</a>
-      </div>
-      <div class="info-row">
-        <span class="info-label">영업시간</span><br>
-        ${biz.openingHours.join('<br>')}
-      </div>
-      <div class="info-row">
-        <span class="info-label">웹사이트</span><br>
-        <a href="${biz.url}" target="_blank" rel="noopener">${biz.url}</a>
-      </div>
-      <div class="info-row">
-        <span class="info-label">가격대</span><br>
-        ${biz.priceRange}
-      </div>
-    </div>
+${b.faq && b.faq.length ? `
+<div class="faq">
+<h2>자주 묻는 질문</h2>
+${b.faq.map(f => `<div class="faq-item"><div class="faq-q">Q. ${f.q}</div><div class="faq-a">A. ${f.a}</div></div>`).join('')}
+</div>` : ''}
 
-    <!-- 전문 분야 -->
-    <div class="card">
-      <h2>전문 분야</h2>
-      <p>${biz.specialties.map(s => `<span class="badge">${s}</span>`).join(' ')}</p>
-    </div>
+<div class="maps">
+<h2>지도에서 보기</h2>
+<div class="map-links">
+<a class="map-link" href="https://www.google.com/maps/search/?api=1&query=${b.lat},${b.lng}" target="_blank">📍 구글맵</a>
+<a class="map-link" href="https://map.naver.com/v5/search/${encodeURIComponent(b.name)}" target="_blank">📍 네이버지도</a>
+<a class="map-link" href="https://map.kakao.com/?q=${encodeURIComponent(b.name)}" target="_blank">📍 카카오맵</a>
+</div>
+</div>
 
-    <!-- FAQ (SEO Rich Snippet + GEO 인용) -->
-    ${biz.faq && biz.faq.length > 0 ? `
-    <div class="card" itemscope itemtype="https://schema.org/FAQPage">
-      <h2>자주 묻는 질문</h2>
-      ${faqSection}
-    </div>` : ''}
-
-    <div class="footer">
-      <p>© ${new Date().getFullYear()} ${biz.name} | Managed by <a href="https://studioaibotbot.com">XIVIX</a></p>
-      <p>Last updated: ${BUILD_DATE}</p>
-    </div>
-  </div>
+<div class="footer">
+<p>${b.name} | ${b.address} | ${b.phone}</p>
+<p>Managed by <a href="${DOMAIN}">XIVIX Tower Control</a></p>
+</div>
+</div>
 </body>
 </html>`;
 }
 
+// ─── LLMS.TXT (Individual) ───
+function buildLlms(b) {
+  const snsLines = [];
+  if (b.sns) Object.entries(b.sns).forEach(([k,v]) => { if(v) snsLines.push(`- ${k}: ${v}`); });
 
-// ═══════════════════════════════════════
-// 3. llms.txt Generator (AEO)
-// ═══════════════════════════════════════
-function generateLlmsTxt(biz) {
-  const faqSection = biz.faq ? biz.faq.map(f =>
-    `### ${f.question}\n${f.answer}`
-  ).join('\n\n') : '';
-
-  return `# ${biz.name} (${biz.name_en})
-
-> ${biz.description}
+  return `# ${b.name}
+> ${b.description}
 
 ## 기본 정보
-- 업종: ${biz.type} (${biz.category})
-- 주소: ${biz.address.street}, ${biz.address.district}, ${biz.address.city} ${biz.address.postalCode}
-- 전화: ${biz.phone}
-- 웹사이트: ${biz.url}
-- 영업시간: ${biz.openingHours.join(', ')}
-- 가격대: ${biz.priceRange}
-- 좌표: ${biz.geo.lat}, ${biz.geo.lng}
+- 업종: ${b.category}
+- 주소: ${b.address}
+- 전화: ${b.phone}
+- 웹사이트: ${b.url || '없음'}
+${b.hours ? `- 운영시간: ${b.hours}` : ''}
+- 좌표: ${b.lat}, ${b.lng}
 
-## 전문 분야
-${biz.specialties.map(s => `- ${s}`).join('\n')}
+## 키워드
+${b.keywords.map(k => `- ${k}`).join('\n')}
 
-## 검색 키워드
-${(biz.keywords || []).map(k => `- ${k}`).join('\n')}
+${snsLines.length ? `## SNS 채널\n${snsLines.join('\n')}` : ''}
 
-${biz.reviews ? `## 고객 평가
-- 평균 평점: ${biz.reviews.rating}/5
-- 리뷰 수: ${biz.reviews.count}개
-- 출처: ${biz.reviews.source}` : ''}
+## 자주 묻는 질문
+${(b.faq || []).map(f => `### Q: ${f.q}\nA: ${f.a}`).join('\n\n')}
 
-${faqSection ? `## 자주 묻는 질문\n\n${faqSection}` : ''}
-
-${biz.socialLinks ? `## 소셜 미디어
-${Object.entries(biz.socialLinks).map(([k, v]) => `- ${k}: ${v}`).join('\n')}` : ''}
-
----
-Managed by XIVIX (https://studioaibotbot.com)
-Last updated: ${BUILD_DATE}
+## 지도 링크
+- Google Maps: https://www.google.com/maps/search/?api=1&query=${b.lat},${b.lng}
+- Naver Map: https://map.naver.com/v5/search/${encodeURIComponent(b.name)}
+- Kakao Map: https://map.kakao.com/?q=${encodeURIComponent(b.name)}
 `;
 }
 
+// ─── GLOBAL LLMS.TXT ───
+function buildGlobalLlms(allBiz) {
+  let out = `# XIVIX Tower Control - Brand Directory
+> 소상공인/프리랜서 통합 검색 최적화 시스템
 
-// ═══════════════════════════════════════
-// 4. Sitemap Generator (SEO)
-// ═══════════════════════════════════════
-function generateSitemap(businesses) {
-  const urls = [
-    { loc: `${BASE_URL}/`, priority: '1.0' },
-    { loc: `${BASE_URL}/llms.txt`, priority: '0.8' },
-    ...businesses.map(biz => ({
-      loc: `${BASE_URL}/brands/${biz.id}/`,
-      priority: '0.9'
-    })),
-    ...businesses.map(biz => ({
-      loc: `${BASE_URL}/brands/${biz.id}/llms.txt`,
-      priority: '0.7'
-    }))
-  ];
+## 등록된 매장 (${allBiz.length}개)
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemapschemas.org/sitemap/0.9">
-${urls.map(u => `  <url>
-    <loc>${u.loc}</loc>
-    <lastmod>${BUILD_DATE}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>${u.priority}</priority>
-  </url>`).join('\n')}
-</urlset>`;
+`;
+  allBiz.forEach(b => {
+    out += `### ${b.name}
+- 업종: ${b.category}
+- 주소: ${b.address}
+- 전화: ${b.phone}
+- 키워드: ${b.keywords.join(', ')}
+- 상세: ${DOMAIN}/brands/${b.id}/
+- llms.txt: ${DOMAIN}/brands/${b.id}/llms.txt
+
+`;
+  });
+  return out;
 }
 
+// ─── SITEMAP ───
+function buildSitemap(allBiz) {
+  const now = new Date().toISOString().split('T')[0];
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>${DOMAIN}/</loc><lastmod>${now}</lastmod><priority>1.0</priority></url>
+<url><loc>${DOMAIN}/dashboard.html</loc><lastmod>${now}</lastmod><priority>0.5</priority></url>
+`;
+  allBiz.forEach(b => {
+    xml += `<url><loc>${DOMAIN}/brands/${b.id}/</loc><lastmod>${now}</lastmod><priority>0.8</priority></url>\n`;
+  });
+  xml += '</urlset>';
+  return xml;
+}
 
-// ═══════════════════════════════════════
-// 5. robots.txt (SEO + AEO)
-// ═══════════════════════════════════════
-function generateRobotsTxt() {
-  return `# XIVIX Tower Control - robots.txt
-# SEO + AEO 최적화: 모든 검색엔진 및 LLM 크롤러 허용
-
-User-agent: *
+// ─── ROBOTS.TXT ───
+function buildRobots() {
+  return `User-agent: *
 Allow: /
-Disallow: /_data/
 
-# Google
-User-agent: Googlebot
-Allow: /
-
-# Google AI (Gemini, AI Overview)
-User-agent: Google-Extended
-Allow: /
-
-# OpenAI (ChatGPT)
 User-agent: GPTBot
 Allow: /
 
-# OpenAI (ChatGPT browsing)
-User-agent: ChatGPT-User
+User-agent: Claude-Web
 Allow: /
 
-# Anthropic (Claude)
-User-agent: ClaudeBot
-Allow: /
-User-agent: anthropic-ai
-Allow: /
-
-# Microsoft (Bing, Copilot)
-User-agent: bingbot
-Allow: /
-
-# Perplexity
 User-agent: PerplexityBot
 Allow: /
 
-# Naver
-User-agent: Yeti
+User-agent: Google-Extended
 Allow: /
 
-# Common Crawl
-User-agent: CCBot
-Allow: /
-
-Sitemap: ${BASE_URL}/sitemap.xml
+Sitemap: ${DOMAIN}/sitemap.xml
 `;
 }
 
-
-// ═══════════════════════════════════════
-// 6. Root llms.txt (AEO - 사이트 디렉토리)
-// ═══════════════════════════════════════
-function generateRootLlmsTxt(businesses) {
-  return `# XIVIX Brand Directory
-
-> XIVIX가 관리하는 병원, 매장, 브랜드의 공식 정보 디렉토리입니다.
-> 각 브랜드의 상세 정보는 개별 llms.txt 파일에서 확인할 수 있습니다.
-
-## 관리 브랜드 목록
-
-${businesses.filter(b => b.status === 'active').map(biz =>
-  `### ${biz.name} (${biz.name_en})
-- 업종: ${biz.category}
-- 위치: ${biz.address.district}, ${biz.address.city}
-- 상세정보: ${BASE_URL}/brands/${biz.id}/llms.txt
-- 웹사이트: ${biz.url}`
-).join('\n\n')}
-
----
-Total active brands: ${businesses.filter(b => b.status === 'active').length}
-Directory managed by: XIVIX (https://studioaibotbot.com)
-Last updated: ${BUILD_DATE}
-`;
-}
-
-
-// ═══════════════════════════════════════
-// 7. Index Page (브랜드 디렉토리 메인)
-// ═══════════════════════════════════════
-function generateIndexHTML(businesses) {
-  const orgJsonLd = generateOrgJsonLd();
-  const activeBusinesses = businesses.filter(b => b.status === 'active');
-
-  const cards = activeBusinesses.map(biz => `
-        <a href="/brands/${biz.id}/" class="biz-card">
-          <div class="biz-category">${biz.category}</div>
-          <h3>${biz.name}</h3>
-          <p class="biz-location">${biz.address.district}, ${biz.address.city}</p>
-          <p class="biz-desc">${biz.description.substring(0, 80)}...</p>
-          ${biz.reviews ? `<p class="biz-rating">★ ${biz.reviews.rating} (${biz.reviews.count})</p>` : ''}
-        </a>`).join('\n');
-
+// ─── INDEX PAGE ───
+function buildIndex(allBiz) {
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XIVIX Brand Directory | 브랜드 검색 최적화 관리</title>
-  <meta name="description" content="XIVIX가 관리하는 병원, 매장, 브랜드의 공식 정보 디렉토리. SEO, AEO, GEO, C-RANK 최적화.">
-  <link rel="canonical" href="${BASE_URL}/">
-
-  <script type="application/ld+json">
-${JSON.stringify(orgJsonLd, null, 2)}
-  </script>
-
-  <style>
-    :root { --primary: #2563eb; --text: #1f2937; --bg: #0f172a; --card: #1e293b; }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Pretendard', -apple-system, sans-serif; color: #e2e8f0; background: var(--bg); }
-    .header { text-align: center; padding: 3rem 1rem 2rem; }
-    .header h1 { font-size: 2rem; color: white; }
-    .header p { color: #94a3b8; margin-top: 0.5rem; }
-    .stats { display: flex; justify-content: center; gap: 2rem; margin: 1.5rem 0; }
-    .stat { text-align: center; }
-    .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
-    .stat-label { font-size: 0.85rem; color: #64748b; }
-    .grid { max-width: 900px; margin: 0 auto; padding: 0 1rem 3rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-    .biz-card { background: var(--card); border-radius: 12px; padding: 1.5rem; text-decoration: none; color: #e2e8f0; transition: transform 0.2s, box-shadow 0.2s; display: block; }
-    .biz-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,99,235,0.15); }
-    .biz-category { display: inline-block; background: rgba(37,99,235,0.2); color: var(--primary); padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.8rem; margin-bottom: 0.5rem; }
-    .biz-card h3 { font-size: 1.15rem; margin-bottom: 0.3rem; color: white; }
-    .biz-location { color: #94a3b8; font-size: 0.85rem; }
-    .biz-desc { color: #64748b; font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.5; }
-    .biz-rating { color: #f59e0b; margin-top: 0.5rem; font-size: 0.9rem; }
-    .footer { text-align: center; padding: 2rem; color: #475569; font-size: 0.8rem; }
-    .opt-badges { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
-    .opt-badge { background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.3); color: var(--primary); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XIVIX Brand Directory</title>
+<meta name="description" content="XIVIX Tower Control이 관리하는 매장/프리랜서 디렉토리">
+<link rel="canonical" href="${DOMAIN}/">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Malgun Gothic',sans-serif;background:#fafafa;color:#1f2937;line-height:1.6}
+.container{max-width:720px;margin:0 auto;padding:1.5rem}
+h1{font-size:1.3rem;margin-bottom:1rem}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem;margin-bottom:.6rem;text-decoration:none;color:inherit;display:block;transition:box-shadow .15s}
+.card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card h2{font-size:1rem;margin-bottom:.2rem}
+.card .cat{color:#2563eb;font-size:.75rem;font-weight:600}
+.card .addr{color:#6b7280;font-size:.82rem}
+.card .kws{margin-top:.3rem;display:flex;flex-wrap:wrap;gap:.2rem}
+.card .kw{background:#f3f4f6;padding:.1rem .35rem;border-radius:3px;font-size:.68rem;color:#374151}
+.footer{text-align:center;padding:2rem;font-size:.72rem;color:#9ca3af}
+</style>
 </head>
 <body>
-  <div class="header">
-    <h1>XIVIX Brand Directory</h1>
-    <p>병원 · 매장 · 브랜드 검색 최적화 관리</p>
-    <div class="opt-badges">
-      <span class="opt-badge">SEO</span>
-      <span class="opt-badge">AEO</span>
-      <span class="opt-badge">GEO</span>
-      <span class="opt-badge">C-RANK</span>
-    </div>
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-num">${activeBusinesses.length}</div>
-        <div class="stat-label">관리 브랜드</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">4</div>
-        <div class="stat-label">최적화 영역</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="grid">
-    ${cards}
-  </div>
-
-  <div class="footer">
-    <p>© ${new Date().getFullYear()} XIVIX Tower Control | <a href="/llms.txt" style="color:#64748b;">llms.txt</a> · <a href="/sitemap.xml" style="color:#64748b;">sitemap.xml</a></p>
-  </div>
+<div class="container">
+<h1>XIVIX Brand Directory</h1>
+<p style="color:#6b7280;font-size:.85rem;margin-bottom:1rem">${allBiz.length}개 매장이 등록되어 있습니다.</p>
+${allBiz.map(b => `
+<a href="brands/${b.id}/" class="card">
+<span class="cat">${b.category}</span>
+<h2>${b.name}</h2>
+<div class="addr">📍 ${b.address} | 📞 ${b.phone}</div>
+<div class="kws">${b.keywords.slice(0,5).map(k => `<span class="kw">${k}</span>`).join('')}</div>
+</a>`).join('')}
+<div class="footer">
+<p>Managed by XIVIX Tower Control</p>
+<p><a href="llms.txt" style="color:#6b7280">llms.txt</a> | <a href="sitemap.xml" style="color:#6b7280">sitemap.xml</a></p>
+</div>
+</div>
 </body>
 </html>`;
 }
 
-
-// ═══════════════════════════════════════
-// 8. C-RANK Config Generator (네이버)
-// ═══════════════════════════════════════
-function generateCrankConfig(businesses) {
-  const crankEnabled = businesses.filter(b => b.crank?.naverCafeEnabled);
-
-  const config = {
-    _comment: "C-RANK 자동화 설정 - cafe-auto-v2 연동용",
-    generated: BUILD_DATE,
-    businesses: crankEnabled.map(biz => ({
-      id: biz.id,
-      name: biz.name,
-      blogAutoPost: biz.crank.blogAutoPost,
-      cafeAutoPostTopics: biz.crank.cafeAutoPostTopics,
-      keywords: biz.keywords,
-      location: `${biz.address.district} ${biz.address.city}`
+// ─── C-RANK CONFIG ───
+function buildCrankConfig(allBiz) {
+  return JSON.stringify({
+    version: '1.0.0',
+    updated: new Date().toISOString(),
+    businesses: allBiz.map(b => ({
+      id: b.id,
+      name: b.name,
+      category: b.category,
+      keywords: b.keywords,
+      crankEnabled: true
     }))
-  };
-
-  return JSON.stringify(config, null, 2);
+  }, null, 2);
 }
 
+// ═══════════════════════════════
+// BUILD
+// ═══════════════════════════════
+console.log('=== XIVIX Tower Control Build ===\n');
 
-// ═══════════════════════════════════════
-// BUILD EXECUTION
-// ═══════════════════════════════════════
-const activeBiz = data.businesses.filter(b => b.status === 'active');
+// Clean old brands
+const brandsDir = path.join(DOCS, 'brands');
+if (fs.existsSync(brandsDir)) {
+  fs.rmSync(brandsDir, { recursive: true });
+}
 
-activeBiz.forEach(biz => {
-  const dir = path.join(OUTPUT_DIR, 'brands', biz.id);
-  fs.mkdirSync(dir, { recursive: true });
-
-  // HTML (SEO + GEO)
-  fs.writeFileSync(path.join(dir, 'index.html'), generateHTML(biz));
-  console.log(`  ✅ ${biz.name} → index.html (SEO + GEO)`);
-
-  // llms.txt (AEO)
-  fs.writeFileSync(path.join(dir, 'llms.txt'), generateLlmsTxt(biz));
-  console.log(`  ✅ ${biz.name} → llms.txt (AEO)`);
+// Build each business
+businesses.forEach(b => {
+  const dir = path.join(DOCS, 'brands', b.id);
+  ensureDir(dir);
+  writeF(path.join(dir, 'index.html'), buildPage(b));
+  writeF(path.join(dir, 'llms.txt'), buildLlms(b));
 });
 
-// Root files
-fs.writeFileSync(path.join(OUTPUT_DIR, 'index.html'), generateIndexHTML(data.businesses));
-console.log(`\n  ✅ index.html (Brand Directory)`);
+// Global files
+writeF(path.join(DOCS, 'index.html'), buildIndex(businesses));
+writeF(path.join(DOCS, 'llms.txt'), buildGlobalLlms(businesses));
+writeF(path.join(DOCS, 'sitemap.xml'), buildSitemap(businesses));
+writeF(path.join(DOCS, 'robots.txt'), buildRobots());
+writeF(path.join(DOCS, 'crank-config.json'), buildCrankConfig(businesses));
 
-fs.writeFileSync(path.join(OUTPUT_DIR, 'sitemap.xml'), generateSitemap(activeBiz));
-console.log(`  ✅ sitemap.xml (SEO)`);
-
-fs.writeFileSync(path.join(OUTPUT_DIR, 'robots.txt'), generateRobotsTxt());
-console.log(`  ✅ robots.txt (SEO + AEO)`);
-
-fs.writeFileSync(path.join(OUTPUT_DIR, 'llms.txt'), generateRootLlmsTxt(activeBiz));
-console.log(`  ✅ llms.txt (AEO Directory)`);
-
-// C-RANK config
-fs.writeFileSync(path.join(OUTPUT_DIR, 'crank-config.json'), generateCrankConfig(activeBiz));
-console.log(`  ✅ crank-config.json (C-RANK)`);
-
-console.log(`\n🎯 Build complete!`);
-console.log(`   Output: ${OUTPUT_DIR}/`);
-console.log(`   Pages: ${activeBiz.length * 2 + 4} files generated`);
-console.log(`   Coverage: SEO ✅ AEO ✅ GEO ✅ C-RANK ✅\n`);
+console.log('\n=== Build Complete ===');
+console.log('Total: ' + businesses.length + ' businesses');
+console.log('Files: ' + (businesses.length * 2 + 5) + ' files generated');
