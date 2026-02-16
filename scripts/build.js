@@ -19,7 +19,7 @@ const path = require('path');
 
 // ─── Config ───
 const DATA_PATH = './_data/businesses.json';
-const OUTPUT_DIR = './dist';
+const OUTPUT_DIR = './docs';
 const data = JSON.parse(fs.readFileSync(DATA_PATH, 'utf8'));
 const DOMAIN = data.meta.domain || 'brands.studioaibotbot.com';
 const BASE_URL = `https://${DOMAIN}`;
