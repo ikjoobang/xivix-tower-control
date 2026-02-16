@@ -6,7 +6,7 @@
 <title>XIVIX Tower Control</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2235;--bg-input:#0f1729;--border:#2a3548;--text-primary:#e8ecf4;--text-secondary:#8896ab;--text-muted:#556479;--accent-blue:#3b82f6;--accent-green:#22c55e;--accent-amber:#f59e0b;--accent-red:#ef4444;--accent-purple:#a855f7;--accent-cyan:#06b6d4}
+:root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2235;--bg-input:#0f1729;--border:#2a3548;--text-primary:#e8ecf4;--text-secondary:#8896ab;--text-muted:#556479;--accent-blue:#3b82f6;--accent-green:#22c55e;--accent-amber:#f59e0b;--accent-red:#ef4444;--accent-purple:#a855f7;--accent-cyan:#06b6d4;--accent-pink:#ec4899}
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'IBM Plex Sans KR',-apple-system,sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
 .app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
 .sidebar{background:var(--bg-secondary);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;z-index:50}
@@ -26,11 +26,12 @@
 .main-content{padding:1.2rem}
 .btn{padding:.45rem .9rem;border-radius:6px;font-size:.78rem;font-weight:500;border:none;cursor:pointer;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
 .btn-primary{background:var(--accent-blue);color:#fff}.btn-primary:hover{background:#2563eb}.btn-success{background:var(--accent-green);color:#fff}.btn-outline{background:transparent;color:var(--text-secondary);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--accent-blue);color:var(--accent-blue)}.btn-danger{background:rgba(239,68,68,.15);color:var(--accent-red);border:none}.btn-sm{padding:.3rem .6rem;font-size:.72rem}.btn-lg{padding:.6rem 1.3rem;font-size:.85rem}
+.btn-pink{background:var(--accent-pink);color:#fff}.btn-pink:hover{background:#db2777}
 .card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:1rem}.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.4rem}.card-title{font-size:.88rem;font-weight:600}
-.stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin-bottom:1.2rem}.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:.9rem}.stat-value{font-size:1.5rem;font-weight:700;font-family:'JetBrains Mono',monospace}.stat-label{font-size:.65rem;color:var(--text-muted);margin-top:.15rem;letter-spacing:.05em}
-.stat-card.blue .stat-value{color:var(--accent-blue)}.stat-card.green .stat-value{color:var(--accent-green)}.stat-card.amber .stat-value{color:var(--accent-amber)}.stat-card.purple .stat-value{color:var(--accent-purple)}.stat-card.cyan .stat-value{color:var(--accent-cyan)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.7rem;margin-bottom:1.2rem}.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:.9rem}.stat-value{font-size:1.5rem;font-weight:700;font-family:'JetBrains Mono',monospace}.stat-label{font-size:.65rem;color:var(--text-muted);margin-top:.15rem;letter-spacing:.05em}
+.stat-card.blue .stat-value{color:var(--accent-blue)}.stat-card.green .stat-value{color:var(--accent-green)}.stat-card.amber .stat-value{color:var(--accent-amber)}.stat-card.purple .stat-value{color:var(--accent-purple)}.stat-card.cyan .stat-value{color:var(--accent-cyan)}.stat-card.pink .stat-value{color:var(--accent-pink)}
 table{width:100%;border-collapse:collapse;font-size:.8rem}th{text-align:left;padding:.55rem .5rem;color:var(--text-muted);font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-bottom:1px solid var(--border)}td{padding:.6rem .5rem;border-bottom:1px solid rgba(42,53,72,.5)}tr:hover td{background:rgba(59,130,246,.03)}
-.status{display:inline-block;padding:.12rem .45rem;border-radius:4px;font-size:.68rem;font-weight:600}.status-active{background:rgba(34,197,94,.15);color:var(--accent-green)}.status-pending{background:rgba(245,158,11,.15);color:var(--accent-amber)}
+.status{display:inline-block;padding:.12rem .45rem;border-radius:4px;font-size:.68rem;font-weight:600}.status-active{background:rgba(34,197,94,.15);color:var(--accent-green)}.status-pending{background:rgba(245,158,11,.15);color:var(--accent-amber)}.status-biz{background:rgba(59,130,246,.15);color:var(--accent-blue)}.status-free{background:rgba(236,72,153,.15);color:var(--accent-pink)}
 .opt-indicators{display:flex;gap:.25rem}.opt-dot{width:8px;height:8px;border-radius:50%}.opt-dot.on{opacity:1}.opt-dot.off{opacity:.2}.opt-dot.seo{background:var(--accent-blue)}.opt-dot.aeo{background:var(--accent-purple)}.opt-dot.geo{background:var(--accent-green)}.opt-dot.crank{background:var(--accent-amber)}.opt-dot.nlogic{background:var(--accent-cyan)}
 .form-group{margin-bottom:.9rem}.form-label{display:block;font-size:.72rem;color:var(--text-muted);margin-bottom:.25rem;font-weight:500}
 .form-input,.form-textarea,.form-select{width:100%;padding:.55rem .75rem;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);font-size:.82rem;font-family:inherit;transition:border-color .15s}
@@ -39,63 +40,52 @@ table{width:100%;border-collapse:collapse;font-size:.8rem}th{text-align:left;pad
 .map-option:hover{border-color:var(--accent-blue)}.map-option.selected{border-color:var(--accent-blue);background:rgba(59,130,246,.05)}.map-option input{display:none}
 .map-check{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .map-option.selected .map-check{background:var(--accent-blue);border-color:var(--accent-blue)}.map-option.selected .map-check::after{content:'';width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-2px}
-.map-name{font-size:.8rem;font-weight:500}.map-desc{font-size:.65rem;color:var(--text-muted)}
 .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1rem;overflow-x:auto}.tab{padding:.55rem 1rem;font-size:.78rem;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;font-weight:500;white-space:nowrap}.tab:hover{color:var(--text-primary)}.tab.active{color:var(--accent-blue);border-bottom-color:var(--accent-blue)}
-.console{background:#0c0c0c;border-radius:8px;padding:1rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#4ade80;max-height:350px;overflow-y:auto;line-height:1.8;word-break:break-all}.console .c-info{color:#3b82f6}.console .c-warn{color:#f59e0b}.console .c-ok{color:#22c55e}.console .c-dim{color:#556479}
+.tab.active-pink{color:var(--accent-pink);border-bottom-color:var(--accent-pink)}
+.console{background:#0c0c0c;border-radius:8px;padding:1rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#4ade80;max-height:350px;overflow-y:auto;line-height:1.8;word-break:break-all}.console .c-info{color:#3b82f6}.console .c-warn{color:#f59e0b}.console .c-ok{color:#22c55e}.console .c-dim{color:#556479}.console .c-pink{color:#ec4899}
 .toast{position:fixed;bottom:2rem;right:1rem;left:1rem;background:var(--bg-card);border:1px solid var(--accent-green);border-radius:8px;padding:.7rem 1.1rem;font-size:.82rem;z-index:1000;transform:translateY(100px);opacity:0;transition:all .3s;text-align:center}.toast.show{transform:translateY(0);opacity:1}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem}.modal-overlay.show{display:flex}.modal{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;max-width:640px;width:100%;max-height:85vh;overflow-y:auto}.modal h3{font-size:1rem;margin-bottom:1rem}
 .guide-step{display:flex;gap:1rem;padding:.8rem 0;border-bottom:1px solid rgba(42,53,72,.4)}.guide-step:last-child{border-bottom:none}.guide-num{width:28px;height:28px;border-radius:50%;background:rgba(59,130,246,.15);color:var(--accent-blue);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono'}
 .guide-text h4{font-size:.85rem;font-weight:600;margin-bottom:.2rem}.guide-text p{font-size:.78rem;color:var(--text-secondary);line-height:1.5}.guide-text code{background:rgba(59,130,246,.1);color:var(--accent-blue);padding:.1rem .3rem;border-radius:3px;font-size:.72rem;font-family:'JetBrains Mono'}
 .flow-branch{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-top:.3rem}.flow-box{padding:.5rem .6rem;border-radius:6px;font-size:.7rem;font-weight:500;text-align:center}
-.google-auth-card{background:linear-gradient(135deg,rgba(66,133,244,.06),rgba(52,168,83,.04));border:1px solid rgba(66,133,244,.15)}
-.lang-toggle{display:flex;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;overflow:hidden}.lang-btn{padding:.25rem .5rem;font-size:.68rem;cursor:pointer;border:none;background:transparent;color:var(--text-muted);font-family:inherit;font-weight:500}.lang-btn.active{background:var(--accent-blue);color:#fff}
-/* Settings */
 .setting-section{margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}.setting-section:last-child{border-bottom:none}
 .setting-title{font-size:.82rem;font-weight:600;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem}
-.api-key-input{font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:-.02em}
+.api-key-input{font-family:'JetBrains Mono',monospace;font-size:.75rem}
 .key-status{display:inline-flex;align-items:center;gap:.3rem;font-size:.68rem;padding:.2rem .5rem;border-radius:4px;margin-left:.5rem}
 .key-ok{background:rgba(34,197,94,.12);color:var(--accent-green)}.key-none{background:rgba(239,68,68,.12);color:var(--accent-red)}
 .mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40}
+.sns-row{display:flex;gap:.4rem;align-items:center;margin-bottom:.4rem}.sns-row .form-input{flex:1}.sns-label{min-width:60px;font-size:.72rem;font-weight:600;color:var(--text-muted)}
+.sns-link{display:inline-flex;align-items:center;gap:.3rem;padding:.15rem .4rem;border-radius:4px;font-size:.65rem;font-weight:500;text-decoration:none;transition:opacity .15s}.sns-link:hover{opacity:.8}
+.sns-link.insta{background:rgba(225,48,108,.15);color:#e1306c}.sns-link.youtube{background:rgba(255,0,0,.12);color:#ff0000}.sns-link.blog{background:rgba(3,199,90,.12);color:#03c75a}.sns-link.kakao{background:rgba(254,229,0,.15);color:#b8a800}.sns-link.tiktok{background:rgba(0,0,0,.2);color:#fff}.sns-link.facebook{background:rgba(24,119,242,.12);color:#1877f2}.sns-link.other{background:rgba(59,130,246,.1);color:var(--accent-blue)}
+.mode-toggle{display:flex;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:1rem}.mode-btn{flex:1;padding:.6rem;text-align:center;font-size:.82rem;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text-muted);font-family:inherit;transition:all .15s}.mode-btn.active-biz{background:rgba(59,130,246,.15);color:var(--accent-blue)}.mode-btn.active-free{background:rgba(236,72,153,.15);color:var(--accent-pink)}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-/* Mobile */
 @media(max-width:768px){
 .app{grid-template-columns:1fr}
-.sidebar{position:fixed;left:-260px;width:260px;height:100vh;transition:left .3s;z-index:50}
-.sidebar.open{left:0}
-.sidebar-close{display:block}
-.mobile-overlay.show{display:block}
-.hamburger{display:block}
+.sidebar{position:fixed;left:-260px;width:260px;height:100vh;transition:left .3s;z-index:50}.sidebar.open{left:0}.sidebar-close{display:block}
+.mobile-overlay.show{display:block}.hamburger{display:block}
 .stats-grid{grid-template-columns:repeat(2,1fr)}
 .form-row,.form-row-3,.map-options{grid-template-columns:1fr}
 .flow-branch{grid-template-columns:repeat(3,1fr)}
 .stat-value{font-size:1.2rem}
 table{font-size:.72rem;display:block;overflow-x:auto}
-.main-content{padding:.8rem}
-.card{padding:.9rem}
+.main-content{padding:.8rem}.card{padding:.9rem}
 .toast{left:.5rem;right:.5rem}
 }
-@media(max-width:400px){
-.stats-grid{grid-template-columns:1fr 1fr}
-.flow-branch{grid-template-columns:repeat(2,1fr)}
-}
+@media(max-width:400px){.stats-grid{grid-template-columns:1fr 1fr}.flow-branch{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 <div class="app">
 <div class="mobile-overlay" id="mobileOverlay" onclick="closeSidebar()"></div>
 <aside class="sidebar" id="sidebar">
-<div class="sidebar-brand"><div><h1>XIVIX</h1><span>Tower Control v1.1</span></div><button class="sidebar-close" onclick="closeSidebar()">X</button></div>
+<div class="sidebar-brand"><div><h1>XIVIX</h1><span>Tower Control v2.0</span></div><button class="sidebar-close" onclick="closeSidebar()">X</button></div>
 <div class="nav-section">
 <div class="nav-label">관리</div>
 <div class="nav-item active" data-page="guide" onclick="go('guide')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>사용 가이드</div>
 <div class="nav-item" data-page="dashboard" onclick="go('dashboard')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
-<div class="nav-item" data-page="add" onclick="go('add')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>매장 등록</div>
-<div class="nav-item" data-page="businesses" onclick="go('businesses')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>매장 목록</div>
-</div>
-<div class="nav-section">
-<div class="nav-label">최적화</div>
-<div class="nav-item" data-page="maps" onclick="go('maps')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>지도 플랫폼</div>
-<div class="nav-item" data-page="google-auth" onclick="go('google-auth')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>구글 인증</div>
+<div class="nav-item" data-page="add-biz" onclick="go('add-biz')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>매장 등록</div>
+<div class="nav-item" data-page="add-free" onclick="go('add-free')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>프리랜서 등록</div>
+<div class="nav-item" data-page="list" onclick="go('list')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>전체 목록</div>
 </div>
 <div class="nav-section">
 <div class="nav-label">시스템</div>
@@ -105,252 +95,198 @@ table{font-size:.72rem;display:block;overflow-x:auto}
 </div>
 <div class="opt-tags"><span class="opt-tag seo">SEO</span><span class="opt-tag aeo">AEO</span><span class="opt-tag geo">GEO</span><span class="opt-tag crank">C-RANK</span><span class="opt-tag nlogic">N-LOGIC</span></div>
 </aside>
-
 <div class="main">
-<div class="main-header">
-<div style="display:flex;align-items:center">
-<button class="hamburger" onclick="openSidebar()">&#9776;</button>
-<h2 id="pageTitle">사용 가이드</h2>
-</div>
-<div class="header-actions">
-<button class="btn btn-outline btn-sm" onclick="go('settings')">설정</button>
-<button class="btn btn-primary btn-sm" onclick="go('build')">빌드</button>
-</div>
-</div>
+<div class="main-header"><div style="display:flex;align-items:center"><button class="hamburger" onclick="openSidebar()">&#9776;</button><h2 id="pageTitle">사용 가이드</h2></div><div class="header-actions"><button class="btn btn-outline btn-sm" onclick="go('settings')">설정</button><button class="btn btn-primary btn-sm" onclick="go('build')">빌드</button></div></div>
 <div class="main-content">
 
-<!-- 사용 가이드 -->
+<!-- 가이드 -->
 <div id="page-guide" class="page">
-<div class="card"><div class="card-title" style="margin-bottom:.3rem">XIVIX Tower Control 이란?</div><p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6">매장 정보를 한 곳에 입력하면, 구글/네이버/카카오/T-MAP 등 모든 검색 엔진과 AI에 최적화된 페이지가 자동 생성됩니다.</p></div>
-<div class="card"><div class="card-title" style="margin-bottom:.8rem">시작하기 (4단계)</div>
-<div class="guide-step"><div class="guide-num">1</div><div class="guide-text"><h4>설정</h4><p><code>설정</code> 메뉴에서 GitHub 토큰, Cloudflare 키, 도메인, 기본 지도 등을 먼저 입력하세요. 한 번만 하면 됩니다.</p></div></div>
-<div class="guide-step"><div class="guide-num">2</div><div class="guide-text"><h4>매장 등록</h4><p><code>매장 등록</code>에서 Smart Paste(복사 붙여넣기 자동 분류) 또는 직접 입력으로 등록.</p></div></div>
-<div class="guide-step"><div class="guide-num">3</div><div class="guide-text"><h4>구글 인증 (1회)</h4><p><code>구글 인증</code>에서 "구글 인증 시작" -> 점주 전화/우편 인증 -> "인증 완료" 클릭.</p></div></div>
-<div class="guide-step"><div class="guide-num">4</div><div class="guide-text"><h4>빌드 & 배포</h4><p><code>빌드 & 배포</code>에서 실행하면 모든 최적화 파일이 자동 생성되고 배포됩니다.</p></div></div>
-</div>
-<div class="card"><div class="card-title" style="margin-bottom:.8rem">등록 후 동작 흐름</div>
-<div style="background:var(--bg-input);border-radius:8px;padding:1rem">
-<div style="text-align:center;margin-bottom:.6rem"><span class="flow-box" style="background:rgba(59,130,246,.15);color:var(--accent-blue);display:inline-block">매장 정보 입력</span></div>
-<div style="text-align:center;color:var(--text-muted)">|</div>
-<div style="text-align:center;margin:.2rem 0"><span class="flow-box" style="background:rgba(168,85,247,.15);color:var(--accent-purple);display:inline-block">빌드 (자동 생성)</span></div>
-<div style="text-align:center;color:var(--text-muted)">|</div>
-<div class="flow-branch">
-<div class="flow-box" style="background:rgba(59,130,246,.12);color:var(--accent-blue);font-size:.65rem"><strong>SEO</strong><br>Schema.org<br>sitemap.xml</div>
-<div class="flow-box" style="background:rgba(168,85,247,.12);color:var(--accent-purple);font-size:.65rem"><strong>AEO</strong><br>llms.txt<br>AI 크롤러용</div>
-<div class="flow-box" style="background:rgba(34,197,94,.12);color:var(--accent-green);font-size:.65rem"><strong>GEO</strong><br>FAQ 리치<br>AI Overview</div>
-<div class="flow-box" style="background:rgba(245,158,11,.12);color:var(--accent-amber);font-size:.65rem"><strong>C-RANK</strong><br>네이버 카페<br>블로그 연동</div>
-<div class="flow-box" style="background:rgba(6,182,212,.12);color:var(--accent-cyan);font-size:.65rem"><strong>N-LOGIC</strong><br>네이버 검색<br>메타태그</div>
-</div>
-<div style="text-align:center;color:var(--text-muted);margin-top:.5rem">|</div>
-<div style="text-align:center;margin-top:.3rem"><span class="flow-box" style="background:rgba(34,197,94,.15);color:var(--accent-green);display:inline-block">배포 -> 검색 + AI 자동 수집</span></div>
+<div class="card"><div class="card-title" style="margin-bottom:.3rem">XIVIX Tower Control</div><p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6"><strong>매장</strong> 또는 <strong>프리랜서(개인 브랜드)</strong> 정보를 등록하면, 구글/네이버/카카오/AI 검색에 최적화된 페이지가 자동 생성됩니다.</p></div>
+<div class="card"><div class="card-title" style="margin-bottom:.5rem">두 가지 모드</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.5rem">
+<div style="padding:.8rem;border-radius:8px;border:1px solid rgba(59,130,246,.3);background:rgba(59,130,246,.04)"><div style="font-weight:600;color:var(--accent-blue);margin-bottom:.3rem">매장 모드</div><div style="font-size:.75rem;color:var(--text-secondary);line-height:1.5">치과, 병원, 음식점, 카페 등<br>고정 주소 + 지도 노출<br>Schema: LocalBusiness</div><button class="btn btn-primary btn-sm" style="margin-top:.5rem" onclick="go('add-biz')">매장 등록</button></div>
+<div style="padding:.8rem;border-radius:8px;border:1px solid rgba(236,72,153,.3);background:rgba(236,72,153,.04)"><div style="font-weight:600;color:var(--accent-pink);margin-bottom:.3rem">프리랜서 모드</div><div style="font-size:.75rem;color:var(--text-secondary);line-height:1.5">보험설계사, 자동차딜러, 부동산중개<br>SNS 채널 + 키워드 노출<br>Schema: Person + Service</div><button class="btn btn-pink btn-sm" style="margin-top:.5rem" onclick="go('add-free')">프리랜서 등록</button></div>
 </div></div>
-<div class="card"><div class="card-title" style="margin-bottom:.5rem">데모 실행</div><p style="font-size:.78rem;color:var(--text-muted);margin-bottom:.8rem">전체 과정 시뮬레이션을 보여줍니다.</p>
-<button class="btn btn-primary btn-lg" onclick="runDemo()">데모 실행</button>
-<div id="demoOutput" style="margin-top:1rem;display:none"><div class="console" id="demoConsole"></div></div></div>
-</div>
-
-<!-- 설정 -->
-<div id="page-settings" class="page" style="display:none">
-<div class="card">
-<div class="card-title" style="margin-bottom:1rem">시스템 설정</div>
-<div class="setting-section">
-<div class="setting-title">배포 설정</div>
-<div class="form-group"><label class="form-label">배포 대상</label><select class="form-select" id="s_deployTarget" onchange="saveCfg()"><option value="github">GitHub Pages</option><option value="cloudflare">Cloudflare Pages</option></select></div>
-<div class="form-group"><label class="form-label">도메인</label><input class="form-input" id="s_domain" placeholder="brands.studioaibotbot.com" onblur="saveCfg()"></div>
-<div class="form-group"><label class="form-label">GitHub 저장소</label><input class="form-input" id="s_repo" placeholder="ikjoobang/xivix-tower-control" onblur="saveCfg()"></div>
-</div>
-<div class="setting-section">
-<div class="setting-title">GitHub API 토큰 <span class="key-status" id="ghStatus"></span></div>
-<p style="font-size:.72rem;color:var(--text-muted);margin-bottom:.4rem">배포 시 GitHub에 자동 Push하는 데 필요합니다. Personal Access Token (classic) 사용.</p>
-<div class="form-group"><input class="form-input api-key-input" id="s_ghToken" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" onblur="saveCfg()"></div>
-<button class="btn btn-outline btn-sm" onclick="toggleShow('s_ghToken')">토큰 보기/숨기기</button>
-<button class="btn btn-primary btn-sm" onclick="testGH()">연결 테스트</button>
-</div>
-<div class="setting-section">
-<div class="setting-title">Cloudflare API 토큰 <span class="key-status" id="cfStatus"></span></div>
-<p style="font-size:.72rem;color:var(--text-muted);margin-bottom:.4rem">Cloudflare Pages 배포 또는 DNS 설정 시 필요합니다.</p>
-<div class="form-group"><input class="form-input api-key-input" id="s_cfToken" type="password" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" onblur="saveCfg()"></div>
-<div class="form-group"><label class="form-label">Account ID</label><input class="form-input api-key-input" id="s_cfAccount" placeholder="764ebfb0ce23114e62876b1873e2154f" onblur="saveCfg()"></div>
-<button class="btn btn-outline btn-sm" onclick="toggleShow('s_cfToken')">토큰 보기/숨기기</button>
-<button class="btn btn-primary btn-sm" onclick="testCF()">연결 테스트</button>
-</div>
-<div class="setting-section">
-<div class="setting-title">기본 지도 플랫폼</div>
-<p style="font-size:.72rem;color:var(--text-muted);margin-bottom:.4rem">매장 등록 시 기본으로 선택되는 플랫폼입니다.</p>
-<div style="display:flex;flex-wrap:wrap;gap:.4rem">
-<label style="display:flex;gap:.3rem;align-items:center;font-size:.78rem;color:var(--text-secondary)"><input type="checkbox" class="s_defMap" value="google" checked onchange="saveCfg()"> Google Maps</label>
-<label style="display:flex;gap:.3rem;align-items:center;font-size:.78rem;color:var(--text-secondary)"><input type="checkbox" class="s_defMap" value="naver" checked onchange="saveCfg()"> 네이버</label>
-<label style="display:flex;gap:.3rem;align-items:center;font-size:.78rem;color:var(--text-secondary)"><input type="checkbox" class="s_defMap" value="kakao" checked onchange="saveCfg()"> 카카오</label>
-<label style="display:flex;gap:.3rem;align-items:center;font-size:.78rem;color:var(--text-secondary)"><input type="checkbox" class="s_defMap" value="tmap" onchange="saveCfg()"> T-MAP</label>
-<label style="display:flex;gap:.3rem;align-items:center;font-size:.78rem;color:var(--text-secondary)"><input type="checkbox" class="s_defMap" value="apple" onchange="saveCfg()"> Apple</label>
-<label style="display:flex;gap:.3rem;align-items:center;font-size:.78rem;color:var(--text-secondary)"><input type="checkbox" class="s_defMap" value="tesla" onchange="saveCfg()"> Tesla</label>
-</div>
-</div>
-<div class="setting-section">
-<div class="setting-title">C-RANK 연동</div>
-<div class="form-group"><label class="form-label">cafe-auto-v2 서버 URL (네이버 카페 자동포스팅)</label><input class="form-input" id="s_crankUrl" placeholder="https://cafe-auto.studioaibotbot.com" onblur="saveCfg()"></div>
-</div>
-<div class="setting-section">
-<div class="setting-title">데이터 관리</div>
-<div style="display:flex;flex-wrap:wrap;gap:.4rem">
-<button class="btn btn-outline" onclick="exportJSON()">JSON 내보내기</button>
-<button class="btn btn-outline" onclick="importJSON()">JSON 가져오기</button>
-<button class="btn btn-danger" onclick="resetAll()">전체 초기화</button>
-</div>
-<input type="file" id="importFile" accept=".json" style="display:none" onchange="doImport(this)">
-</div>
-</div>
+<div class="card"><div class="card-title" style="margin-bottom:.8rem">등록 후 자동 생성물</div>
+<div style="background:var(--bg-input);border-radius:8px;padding:1rem">
+<div class="flow-branch">
+<div class="flow-box" style="background:rgba(59,130,246,.12);color:var(--accent-blue);font-size:.65rem"><strong>SEO</strong><br>Schema.org<br>sitemap</div>
+<div class="flow-box" style="background:rgba(168,85,247,.12);color:var(--accent-purple);font-size:.65rem"><strong>AEO</strong><br>llms.txt<br>AI 답변용</div>
+<div class="flow-box" style="background:rgba(34,197,94,.12);color:var(--accent-green);font-size:.65rem"><strong>GEO</strong><br>FAQ 리치<br>AI Overview</div>
+<div class="flow-box" style="background:rgba(245,158,11,.12);color:var(--accent-amber);font-size:.65rem"><strong>C-RANK</strong><br>네이버 카페<br>블로그</div>
+<div class="flow-box" style="background:rgba(6,182,212,.12);color:var(--accent-cyan);font-size:.65rem"><strong>N-LOGIC</strong><br>네이버 검색<br>메타태그</div>
+</div></div></div>
+<div class="card"><div class="card-title" style="margin-bottom:.5rem">프리랜서 vs 매장 차이</div>
+<table><thead><tr><th></th><th>매장</th><th>프리랜서</th></tr></thead><tbody>
+<tr><td style="font-weight:600">정체</td><td>LocalBusiness (장소)</td><td>Person + ProfessionalService</td></tr>
+<tr><td style="font-weight:600">위치</td><td>고정 주소 + 지도</td><td>활동 지역 (강남/분당 등)</td></tr>
+<tr><td style="font-weight:600">노출 채널</td><td>구글맵/네이버지도</td><td>인스타/유튜브/블로그/카카오</td></tr>
+<tr><td style="font-weight:600">키워드</td><td>"강남 치과"</td><td>"강남 보험설계사 추천"</td></tr>
+<tr><td style="font-weight:600">AEO</td><td>"근처 치과 추천"</td><td>"좋은 보험설계사 찾는법"</td></tr>
+<tr><td style="font-weight:600">빌드 결과</td><td>매장 페이지 + 지도</td><td>링크허브 + SNS 프로필</td></tr>
+</tbody></table></div>
+<div class="card"><button class="btn btn-primary btn-lg" onclick="runDemo()">데모 실행</button><div id="demoOutput" style="margin-top:1rem;display:none"><div class="console" id="demoConsole"></div></div></div>
 </div>
 
 <!-- 대시보드 -->
 <div id="page-dashboard" class="page" style="display:none">
-<div class="stats-grid">
-<div class="stat-card blue"><div class="stat-value" id="statTotal">0</div><div class="stat-label">전체 매장</div></div>
-<div class="stat-card green"><div class="stat-value" id="statActive">0</div><div class="stat-label">운영중</div></div>
-<div class="stat-card purple"><div class="stat-value" id="statSEO">0</div><div class="stat-label">SEO 적용</div></div>
-<div class="stat-card amber"><div class="stat-value" id="statCrank">0</div><div class="stat-label">C-RANK</div></div>
-<div class="stat-card cyan"><div class="stat-value" id="statMaps">0</div><div class="stat-label">지도 연동</div></div>
-</div>
-<div class="card"><div class="card-header"><span class="card-title">관리 매장</span><button class="btn btn-primary btn-sm" onclick="go('add')">+ 등록</button></div>
-<table><thead><tr><th>매장</th><th>업종</th><th>최적화</th><th>상태</th><th></th></tr></thead><tbody id="bizTable"></tbody></table></div>
-<div class="card"><div class="card-header"><span class="card-title">최적화 현황</span></div><div id="optCoverage" style="display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem"></div></div>
+<div class="stats-grid" id="statsGrid"></div>
+<div class="card"><div class="card-header"><span class="card-title">전체 관리 현황</span><div style="display:flex;gap:.3rem"><button class="btn btn-primary btn-sm" onclick="go('add-biz')">+ 매장</button><button class="btn btn-pink btn-sm" onclick="go('add-free')">+ 프리랜서</button></div></div>
+<table><thead><tr><th>이름</th><th>유형</th><th>업종</th><th>최적화</th><th>상태</th><th></th></tr></thead><tbody id="dashTable"></tbody></table></div>
 </div>
 
 <!-- 매장 등록 -->
-<div id="page-add" class="page" style="display:none">
-<div class="tabs"><div class="tab active" onclick="switchTab('paste',this)">Smart Paste</div><div class="tab" onclick="switchTab('manual',this)">직접 입력</div></div>
-<div id="addTab-paste"><div class="card"><div class="card-title" style="margin-bottom:.5rem">자동 분류</div><p style="font-size:.78rem;color:var(--text-muted);margin-bottom:.8rem">명함, URL, 텍스트 등 아무거나 붙여넣기.</p>
-<textarea id="smartPasteInput" class="form-textarea" style="min-height:150px;font-family:'JetBrains Mono',monospace;font-size:.75rem" placeholder="여기에 매장 정보 붙여넣기..."></textarea>
-<div style="margin-top:.7rem;display:flex;gap:.4rem"><button class="btn btn-primary" onclick="smartParse()">자동 분류</button><button class="btn btn-outline" onclick="clearPaste()">초기화</button></div></div>
-<div id="parseResult" style="display:none"><div class="card" style="border-color:var(--accent-green)"><div class="card-title" style="color:var(--accent-green);margin-bottom:.8rem">분류 결과</div><div id="parsedFields"></div>
-<div style="margin-top:1rem;display:flex;gap:.4rem"><button class="btn btn-success" onclick="confirmAdd()">등록</button><button class="btn btn-outline" onclick="document.getElementById('parseResult').style.display='none'">취소</button></div></div></div>
-</div>
-<div id="addTab-manual" style="display:none"><div class="card"><div class="card-title" style="margin-bottom:.8rem">매장 정보</div>
+<div id="page-add-biz" class="page" style="display:none">
+<div class="card" style="border-color:rgba(59,130,246,.3)"><div class="card-title" style="color:var(--accent-blue);margin-bottom:.3rem">매장 등록</div><p style="font-size:.78rem;color:var(--text-muted)">고정 위치가 있는 사업체 (치과, 병원, 음식점 등)</p></div>
+<div class="tabs"><div class="tab active" onclick="switchBizTab('paste',this)">Smart Paste</div><div class="tab" onclick="switchBizTab('manual',this)">직접 입력</div></div>
+<div id="bizTab-paste"><div class="card"><textarea id="smartPasteInput" class="form-textarea" style="min-height:130px;font-family:'JetBrains Mono',monospace;font-size:.75rem" placeholder="명함, URL, 텍스트 등 아무거나 붙여넣기..."></textarea><div style="margin-top:.5rem"><button class="btn btn-primary" onclick="smartParse()">자동 분류</button></div></div><div id="parseResult" style="display:none"><div class="card" style="border-color:var(--accent-green)"><div id="parsedFields"></div><div style="margin-top:.8rem;display:flex;gap:.4rem"><button class="btn btn-success" onclick="confirmAdd()">등록</button><button class="btn btn-outline" onclick="document.getElementById('parseResult').style.display='none'">취소</button></div></div></div></div>
+<div id="bizTab-manual" style="display:none"><div class="card">
 <div class="form-row"><div class="form-group"><label class="form-label">매장명</label><input class="form-input" id="f_name" placeholder="강남스마일치과"></div><div class="form-group"><label class="form-label">영문명</label><input class="form-input" id="f_nameEn" placeholder="Gangnam Smile Dental"></div></div>
-<div class="form-row"><div class="form-group"><label class="form-label">업종</label><select class="form-select" id="f_category"><option value="">선택</option><option value="Dentist">치과</option><option value="Hospital">병원</option><option value="Restaurant">음식점</option><option value="CafeOrCoffeeShop">카페</option><option value="BeautySalon">미용</option><option value="Store">매장</option><option value="EducationalOrganization">학원</option><option value="LocalBusiness">기타</option></select></div><div class="form-group"><label class="form-label">전화</label><input class="form-input" id="f_phone" placeholder="02-555-1234"></div></div>
-<div class="form-group"><label class="form-label">주소</label><input class="form-input" id="f_address" placeholder="서울특별시 강남구 강남대로 396"></div>
+<div class="form-row"><div class="form-group"><label class="form-label">업종</label><select class="form-select" id="f_category"><option value="">선택</option><option value="Dentist">치과</option><option value="Hospital">병원</option><option value="Restaurant">음식점</option><option value="CafeOrCoffeeShop">카페</option><option value="BeautySalon">미용</option><option value="Store">매장</option><option value="LocalBusiness">기타</option></select></div><div class="form-group"><label class="form-label">전화</label><input class="form-input" id="f_phone" placeholder="02-555-1234"></div></div>
+<div class="form-group"><label class="form-label">주소</label><input class="form-input" id="f_address" placeholder="서울 강남구 강남대로 396"></div>
 <div class="form-group"><label class="form-label">웹사이트</label><input class="form-input" id="f_url" placeholder="https://"></div>
 <div class="form-row"><div class="form-group"><label class="form-label">위도</label><input class="form-input" id="f_lat" placeholder="37.4979"></div><div class="form-group"><label class="form-label">경도</label><input class="form-input" id="f_lng" placeholder="127.0276"></div></div>
-<div class="form-group"><label class="form-label">설명</label><textarea class="form-textarea" id="f_desc" style="min-height:60px" placeholder="매장 설명"></textarea></div>
-<div class="form-group"><label class="form-label">영문 설명</label><textarea class="form-textarea" id="f_descEn" style="min-height:60px" placeholder="English description"></textarea></div>
+<div class="form-group"><label class="form-label">설명</label><textarea class="form-textarea" id="f_desc" style="min-height:50px" placeholder="매장 설명"></textarea></div>
 <div class="form-group"><label class="form-label">운영시간</label><input class="form-input" id="f_hours" placeholder="월~금 09:00-21:00"></div>
-<div class="form-group"><label class="form-label">전문분야 (쉼표)</label><input class="form-input" id="f_specialties" placeholder="임플란트, 교정"></div>
 <div class="form-group"><label class="form-label">키워드 (쉼표)</label><input class="form-input" id="f_keywords" placeholder="강남 치과, 임플란트"></div>
-<div class="form-group"><label class="form-label">FAQ (질문|답변)</label><textarea class="form-textarea" id="f_faq" style="min-height:60px" placeholder="비용?|80만~180만원"></textarea></div>
-<div class="card-title" style="margin:.8rem 0 .4rem">지도 플랫폼</div>
-<div class="map-options" id="mapTargets">
-<label class="map-option selected" onclick="toggleMap(this)"><input type="checkbox" value="google" checked><div class="map-check"></div><div><div class="map-name">Google</div></div></label>
-<label class="map-option selected" onclick="toggleMap(this)"><input type="checkbox" value="naver" checked><div class="map-check"></div><div><div class="map-name">네이버</div></div></label>
-<label class="map-option selected" onclick="toggleMap(this)"><input type="checkbox" value="kakao" checked><div class="map-check"></div><div><div class="map-name">카카오</div></div></label>
-<label class="map-option" onclick="toggleMap(this)"><input type="checkbox" value="tmap"><div class="map-check"></div><div><div class="map-name">T-MAP</div></div></label>
-<label class="map-option" onclick="toggleMap(this)"><input type="checkbox" value="apple"><div class="map-check"></div><div><div class="map-name">Apple</div></div></label>
-<label class="map-option" onclick="toggleMap(this)"><input type="checkbox" value="tesla"><div class="map-check"></div><div><div class="map-name">Tesla</div></div></label>
-</div>
-<div style="margin-top:1rem;display:flex;gap:.4rem"><button class="btn btn-success btn-lg" onclick="manualAdd()">등록</button><button class="btn btn-outline" onclick="clearManual()">초기화</button></div></div></div>
+<div class="form-group"><label class="form-label">FAQ (질문|답변, 줄마다)</label><textarea class="form-textarea" id="f_faq" style="min-height:50px" placeholder="비용?|80만~180만원"></textarea></div>
+<div style="margin-top:.8rem"><button class="btn btn-success btn-lg" onclick="manualAddBiz()">매장 등록</button></div>
+</div></div>
 </div>
 
-<!-- 매장 목록 -->
-<div id="page-businesses" class="page" style="display:none"><div class="card"><div class="card-header"><span class="card-title">매장 목록</span><button class="btn btn-outline btn-sm" onclick="exportJSON()">JSON</button></div>
-<table><thead><tr><th>매장</th><th>업종</th><th>전화</th><th>최적화</th><th>상태</th><th></th></tr></thead><tbody id="fullBizTable"></tbody></table></div></div>
-
-<!-- 지도 -->
-<div id="page-maps" class="page" style="display:none"><div class="card"><div class="card-title" style="margin-bottom:.5rem">지도 플랫폼 최적화</div><p style="font-size:.78rem;color:var(--text-secondary);margin-bottom:1rem">각 플랫폼별 연동 방식입니다.</p>
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem">
-<div class="card" style="border-color:rgba(66,133,244,.3)"><div style="font-weight:600;margin-bottom:.3rem;color:#4285f4">Google Maps</div><div style="font-size:.72rem;color:var(--text-secondary)">Schema.org + GBP API</div><div class="status status-active" style="margin-top:.3rem">자동</div></div>
-<div class="card" style="border-color:rgba(30,200,100,.3)"><div style="font-weight:600;margin-bottom:.3rem;color:#1ec864">네이버 지도</div><div style="font-size:.72rem;color:var(--text-secondary)">스마트 플레이스 등록</div><div class="status status-pending" style="margin-top:.3rem">반자동</div></div>
-<div class="card" style="border-color:rgba(254,229,0,.3)"><div style="font-weight:600;margin-bottom:.3rem;color:#fee500">카카오맵</div><div style="font-size:.72rem;color:var(--text-secondary)">Schema.org 크롤링</div><div class="status status-active" style="margin-top:.3rem">자동</div></div>
-<div class="card" style="border-color:rgba(231,50,52,.3)"><div style="font-weight:600;margin-bottom:.3rem;color:#e73234">T-MAP</div><div style="font-size:.72rem;color:var(--text-secondary)">GeoCoordinates</div><div class="status status-active" style="margin-top:.3rem">자동</div></div>
-<div class="card" style="border-color:rgba(160,160,160,.3)"><div style="font-weight:600;margin-bottom:.3rem;color:#a0a0a0">Apple Maps</div><div style="font-size:.72rem;color:var(--text-secondary)">Business Connect</div><div class="status status-active" style="margin-top:.3rem">자동</div></div>
-<div class="card" style="border-color:rgba(232,33,39,.3)"><div style="font-weight:600;margin-bottom:.3rem;color:#e82127">Tesla Map</div><div style="font-size:.72rem;color:var(--text-secondary)">구글 데이터 연동</div><div class="status status-active" style="margin-top:.3rem">구글 연동</div></div>
-</div></div></div>
-
-<!-- 구글 인증 -->
-<div id="page-google-auth" class="page" style="display:none">
-<div class="card google-auth-card"><div class="card-title" style="margin-bottom:.3rem">구글 비즈니스 인증</div><p style="font-size:.78rem;color:var(--text-muted);margin-bottom:.8rem">1회 점주 인증 후 XIVIX가 자동 관리합니다.</p>
-<div class="guide-step"><div class="guide-num">1</div><div class="guide-text"><h4>"구글 인증 시작" 클릭</h4></div></div>
-<div class="guide-step"><div class="guide-num">2</div><div class="guide-text"><h4>점주 인증코드 수신</h4></div></div>
-<div class="guide-step"><div class="guide-num">3</div><div class="guide-text"><h4>"인증 완료" 클릭</h4></div></div>
+<!-- 프리랜서 등록 -->
+<div id="page-add-free" class="page" style="display:none">
+<div class="card" style="border-color:rgba(236,72,153,.3)"><div class="card-title" style="color:var(--accent-pink);margin-bottom:.3rem">프리랜서 등록</div><p style="font-size:.78rem;color:var(--text-muted)">보험설계사, 자동차딜러, 부동산중개사, 영업사원 등 개인 브랜드</p></div>
+<div class="card">
+<div class="card-title" style="margin-bottom:.8rem">기본 정보</div>
+<div class="form-row"><div class="form-group"><label class="form-label">이름 (활동명)</label><input class="form-input" id="fl_name" placeholder="김보험"></div><div class="form-group"><label class="form-label">영문명</label><input class="form-input" id="fl_nameEn" placeholder="Kim Insurance Pro"></div></div>
+<div class="form-row"><div class="form-group"><label class="form-label">직종</label><select class="form-select" id="fl_job"><option value="InsuranceAgent">보험설계사</option><option value="CarDealer">자동차딜러</option><option value="RealEstateAgent">부동산중개사</option><option value="FinancialAdvisor">재무설계사</option><option value="SalesAgent">영업사원</option><option value="Freelancer">프리랜서 기타</option></select></div><div class="form-group"><label class="form-label">소속/회사</label><input class="form-input" id="fl_company" placeholder="삼성생명, 메르세데스벤츠 강남 등"></div></div>
+<div class="form-group"><label class="form-label">전화</label><input class="form-input" id="fl_phone" placeholder="010-1234-5678"></div>
+<div class="form-group"><label class="form-label">활동 지역 (쉼표 구분)</label><input class="form-input" id="fl_areas" placeholder="강남, 서초, 분당, 판교"></div>
+<div class="form-group"><label class="form-label">한줄 소개</label><input class="form-input" id="fl_tagline" placeholder="15년차 보험 전문가, 맞춤 설계"></div>
+<div class="form-group"><label class="form-label">상세 소개</label><textarea class="form-textarea" id="fl_desc" style="min-height:60px" placeholder="경력, 전문 분야, 차별점 등"></textarea></div>
 </div>
-<div class="card"><div class="card-title" style="margin-bottom:.8rem">인증 현황</div><table><thead><tr><th>매장</th><th>구글</th><th>네이버</th><th>관리</th></tr></thead><tbody id="authTable"></tbody></table></div></div>
+<div class="card">
+<div class="card-title" style="margin-bottom:.8rem">SNS 채널</div>
+<p style="font-size:.72rem;color:var(--text-muted);margin-bottom:.6rem">운영중인 채널 URL을 입력하세요. 빈칸은 무시됩니다.</p>
+<div class="sns-row"><span class="sns-label" style="color:#e1306c">인스타그램</span><input class="form-input" id="fl_insta" placeholder="https://instagram.com/username"></div>
+<div class="sns-row"><span class="sns-label" style="color:#ff0000">유튜브</span><input class="form-input" id="fl_youtube" placeholder="https://youtube.com/@channel"></div>
+<div class="sns-row"><span class="sns-label" style="color:#03c75a">네이버블로그</span><input class="form-input" id="fl_blog" placeholder="https://blog.naver.com/id"></div>
+<div class="sns-row"><span class="sns-label" style="color:#b8a800">카카오채널</span><input class="form-input" id="fl_kakao" placeholder="https://pf.kakao.com/_xxxxx"></div>
+<div class="sns-row"><span class="sns-label" style="color:#fff">틱톡</span><input class="form-input" id="fl_tiktok" placeholder="https://tiktok.com/@username"></div>
+<div class="sns-row"><span class="sns-label" style="color:#1877f2">페이스북</span><input class="form-input" id="fl_facebook" placeholder="https://facebook.com/page"></div>
+<div class="sns-row"><span class="sns-label" style="color:var(--accent-blue)">기타 링크</span><input class="form-input" id="fl_other" placeholder="오픈채팅, 홈페이지 등"></div>
+</div>
+<div class="card">
+<div class="card-title" style="margin-bottom:.8rem">전문성 & 키워드</div>
+<div class="form-group"><label class="form-label">자격증 / 수상 (줄마다 1개)</label><textarea class="form-textarea" id="fl_certs" style="min-height:50px" placeholder="손해사정사 자격증&#10;MDRT 2024&#10;보험왕 수상 2023"></textarea></div>
+<div class="form-group"><label class="form-label">전문 분야 (쉼표)</label><input class="form-input" id="fl_specialties" placeholder="변액보험, 종신보험, 연금저축"></div>
+<div class="form-group"><label class="form-label">검색 키워드 (쉼표)</label><input class="form-input" id="fl_keywords" placeholder="강남 보험설계사, 변액보험 추천, 보험 상담"></div>
+<div class="form-group"><label class="form-label">FAQ (질문|답변, 줄마다)</label><textarea class="form-textarea" id="fl_faq" style="min-height:50px" placeholder="상담비용?|무료 상담&#10;어떤보험?|맞춤 설계 후 추천"></textarea></div>
+</div>
+<div style="display:flex;gap:.4rem"><button class="btn btn-pink btn-lg" onclick="addFreelancer()">프리랜서 등록</button><button class="btn btn-outline" onclick="clearFreeForm()">초기화</button></div>
+</div>
+
+<!-- 전체 목록 -->
+<div id="page-list" class="page" style="display:none"><div class="card"><div class="card-header"><span class="card-title">전체 목록</span><button class="btn btn-outline btn-sm" onclick="exportJSON()">JSON</button></div>
+<table><thead><tr><th>이름</th><th>유형</th><th>업종/직종</th><th>채널</th><th>상태</th><th></th></tr></thead><tbody id="fullTable"></tbody></table></div></div>
+
+<!-- 설정 -->
+<div id="page-settings" class="page" style="display:none">
+<div class="card"><div class="card-title" style="margin-bottom:1rem">시스템 설정</div>
+<div class="setting-section"><div class="setting-title">배포</div>
+<div class="form-row"><div class="form-group"><label class="form-label">배포 대상</label><select class="form-select" id="s_deployTarget" onchange="saveCfg()"><option value="github">GitHub Pages</option><option value="cloudflare">Cloudflare Pages</option></select></div><div class="form-group"><label class="form-label">도메인</label><input class="form-input" id="s_domain" placeholder="brands.studioaibotbot.com" onblur="saveCfg()"></div></div>
+<div class="form-group"><label class="form-label">GitHub 저장소</label><input class="form-input" id="s_repo" placeholder="ikjoobang/xivix-tower-control" onblur="saveCfg()"></div></div>
+<div class="setting-section"><div class="setting-title">GitHub API 토큰 <span id="ghStatus"></span></div>
+<div class="form-group"><input class="form-input api-key-input" id="s_ghToken" type="password" placeholder="ghp_xxxx" onblur="saveCfg()"></div>
+<div style="display:flex;gap:.3rem"><button class="btn btn-outline btn-sm" onclick="toggleShow('s_ghToken')">보기/숨기기</button><button class="btn btn-primary btn-sm" onclick="testGH()">테스트</button></div></div>
+<div class="setting-section"><div class="setting-title">데이터</div>
+<div style="display:flex;flex-wrap:wrap;gap:.3rem"><button class="btn btn-outline" onclick="exportJSON()">JSON 내보내기</button><button class="btn btn-outline" onclick="document.getElementById('importFile').click()">JSON 가져오기</button><button class="btn btn-danger" onclick="resetAll()">전체 초기화</button></div>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="doImport(this)"></div>
+</div></div>
 
 <!-- 빌드 -->
-<div id="page-build" class="page" style="display:none"><div class="card"><div class="card-title" style="margin-bottom:.5rem">빌드 & 배포</div><p style="font-size:.78rem;color:var(--text-muted);margin-bottom:.8rem">매장 데이터로 최적화 파일 생성 후 배포합니다.</p>
-<div id="buildCfgSummary" style="font-size:.78rem;color:var(--text-secondary);margin-bottom:.8rem;padding:.6rem;background:var(--bg-input);border-radius:6px"></div>
+<div id="page-build" class="page" style="display:none"><div class="card"><div class="card-title" style="margin-bottom:.5rem">빌드 & 배포</div>
+<div id="buildSummary" style="font-size:.78rem;color:var(--text-secondary);margin-bottom:.8rem;padding:.6rem;background:var(--bg-input);border-radius:6px"></div>
 <div style="display:flex;flex-wrap:wrap;gap:.4rem"><button class="btn btn-success btn-lg" onclick="runBuild()">빌드 실행</button><button class="btn btn-primary btn-lg" onclick="runDeploy()">빌드 + 배포</button></div></div>
 <div class="card" id="buildConsole" style="display:none"><div class="card-title" style="margin-bottom:.4rem">빌드 로그</div><div class="console" id="consoleOutput"></div></div></div>
 
 <!-- 미리보기 -->
 <div id="page-preview" class="page" style="display:none"><div class="card"><div class="card-title" style="margin-bottom:.5rem">미리보기</div>
-<select class="form-select" id="previewSelect" style="margin-bottom:.5rem" onchange="updatePreview()"><option value="index">브랜드 디렉토리</option></select>
+<select class="form-select" id="previewSelect" style="margin-bottom:.5rem" onchange="updatePreview()"></select>
 <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff"><div style="padding:1rem;color:#1f2937;min-height:250px;font-size:.82rem;line-height:1.5" id="previewContent"></div></div></div></div>
 
 </div></div></div>
 <div class="toast" id="toast"></div>
 <div class="modal-overlay" id="modalOverlay"><div class="modal" id="modalContent"></div></div>
 <script>
-// Data
-let biz=[];let cfg={domain:'brands.studioaibotbot.com',repo:'ikjoobang/xivix-tower-control',deployTarget:'github',ghToken:'',cfToken:'',cfAccount:'',crankUrl:'',defaultMaps:['google','naver','kakao']};
-try{const s=localStorage.getItem('xivix_biz2');if(s)biz=JSON.parse(s);}catch(e){}
-try{const c=localStorage.getItem('xivix_cfg');if(c)cfg={...cfg,...JSON.parse(c)};}catch(e){}
-if(!biz.length){biz=[
-{id:"gangnam-smile-dental",name:"강남스마일치과",nameEn:"Gangnam Smile Dental",type:"Dentist",category:"치과",description:"강남역 3번출구, 임플란트/교정/심미 전문. 야간(21시), 주말(토 14시).",descriptionEn:"Dental near Gangnam Stn. Implants, orthodontics.",address:"서울특별시 강남구 강남대로 396",phone:"02-555-1234",url:"https://gangnam-smile.co.kr",lat:37.4979,lng:127.0276,hours:"월~금 09:00-21:00, 토 09:00-14:00",specialties:["임플란트","교정","라미네이트"],keywords:["강남 치과","강남역 임플란트"],faq:[{q:"임플란트 비용?",a:"80만~180만원"},{q:"야간진료?",a:"월~금 21시까지"}],rating:4.8,reviewCount:324,maps:["google","naver","kakao","tmap"],googleVerified:false,naverVerified:true,crankEnabled:true,status:"active"},
-{id:"yeoksam-bbq",name:"역삼숯불바베큐",nameEn:"Yeoksam Charcoal BBQ",type:"Restaurant",category:"음식점",description:"역삼동 직화 숯불구이. 한우, 갈비, 삼겹살. 단체 40명.",descriptionEn:"Charcoal BBQ. Korean beef, galbi.",address:"서울특별시 강남구 테헤란로 134",phone:"02-555-5678",url:"",lat:37.5012,lng:127.0365,hours:"매일 11:30-23:00",specialties:["한우","숯불 갈비","삼겹살"],keywords:["역삼 고기집","강남 회식"],faq:[{q:"단체 예약?",a:"40명까지, 전화 예약"}],rating:4.6,reviewCount:189,maps:["google","naver","kakao"],googleVerified:false,naverVerified:false,crankEnabled:true,status:"active"}
-];sv();}
-function sv(){localStorage.setItem('xivix_biz2',JSON.stringify(biz));}
-function saveCfg(){cfg.domain=gi('s_domain')||cfg.domain;cfg.repo=gi('s_repo')||cfg.repo;cfg.deployTarget=gi('s_deployTarget')||cfg.deployTarget;cfg.ghToken=gi('s_ghToken')||'';cfg.cfToken=gi('s_cfToken')||'';cfg.cfAccount=gi('s_cfAccount')||'';cfg.crankUrl=gi('s_crankUrl')||'';cfg.defaultMaps=Array.from(document.querySelectorAll('.s_defMap:checked')).map(c=>c.value);localStorage.setItem('xivix_cfg',JSON.stringify(cfg));updateKeyStatus();toast('설정 저장됨');}
-function loadCfg(){si('s_domain',cfg.domain);si('s_repo',cfg.repo);si('s_deployTarget',cfg.deployTarget);si('s_ghToken',cfg.ghToken);si('s_cfToken',cfg.cfToken);si('s_cfAccount',cfg.cfAccount);si('s_crankUrl',cfg.crankUrl);document.querySelectorAll('.s_defMap').forEach(c=>{c.checked=cfg.defaultMaps.includes(c.value);});updateKeyStatus();}
-function updateKeyStatus(){const gh=document.getElementById('ghStatus');const cf=document.getElementById('cfStatus');if(gh)gh.innerHTML=cfg.ghToken?'<span class="key-status key-ok">연결됨</span>':'<span class="key-status key-none">미설정</span>';if(cf)cf.innerHTML=cfg.cfToken?'<span class="key-status key-ok">연결됨</span>':'<span class="key-status key-none">미설정</span>';}
-function gi(id){const e=document.getElementById(id);return e?(e.tagName==='SELECT'?e.value:e.value):'';}
+let biz=[];let free=[];let cfg={domain:'brands.studioaibotbot.com',repo:'ikjoobang/xivix-tower-control',deployTarget:'github',ghToken:''};
+try{biz=JSON.parse(localStorage.getItem('xivix_biz3'))||[];}catch(e){}
+try{free=JSON.parse(localStorage.getItem('xivix_free'))||[];}catch(e){}
+try{cfg={...cfg,...JSON.parse(localStorage.getItem('xivix_cfg2'))};}catch(e){}
+if(!biz.length&&!free.length){
+biz=[{id:"gangnam-dental",name:"강남스마일치과",nameEn:"Gangnam Smile Dental",type:"Dentist",category:"치과",description:"강남역 3번출구, 임플란트/교정 전문",address:"서울 강남구 강남대로 396",phone:"02-555-1234",url:"https://gangnam-smile.co.kr",lat:37.4979,lng:127.0276,hours:"월~금 09:00-21:00",keywords:["강남 치과","임플란트"],faq:[{q:"임플란트 비용?",a:"80만~180만원"}],maps:["google","naver","kakao"],status:"active",crankEnabled:true}];
+free=[{id:"kim-insurance",name:"김보험프로",nameEn:"Kim Insurance Pro",job:"InsuranceAgent",jobLabel:"보험설계사",company:"삼성생명 강남지점",phone:"010-1234-5678",areas:["강남","서초","분당"],tagline:"15년차 보험 전문가, 맞춤 설계",description:"MDRT 5회 달성. 변액보험/종신보험/연금저축 전문. 고객 800명 관리중.",sns:{instagram:"https://instagram.com/kim_insurance",youtube:"https://youtube.com/@kim-insurance",blog:"https://blog.naver.com/kim_insurance",kakao:"https://pf.kakao.com/_kim",tiktok:"",facebook:"",other:""},certs:["손해사정사","MDRT 2024","보험왕 2023"],specialties:["변액보험","종신보험","연금저축","실손보험"],keywords:["강남 보험설계사","변액보험 추천","보험 상담 무료"],faq:[{q:"상담 비용?",a:"무료 상담"},{q:"어떤 보험?",a:"맞춤 설계 후 추천"}],status:"active",crankEnabled:true}];
+svBiz();svFree();
+}
+function svBiz(){localStorage.setItem('xivix_biz3',JSON.stringify(biz));}
+function svFree(){localStorage.setItem('xivix_free',JSON.stringify(free));}
+function saveCfg(){cfg.domain=gi('s_domain')||cfg.domain;cfg.repo=gi('s_repo')||cfg.repo;cfg.deployTarget=gi('s_deployTarget');cfg.ghToken=gi('s_ghToken');localStorage.setItem('xivix_cfg2',JSON.stringify(cfg));toast('설정 저장');}
+function loadCfg(){si('s_domain',cfg.domain);si('s_repo',cfg.repo);si('s_deployTarget',cfg.deployTarget);si('s_ghToken',cfg.ghToken);const gh=document.getElementById('ghStatus');if(gh)gh.innerHTML=cfg.ghToken?'<span class="key-status key-ok">연결됨</span>':'<span class="key-status key-none">미설정</span>';}
+function gi(id){const e=document.getElementById(id);return e?e.value:'';}
 function si(id,v){const e=document.getElementById(id);if(e)e.value=v||'';}
 function toggleShow(id){const e=document.getElementById(id);if(e)e.type=e.type==='password'?'text':'password';}
-function testGH(){if(!cfg.ghToken)return toast('GitHub 토큰을 먼저 입력하세요');toast('GitHub 연결 테스트중...');fetch('https://api.github.com/user',{headers:{'Authorization':'token '+cfg.ghToken}}).then(r=>r.json()).then(d=>{if(d.login)toast('GitHub 연결 성공: '+d.login);else toast('GitHub 연결 실패');}).catch(()=>toast('GitHub 연결 실패'));}
-function testCF(){if(!cfg.cfToken)return toast('Cloudflare 토큰을 먼저 입력하세요');toast('Cloudflare 연결 테스트중...');fetch('https://api.cloudflare.com/client/v4/user/tokens/verify',{headers:{'Authorization':'Bearer '+cfg.cfToken}}).then(r=>r.json()).then(d=>{if(d.success)toast('Cloudflare 연결 성공');else toast('Cloudflare 연결 실패');}).catch(()=>toast('Cloudflare 연결 실패'));}
-
-// Mobile
+function testGH(){if(!cfg.ghToken)return toast('토큰 먼저 입력');fetch('https://api.github.com/user',{headers:{Authorization:'token '+cfg.ghToken}}).then(r=>r.json()).then(d=>toast(d.login?'연결 성공: '+d.login:'실패')).catch(()=>toast('실패'));}
 function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('mobileOverlay').classList.add('show');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('mobileOverlay').classList.remove('show');}
-
-// Nav
-const PT={guide:'사용 가이드',dashboard:'대시보드',add:'매장 등록',businesses:'매장 목록',maps:'지도 플랫폼','google-auth':'구글 인증',settings:'설정',build:'빌드 & 배포',preview:'미리보기'};
+const PT={guide:'사용 가이드',dashboard:'대시보드','add-biz':'매장 등록','add-free':'프리랜서 등록',list:'전체 목록',settings:'설정',build:'빌드 & 배포',preview:'미리보기'};
 function go(n){closeSidebar();document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));const pg=document.getElementById('page-'+n);if(pg)pg.style.display='block';document.getElementById('pageTitle').textContent=PT[n]||n;document.querySelectorAll('.nav-item[data-page="'+n+'"]').forEach(x=>x.classList.add('active'));renderAll();if(n==='settings')loadCfg();if(n==='build')updateBuildSummary();window.scrollTo(0,0);}
-function renderAll(){renderStats();renderDash();renderBizList();renderAuth();renderPrevSel();renderOpt();}
-function renderStats(){const a=biz.filter(b=>b.status==='active');document.getElementById('statTotal').textContent=biz.length;document.getElementById('statActive').textContent=a.length;document.getElementById('statSEO').textContent=a.length;document.getElementById('statCrank').textContent=a.filter(b=>b.crankEnabled).length;const ms=new Set();a.forEach(b=>(b.maps||[]).forEach(m=>ms.add(m)));document.getElementById('statMaps').textContent=ms.size;}
-function renderDash(){const t=document.getElementById('bizTable');if(!t)return;t.innerHTML=biz.map(b=>'<tr><td><strong>'+b.name+'</strong><br><span style="font-size:.68rem;color:var(--text-muted)">'+b.nameEn+'</span></td><td>'+b.category+'</td><td><div class="opt-indicators"><div class="opt-dot seo on"></div><div class="opt-dot aeo on"></div><div class="opt-dot geo on"></div><div class="opt-dot crank '+(b.crankEnabled?'on':'off')+'"></div><div class="opt-dot nlogic on"></div></div></td><td><span class="status status-'+(b.status==='active'?'active':'pending')+'">'+(b.status==='active'?'운영':'대기')+'</span></td><td><button class="btn btn-outline btn-sm" onclick="editBiz(\''+b.id+'\')">수정</button> <button class="btn btn-danger btn-sm" onclick="removeBiz(\''+b.id+'\')">삭제</button></td></tr>').join('');}
-function renderBizList(){const t=document.getElementById('fullBizTable');if(!t)return;t.innerHTML=biz.map(b=>'<tr><td><strong>'+b.name+'</strong></td><td>'+b.category+'</td><td style="font-size:.72rem">'+b.phone+'</td><td><div class="opt-indicators"><div class="opt-dot seo on"></div><div class="opt-dot aeo on"></div><div class="opt-dot geo on"></div><div class="opt-dot crank '+(b.crankEnabled?'on':'off')+'"></div><div class="opt-dot nlogic on"></div></div></td><td><span class="status status-active">'+(b.status==='active'?'운영':'대기')+'</span></td><td><button class="btn btn-outline btn-sm" onclick="editBiz(\''+b.id+'\')">수정</button></td></tr>').join('');}
-function renderAuth(){const t=document.getElementById('authTable');if(!t)return;t.innerHTML=biz.map(b=>'<tr><td><strong>'+b.name+'</strong></td><td><span class="status '+(b.googleVerified?'status-active':'status-pending')+'">'+(b.googleVerified?'완료':'미인증')+'</span></td><td><span class="status '+(b.naverVerified?'status-active':'status-pending')+'">'+(b.naverVerified?'완료':'미등록')+'</span></td><td style="display:flex;gap:.3rem;flex-wrap:wrap">'+(!b.googleVerified?'<button class="btn btn-primary btn-sm" onclick="startGV(\''+b.id+'\')">인증시작</button>':'')+'<button class="btn btn-sm '+(b.googleVerified?'btn-outline':'btn-success')+'" onclick="togV(\''+b.id+'\')">'+(b.googleVerified?'해제':'인증완료')+'</button></td></tr>').join('');}
-function renderOpt(){const el=document.getElementById('optCoverage');if(!el)return;const a=biz.filter(b=>b.status==='active').length;const o=[{n:'SEO',c:'blue',v:a},{n:'AEO',c:'purple',v:a},{n:'GEO',c:'green',v:a},{n:'C-RANK',c:'amber',v:biz.filter(b=>b.crankEnabled).length},{n:'N-Logic',c:'cyan',v:a}];el.innerHTML=o.map(x=>'<div style="text-align:center"><div style="font-size:1.3rem;font-weight:700;color:var(--accent-'+x.c+');font-family:JetBrains Mono">'+x.v+'/'+a+'</div><div style="font-size:.72rem;font-weight:600">'+x.n+'</div></div>').join('');}
-function renderPrevSel(){const s=document.getElementById('previewSelect');if(!s)return;s.innerHTML='<option value="index">디렉토리</option>'+biz.map(b=>'<option value="'+b.id+'">'+b.name+'</option>').join('');updatePreview();}
-function updateBuildSummary(){const el=document.getElementById('buildCfgSummary');if(!el)return;el.innerHTML='배포: <strong>'+(cfg.deployTarget==='github'?'GitHub Pages':'Cloudflare')+'</strong> | 도메인: <strong>'+cfg.domain+'</strong> | 저장소: <strong>'+cfg.repo+'</strong>'+(cfg.ghToken?'':'<br><span style="color:var(--accent-red)">설정에서 GitHub 토큰을 먼저 입력하세요</span>');}
-
-// Smart Paste
-function smartParse(){const raw=document.getElementById('smartPasteInput').value.trim();if(!raw)return toast('데이터를 붙여넣으세요');const r={name:'',nameEn:'',type:'LocalBusiness',address:'',phone:'',url:'',lat:'',lng:'',hours:'',description:''};const pm=raw.match(/(0\d{1,2}[-.\s]?\d{3,4}[-.\s]?\d{4})/);if(pm)r.phone=pm[0];const um=raw.match(/(https?:\/\/[^\s,]+)/);if(um)r.url=um[0];const am=raw.match(/(서울|부산|대구|인천|광주|대전|울산|경기|강원|충북|충남|전북|전남|경북|경남|제주)[^\n,]*?(구|시|군)[^\n,]*?(로|길|동)\s*\d*/);if(am)r.address=am[0].trim();const cm=raw.match(/@([\d.]+),([\d.]+)/);if(cm){r.lat=cm[1];r.lng=cm[2];}const cp={Dentist:/치과|dental/i,Hospital:/병원|hospital/i,Restaurant:/맛집|식당|고기|구이/i,CafeOrCoffeeShop:/카페|커피|cafe/i,BeautySalon:/미용|헤어|뷰티/i};for(const[t,p]of Object.entries(cp)){if(p.test(raw)){r.type=t;break;}}const lines=raw.split('\n').map(l=>l.trim()).filter(Boolean);if(lines[0]){const c=lines[0].replace(/[^\w가-힣\s]/g,'').trim();if(c.length>1&&c.length<30)r.name=c;}const catMap={Dentist:'치과',Hospital:'병원',Restaurant:'음식점',CafeOrCoffeeShop:'카페',BeautySalon:'미용',LocalBusiness:'기타'};const labels={name:'매장명',nameEn:'영문명',type:'업종',address:'주소',phone:'전화',url:'웹사이트',lat:'위도',lng:'경도',hours:'운영시간',description:'설명'};document.getElementById('parsedFields').innerHTML=Object.entries(labels).map(([k,l])=>'<div class="form-group" style="margin-bottom:.4rem"><label class="form-label">'+l+(r[k]?' <span style="color:var(--accent-green)">[감지]</span>':'')+'</label>'+(k==='type'?'<select class="form-select" id="parsed_'+k+'">'+Object.entries(catMap).map(([v,n])=>'<option value="'+v+'"'+(r[k]===v?' selected':'')+'>'+n+'</option>').join('')+'</select>':'<input class="form-input" id="parsed_'+k+'" value="'+(r[k]||'')+'">')+'</div>').join('');document.getElementById('parseResult').style.display='block';toast('분류 완료');}
-function confirmAdd(){const n=document.getElementById('parsed_name').value.trim();if(!n)return toast('매장명 입력');const catMap={Dentist:'치과',Hospital:'병원',Restaurant:'음식점',CafeOrCoffeeShop:'카페',BeautySalon:'미용',LocalBusiness:'기타'};const t=document.getElementById('parsed_type').value;biz.push({id:slugify(n),name:n,nameEn:document.getElementById('parsed_nameEn').value.trim()||n,type:t,category:catMap[t]||'기타',description:document.getElementById('parsed_description').value.trim(),descriptionEn:'',address:document.getElementById('parsed_address').value.trim(),phone:document.getElementById('parsed_phone').value.trim(),url:document.getElementById('parsed_url').value.trim(),lat:parseFloat(document.getElementById('parsed_lat').value)||0,lng:parseFloat(document.getElementById('parsed_lng').value)||0,hours:document.getElementById('parsed_hours').value.trim(),specialties:[],keywords:[],faq:[],rating:0,reviewCount:0,maps:cfg.defaultMaps||['google','naver','kakao'],googleVerified:false,naverVerified:false,crankEnabled:true,status:'active'});sv();renderAll();document.getElementById('parseResult').style.display='none';document.getElementById('smartPasteInput').value='';toast(n+' 등록 완료');}
-function clearPaste(){document.getElementById('smartPasteInput').value='';document.getElementById('parseResult').style.display='none';}
-function manualAdd(){const n=document.getElementById('f_name').value.trim();if(!n)return toast('매장명 입력');const maps=Array.from(document.querySelectorAll('#mapTargets input:checked')).map(c=>c.value);const faq=document.getElementById('f_faq').value.trim().split('\n').filter(l=>l.includes('|')).map(l=>{const[q,a]=l.split('|');return{q:q.trim(),a:a.trim()};});const catMap={Dentist:'치과',Hospital:'병원',Restaurant:'음식점',CafeOrCoffeeShop:'카페',BeautySalon:'미용',Store:'매장',EducationalOrganization:'학원',LocalBusiness:'기타'};const t=document.getElementById('f_category').value||'LocalBusiness';biz.push({id:slugify(n),name:n,nameEn:document.getElementById('f_nameEn').value.trim()||n,type:t,category:catMap[t]||'기타',description:document.getElementById('f_desc').value.trim(),descriptionEn:document.getElementById('f_descEn').value.trim(),address:document.getElementById('f_address').value.trim(),phone:document.getElementById('f_phone').value.trim(),url:document.getElementById('f_url').value.trim(),lat:parseFloat(document.getElementById('f_lat').value)||0,lng:parseFloat(document.getElementById('f_lng').value)||0,hours:document.getElementById('f_hours').value.trim(),specialties:document.getElementById('f_specialties').value.split(',').map(s=>s.trim()).filter(Boolean),keywords:document.getElementById('f_keywords').value.split(',').map(s=>s.trim()).filter(Boolean),faq,rating:0,reviewCount:0,maps,googleVerified:false,naverVerified:false,crankEnabled:true,status:'active'});sv();renderAll();toast(n+' 등록');clearManual();}
-function clearManual(){['f_name','f_nameEn','f_phone','f_url','f_address','f_lat','f_lng','f_desc','f_descEn','f_hours','f_specialties','f_keywords','f_faq'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});}
-
-// Edit/Delete
-function editBiz(id){const b=biz.find(x=>x.id===id);if(!b)return;document.getElementById('modalContent').innerHTML='<h3>'+b.name+' 수정</h3><div class="form-group"><label class="form-label">매장명</label><input class="form-input" id="e_name" value="'+b.name+'"></div><div class="form-group"><label class="form-label">영문명</label><input class="form-input" id="e_nameEn" value="'+b.nameEn+'"></div><div class="form-group"><label class="form-label">설명</label><textarea class="form-textarea" id="e_desc" style="min-height:50px">'+b.description+'</textarea></div><div class="form-group"><label class="form-label">전화</label><input class="form-input" id="e_phone" value="'+b.phone+'"></div><div class="form-group"><label class="form-label">주소</label><input class="form-input" id="e_addr" value="'+b.address+'"></div><div class="form-group"><label class="form-label">키워드</label><input class="form-input" id="e_kw" value="'+(b.keywords||[]).join(', ')+'"></div><div class="form-group"><label class="form-label">상태</label><select class="form-select" id="e_status"><option value="active"'+(b.status==='active'?' selected':'')+'>운영중</option><option value="pending"'+(b.status==='pending'?' selected':'')+'>대기</option></select></div><div style="display:flex;gap:.4rem;margin-top:1rem"><button class="btn btn-success" onclick="saveEdit(\''+id+'\')">저장</button><button class="btn btn-outline" onclick="closeModal()">취소</button></div>';document.getElementById('modalOverlay').classList.add('show');}
-function saveEdit(id){const b=biz.find(x=>x.id===id);if(!b)return;b.name=gi('e_name');b.nameEn=gi('e_nameEn');b.description=gi('e_desc');b.phone=gi('e_phone');b.address=gi('e_addr');b.keywords=gi('e_kw').split(',').map(s=>s.trim()).filter(Boolean);b.status=gi('e_status');sv();renderAll();closeModal();toast('수정 완료');}
-function removeBiz(id){if(!confirm('삭제?'))return;biz=biz.filter(b=>b.id!==id);sv();renderAll();toast('삭제');}
-function togV(id){const b=biz.find(x=>x.id===id);if(!b)return;b.googleVerified=!b.googleVerified;sv();renderAll();toast(b.googleVerified?'인증 완료':'인증 해제');}
-function startGV(id){const b=biz.find(x=>x.id===id);if(!b)return;window.open('https://business.google.com/create?hl=ko&q='+encodeURIComponent(b.name+' '+b.address),'_blank');toast('구글 비즈니스 프로필 열림');}
-
+function renderAll(){renderStats();renderDash();renderFullList();renderPrevSel();}
+const jobMap={InsuranceAgent:'보험설계사',CarDealer:'자동차딜러',RealEstateAgent:'부동산중개사',FinancialAdvisor:'재무설계사',SalesAgent:'영업사원',Freelancer:'프리랜서'};
+const catMap={Dentist:'치과',Hospital:'병원',Restaurant:'음식점',CafeOrCoffeeShop:'카페',BeautySalon:'미용',Store:'매장',LocalBusiness:'기타'};
+function renderStats(){const sg=document.getElementById('statsGrid');if(!sg)return;sg.innerHTML='<div class="stat-card blue"><div class="stat-value">'+(biz.length+free.length)+'</div><div class="stat-label">전체 등록</div></div><div class="stat-card green"><div class="stat-value">'+biz.filter(b=>b.status==='active').length+'</div><div class="stat-label">매장</div></div><div class="stat-card pink"><div class="stat-value">'+free.filter(f=>f.status==='active').length+'</div><div class="stat-label">프리랜서</div></div><div class="stat-card purple"><div class="stat-value">'+(biz.length+free.length)+'</div><div class="stat-label">SEO</div></div><div class="stat-card amber"><div class="stat-value">'+[...biz,...free].filter(x=>x.crankEnabled).length+'</div><div class="stat-label">C-RANK</div></div><div class="stat-card cyan"><div class="stat-value">'+countSNS()+'</div><div class="stat-label">SNS 채널</div></div>';}
+function countSNS(){let c=0;free.forEach(f=>{if(f.sns)Object.values(f.sns).forEach(v=>{if(v)c++;});});return c;}
+function snsIcons(sns){if(!sns)return'-';return Object.entries(sns).filter(([k,v])=>v).map(([k,v])=>{const cls={instagram:'insta',youtube:'youtube',blog:'blog',kakao:'kakao',tiktok:'tiktok',facebook:'facebook',other:'other'};return'<a href="'+v+'" target="_blank" class="sns-link '+(cls[k]||'other')+'">'+k.slice(0,2).toUpperCase()+'</a>';}).join(' ')||'-';}
+function renderDash(){const t=document.getElementById('dashTable');if(!t)return;let h='';biz.forEach(b=>{h+='<tr><td><strong>'+b.name+'</strong></td><td><span class="status status-biz">매장</span></td><td>'+(b.category||catMap[b.type]||'')+'</td><td><div class="opt-indicators"><div class="opt-dot seo on"></div><div class="opt-dot aeo on"></div><div class="opt-dot geo on"></div><div class="opt-dot crank '+(b.crankEnabled?'on':'off')+'"></div><div class="opt-dot nlogic on"></div></div></td><td><span class="status status-active">운영</span></td><td><button class="btn btn-outline btn-sm" onclick="editBiz(\''+b.id+'\')">수정</button> <button class="btn btn-danger btn-sm" onclick="removeBiz(\''+b.id+'\')">삭제</button></td></tr>';});
+free.forEach(f=>{h+='<tr><td><strong>'+f.name+'</strong></td><td><span class="status status-free">프리랜서</span></td><td>'+(f.jobLabel||jobMap[f.job]||'')+'</td><td>'+snsIcons(f.sns)+'</td><td><span class="status status-active">운영</span></td><td><button class="btn btn-outline btn-sm" onclick="editFree(\''+f.id+'\')">수정</button> <button class="btn btn-danger btn-sm" onclick="removeFree(\''+f.id+'\')">삭제</button></td></tr>';});t.innerHTML=h;}
+function renderFullList(){const t=document.getElementById('fullTable');if(!t)return;let h='';biz.forEach(b=>{h+='<tr><td><strong>'+b.name+'</strong></td><td><span class="status status-biz">매장</span></td><td>'+(b.category||'')+'</td><td>'+b.phone+'</td><td><span class="status status-active">운영</span></td><td><button class="btn btn-outline btn-sm" onclick="editBiz(\''+b.id+'\')">수정</button></td></tr>';});
+free.forEach(f=>{h+='<tr><td><strong>'+f.name+'</strong></td><td><span class="status status-free">프리랜서</span></td><td>'+(f.jobLabel||'')+'</td><td>'+snsIcons(f.sns)+'</td><td><span class="status status-active">운영</span></td><td><button class="btn btn-outline btn-sm" onclick="editFree(\''+f.id+'\')">수정</button></td></tr>';});t.innerHTML=h;}
+function updateBuildSummary(){const el=document.getElementById('buildSummary');if(!el)return;el.innerHTML='매장: <strong>'+biz.length+'</strong> | 프리랜서: <strong>'+free.length+'</strong> | 도메인: <strong>'+cfg.domain+'</strong>';}
+// Smart Paste (biz)
+function switchBizTab(t,el){document.querySelectorAll('#page-add-biz .tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.getElementById('bizTab-paste').style.display=t==='paste'?'block':'none';document.getElementById('bizTab-manual').style.display=t==='manual'?'block':'none';}
+function smartParse(){const raw=gi('smartPasteInput');if(!raw)return toast('데이터를 붙여넣으세요');const r={name:'',nameEn:'',type:'LocalBusiness',address:'',phone:'',url:'',lat:'',lng:'',hours:'',description:''};const pm=raw.match(/(0\d{1,2}[-.\s]?\d{3,4}[-.\s]?\d{4})/);if(pm)r.phone=pm[0];const um=raw.match(/(https?:\/\/[^\s,]+)/);if(um)r.url=um[0];const am=raw.match(/(서울|부산|대구|인천|광주|대전|울산|경기|강원|충북|충남|전북|전남|경북|경남|제주)[^\n,]*?(구|시|군)[^\n,]*?(로|길|동)\s*\d*/);if(am)r.address=am[0].trim();const cm=raw.match(/@([\d.]+),([\d.]+)/);if(cm){r.lat=cm[1];r.lng=cm[2];}const cp={Dentist:/치과|dental/i,Hospital:/병원|hospital/i,Restaurant:/맛집|식당|고기|구이/i,CafeOrCoffeeShop:/카페|커피|cafe/i,BeautySalon:/미용|헤어|뷰티/i};for(const[t,p]of Object.entries(cp)){if(p.test(raw)){r.type=t;break;}}const lines=raw.split('\n').filter(Boolean);if(lines[0]){const c=lines[0].replace(/[^\w가-힣\s]/g,'').trim();if(c.length>1&&c.length<30)r.name=c;}const labels={name:'매장명',type:'업종',address:'주소',phone:'전화',url:'웹사이트',lat:'위도',lng:'경도'};document.getElementById('parsedFields').innerHTML=Object.entries(labels).map(([k,l])=>'<div class="form-group" style="margin-bottom:.3rem"><label class="form-label">'+l+(r[k]?' <span style="color:var(--accent-green)">[감지]</span>':'')+'</label>'+(k==='type'?'<select class="form-select" id="parsed_'+k+'">'+Object.entries(catMap).map(([v,n])=>'<option value="'+v+'"'+(r[k]===v?' selected':'')+'>'+n+'</option>').join('')+'</select>':'<input class="form-input" id="parsed_'+k+'" value="'+(r[k]||'')+'">')+'</div>').join('');document.getElementById('parseResult').style.display='block';toast('분류 완료');}
+function confirmAdd(){const n=gi('parsed_name');if(!n)return toast('매장명 입력');const t=gi('parsed_type');biz.push({id:slugify(n),name:n,nameEn:'',type:t,category:catMap[t]||'기타',description:'',address:gi('parsed_address'),phone:gi('parsed_phone'),url:gi('parsed_url'),lat:parseFloat(gi('parsed_lat'))||0,lng:parseFloat(gi('parsed_lng'))||0,hours:'',keywords:[],faq:[],maps:['google','naver','kakao'],status:'active',crankEnabled:true});svBiz();renderAll();document.getElementById('parseResult').style.display='none';document.getElementById('smartPasteInput').value='';toast(n+' 등록');}
+function manualAddBiz(){const n=gi('f_name');if(!n)return toast('매장명 입력');const t=gi('f_category')||'LocalBusiness';const faq=gi('f_faq').split('\n').filter(l=>l.includes('|')).map(l=>{const[q,a]=l.split('|');return{q:q.trim(),a:(a||'').trim()};});biz.push({id:slugify(n),name:n,nameEn:gi('f_nameEn'),type:t,category:catMap[t]||'기타',description:gi('f_desc'),address:gi('f_address'),phone:gi('f_phone'),url:gi('f_url'),lat:parseFloat(gi('f_lat'))||0,lng:parseFloat(gi('f_lng'))||0,hours:gi('f_hours'),keywords:gi('f_keywords').split(',').map(s=>s.trim()).filter(Boolean),faq,maps:['google','naver','kakao'],status:'active',crankEnabled:true});svBiz();renderAll();toast(n+' 등록');['f_name','f_nameEn','f_phone','f_url','f_address','f_lat','f_lng','f_desc','f_hours','f_keywords','f_faq'].forEach(id=>si(id,''));}
+// Freelancer add
+function addFreelancer(){const n=gi('fl_name');if(!n)return toast('이름 입력');const job=gi('fl_job');free.push({id:slugify(n),name:n,nameEn:gi('fl_nameEn'),job,jobLabel:jobMap[job]||'프리랜서',company:gi('fl_company'),phone:gi('fl_phone'),areas:gi('fl_areas').split(',').map(s=>s.trim()).filter(Boolean),tagline:gi('fl_tagline'),description:gi('fl_desc'),sns:{instagram:gi('fl_insta'),youtube:gi('fl_youtube'),blog:gi('fl_blog'),kakao:gi('fl_kakao'),tiktok:gi('fl_tiktok'),facebook:gi('fl_facebook'),other:gi('fl_other')},certs:gi('fl_certs').split('\n').map(s=>s.trim()).filter(Boolean),specialties:gi('fl_specialties').split(',').map(s=>s.trim()).filter(Boolean),keywords:gi('fl_keywords').split(',').map(s=>s.trim()).filter(Boolean),faq:gi('fl_faq').split('\n').filter(l=>l.includes('|')).map(l=>{const[q,a]=l.split('|');return{q:q.trim(),a:(a||'').trim()};}),status:'active',crankEnabled:true});svFree();renderAll();toast(n+' 등록');clearFreeForm();}
+function clearFreeForm(){['fl_name','fl_nameEn','fl_company','fl_phone','fl_areas','fl_tagline','fl_desc','fl_insta','fl_youtube','fl_blog','fl_kakao','fl_tiktok','fl_facebook','fl_other','fl_certs','fl_specialties','fl_keywords','fl_faq'].forEach(id=>si(id,''));}
+// Edit / Delete
+function editBiz(id){const b=biz.find(x=>x.id===id);if(!b)return;document.getElementById('modalContent').innerHTML='<h3>'+b.name+' 수정</h3><div class="form-group"><label class="form-label">매장명</label><input class="form-input" id="e_name" value="'+b.name+'"></div><div class="form-group"><label class="form-label">설명</label><textarea class="form-textarea" id="e_desc" style="min-height:40px">'+(b.description||'')+'</textarea></div><div class="form-group"><label class="form-label">전화</label><input class="form-input" id="e_phone" value="'+b.phone+'"></div><div class="form-group"><label class="form-label">주소</label><input class="form-input" id="e_addr" value="'+(b.address||'')+'"></div><div class="form-group"><label class="form-label">키워드</label><input class="form-input" id="e_kw" value="'+(b.keywords||[]).join(', ')+'"></div><div style="display:flex;gap:.3rem;margin-top:.8rem"><button class="btn btn-success" onclick="doEditBiz(\''+id+'\')">저장</button><button class="btn btn-outline" onclick="closeModal()">취소</button></div>';document.getElementById('modalOverlay').classList.add('show');}
+function doEditBiz(id){const b=biz.find(x=>x.id===id);if(!b)return;b.name=gi('e_name');b.description=gi('e_desc');b.phone=gi('e_phone');b.address=gi('e_addr');b.keywords=gi('e_kw').split(',').map(s=>s.trim()).filter(Boolean);svBiz();renderAll();closeModal();toast('수정 완료');}
+function removeBiz(id){if(!confirm('삭제?'))return;biz=biz.filter(b=>b.id!==id);svBiz();renderAll();toast('삭제');}
+function editFree(id){const f=free.find(x=>x.id===id);if(!f)return;const sn=f.sns||{};document.getElementById('modalContent').innerHTML='<h3>'+f.name+' 수정</h3><div class="form-group"><label class="form-label">이름</label><input class="form-input" id="ef_name" value="'+f.name+'"></div><div class="form-group"><label class="form-label">소속</label><input class="form-input" id="ef_company" value="'+(f.company||'')+'"></div><div class="form-group"><label class="form-label">소개</label><textarea class="form-textarea" id="ef_desc" style="min-height:40px">'+(f.description||'')+'</textarea></div><div class="form-group"><label class="form-label">전화</label><input class="form-input" id="ef_phone" value="'+f.phone+'"></div><div class="form-group"><label class="form-label">활동지역</label><input class="form-input" id="ef_areas" value="'+(f.areas||[]).join(', ')+'"></div><div class="form-group"><label class="form-label">인스타그램</label><input class="form-input" id="ef_insta" value="'+(sn.instagram||'')+'"></div><div class="form-group"><label class="form-label">유튜브</label><input class="form-input" id="ef_youtube" value="'+(sn.youtube||'')+'"></div><div class="form-group"><label class="form-label">네이버블로그</label><input class="form-input" id="ef_blog" value="'+(sn.blog||'')+'"></div><div class="form-group"><label class="form-label">카카오채널</label><input class="form-input" id="ef_kakao" value="'+(sn.kakao||'')+'"></div><div class="form-group"><label class="form-label">키워드</label><input class="form-input" id="ef_kw" value="'+(f.keywords||[]).join(', ')+'"></div><div style="display:flex;gap:.3rem;margin-top:.8rem"><button class="btn btn-pink" onclick="doEditFree(\''+id+'\')">저장</button><button class="btn btn-outline" onclick="closeModal()">취소</button></div>';document.getElementById('modalOverlay').classList.add('show');}
+function doEditFree(id){const f=free.find(x=>x.id===id);if(!f)return;f.name=gi('ef_name');f.company=gi('ef_company');f.description=gi('ef_desc');f.phone=gi('ef_phone');f.areas=gi('ef_areas').split(',').map(s=>s.trim()).filter(Boolean);if(!f.sns)f.sns={};f.sns.instagram=gi('ef_insta');f.sns.youtube=gi('ef_youtube');f.sns.blog=gi('ef_blog');f.sns.kakao=gi('ef_kakao');f.keywords=gi('ef_kw').split(',').map(s=>s.trim()).filter(Boolean);svFree();renderAll();closeModal();toast('수정 완료');}
+function removeFree(id){if(!confirm('삭제?'))return;free=free.filter(f=>f.id!==id);svFree();renderAll();toast('삭제');}
 // Build
-function runBuild(){const con=document.getElementById('buildConsole');const out=document.getElementById('consoleOutput');con.style.display='block';out.innerHTML='';const a=biz.filter(b=>b.status==='active');const lines=[{c:'c-info',t:'XIVIX Tower Control 빌드'},{c:'c-dim',t:'도메인: '+cfg.domain},{c:'c-dim',t:'매장: '+a.length+'개'},{c:'',t:''},...a.flatMap(b=>[{c:'c-ok',t:'  [OK] '+b.name+' > index.html (SEO+GEO)'},{c:'c-ok',t:'  [OK] '+b.name+' > llms.txt (AEO)'}]),{c:'',t:''},{c:'c-ok',t:'  [OK] sitemap.xml / robots.txt'},{c:'c-ok',t:'  [OK] llms.txt / crank-config.json'},{c:'',t:''},{c:'c-info',t:'빌드 완료! '+(a.length*2+4)+'개 파일'},{c:'c-ok',t:'SEO AEO GEO C-RANK N-Logic [OK]'}];let i=0;const iv=setInterval(()=>{if(i>=lines.length){clearInterval(iv);return;}out.innerHTML+='<div class="'+lines[i].c+'">'+(lines[i].t||'&nbsp;')+'</div>';out.scrollTop=out.scrollHeight;i++;},70);}
-function runDeploy(){runBuild();const a=biz.filter(b=>b.status==='active');setTimeout(()=>{const out=document.getElementById('consoleOutput');const dl=[{c:'',t:''},{c:'c-info',t:'배포 시작...'},{c:'c-warn',t:'  '+cfg.domain},{c:'c-ok',t:'  [OK] 업로드'},{c:'c-ok',t:'  [OK] CDN'},{c:'c-ok',t:'  [OK] 완료!'}];let i=0;const iv=setInterval(()=>{if(i>=dl.length){clearInterval(iv);toast('배포 완료!');return;}out.innerHTML+='<div class="'+dl[i].c+'">'+(dl[i].t||'&nbsp;')+'</div>';out.scrollTop=out.scrollHeight;i++;},120);},a.length*2*70+600);}
-function exportJSON(){const blob=new Blob([JSON.stringify({config:cfg,businesses:biz},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='xivix-export.json';a.click();toast('JSON 내보내기 완료');}
-function importJSON(){document.getElementById('importFile').click();}
-function doImport(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.businesses){biz=d.businesses;sv();}if(d.config){cfg={...cfg,...d.config};localStorage.setItem('xivix_cfg',JSON.stringify(cfg));}renderAll();toast('가져오기 완료: '+biz.length+'개 매장');}catch(e){toast('JSON 파싱 오류');}};r.readAsText(f);}
-function resetAll(){if(!confirm('모든 데이터를 초기화합니까?'))return;localStorage.removeItem('xivix_biz2');localStorage.removeItem('xivix_cfg');location.reload();}
-function updatePreview(){const sel=document.getElementById('previewSelect')?.value;const el=document.getElementById('previewContent');if(!el)return;if(sel==='index'){el.innerHTML='<h2>XIVIX Brand Directory</h2><p style="color:#6b7280;margin-bottom:1rem">'+biz.filter(b=>b.status==='active').length+'개 매장</p>'+biz.filter(b=>b.status==='active').map(b=>'<div style="border:1px solid #e5e7eb;border-radius:8px;padding:.8rem;margin-bottom:.5rem"><strong>'+b.name+'</strong><br><span style="color:#6b7280;font-size:.82rem">'+b.description+'</span><br><span style="font-size:.78rem;color:#3b82f6">'+b.phone+'</span></div>').join('');}else{const b=biz.find(x=>x.id===sel);if(!b)return;el.innerHTML='<h1 style="font-size:1.2rem">'+b.name+'</h1><p style="color:#6b7280">'+b.category+'</p><p style="margin:.5rem 0">'+b.description+'</p><p>'+b.address+'</p><p>'+b.phone+'</p><p>'+b.hours+'</p>'+(b.faq?.length?'<h3 style="margin-top:.8rem">FAQ</h3>'+b.faq.map(f=>'<p><strong>Q: '+f.q+'</strong><br>A: '+f.a+'</p>').join(''):'');}}
-function runDemo(){document.getElementById('demoOutput').style.display='block';const con=document.getElementById('demoConsole');con.innerHTML='';const L=[{c:'c-info',t:'=== XIVIX 데모 ==='},{c:'',t:''},{c:'c-dim',t:'[1] 매장 등록'},{c:'c-ok',t:'  강남스마일치과 (치과)'},{c:'c-ok',t:'  역삼숯불바베큐 (음식점)'},{c:'',t:''},{c:'c-dim',t:'[2] 빌드'},{c:'c-ok',t:'  [SEO] Schema.org JSON-LD'},{c:'c-ok',t:'  [AEO] llms.txt (AI 크롤러용)'},{c:'c-ok',t:'  [GEO] FAQ 리치스니펫'},{c:'c-ok',t:'  [C-RANK] 네이버 카페 연동'},{c:'c-ok',t:'  [MAP] 구글/네이버/카카오/T-MAP/테슬라'},{c:'',t:''},{c:'c-dim',t:'[3] 검색 결과'},{c:'',t:''},{c:'c-warn',t:'  "강남 치과" (구글 검색)'},{c:'c-ok',t:'  -> 강남스마일치과 리치 결과 노출'},{c:'',t:''},{c:'c-warn',t:'  "강남 좋은 치과?" (ChatGPT)'},{c:'c-ok',t:'  -> llms.txt 기반 추천'},{c:'',t:''},{c:'c-warn',t:'  "역삼 고기집" (네이버)'},{c:'c-ok',t:'  -> C-RANK로 상위 노출'},{c:'',t:''},{c:'c-info',t:'=== 완료 ==='}];let i=0;const iv=setInterval(()=>{if(i>=L.length){clearInterval(iv);return;}con.innerHTML+='<div class="'+L[i].c+'">'+(L[i].t||'&nbsp;')+'</div>';con.scrollTop=con.scrollHeight;i++;},90);}
-
-function slugify(s){return s.replace(/[가-힣]+/g,w=>{const m={'치과':'dental','병원':'hospital','식당':'restaurant','카페':'cafe','미용':'beauty'};for(const[k,v]of Object.entries(m))if(w.includes(k))return v;return w;}).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'biz-'+Date.now();}
+function runBuild(){const con=document.getElementById('buildConsole');const out=document.getElementById('consoleOutput');con.style.display='block';out.innerHTML='';const ab=biz.filter(b=>b.status==='active');const af=free.filter(f=>f.status==='active');const L=[{c:'c-info',t:'=== XIVIX Tower Control 빌드 ==='},{c:'c-dim',t:'도메인: '+cfg.domain},{c:'c-dim',t:'매장: '+ab.length+' | 프리랜서: '+af.length},{c:'',t:''}];
+ab.forEach(b=>{L.push({c:'c-ok',t:'  [매장] '+b.name+' > index.html + llms.txt'});});
+af.forEach(f=>{L.push({c:'c-pink',t:'  [프리랜서] '+f.name+' > linkhub.html + profile.json'});L.push({c:'c-pink',t:'    Schema: Person + '+f.job});const sc=Object.values(f.sns||{}).filter(Boolean).length;if(sc)L.push({c:'c-dim',t:'    SNS '+sc+'개 채널 연동'});});
+L.push({c:'',t:''},{c:'c-ok',t:'  sitemap.xml / robots.txt / llms.txt'},{c:'c-ok',t:'  crank-config.json (매장+프리랜서)'},{c:'',t:''},{c:'c-info',t:'빌드 완료! '+(ab.length*2+af.length*2+4)+'개 파일'},{c:'c-ok',t:'SEO AEO GEO C-RANK N-Logic [OK]'});
+let i=0;const iv=setInterval(()=>{if(i>=L.length){clearInterval(iv);return;}out.innerHTML+='<div class="'+L[i].c+'">'+(L[i].t||'&nbsp;')+'</div>';out.scrollTop=out.scrollHeight;i++;},70);}
+function runDeploy(){runBuild();const total=biz.length+free.length;setTimeout(()=>{const out=document.getElementById('consoleOutput');[{c:'',t:''},{c:'c-info',t:'배포 시작...'},{c:'c-warn',t:'  '+cfg.domain},{c:'c-ok',t:'  [OK] 업로드'},{c:'c-ok',t:'  [OK] 완료!'}].forEach((l,i)=>setTimeout(()=>{out.innerHTML+='<div class="'+l.c+'">'+(l.t||'&nbsp;')+'</div>';out.scrollTop=out.scrollHeight;},i*100));},total*2*70+500);}
+// Preview
+function renderPrevSel(){const s=document.getElementById('previewSelect');if(!s)return;s.innerHTML='<option value="index">디렉토리</option>'+biz.map(b=>'<option value="biz:'+b.id+'">[매장] '+b.name+'</option>').join('')+free.map(f=>'<option value="free:'+f.id+'">[프리랜서] '+f.name+'</option>').join('');updatePreview();}
+function updatePreview(){const sel=gi('previewSelect');const el=document.getElementById('previewContent');if(!el)return;if(sel==='index'){el.innerHTML='<h2 style="margin-bottom:.5rem">Brand Directory</h2>'+biz.filter(b=>b.status==='active').map(b=>'<div style="border:1px solid #e5e7eb;border-radius:8px;padding:.6rem;margin-bottom:.4rem"><strong>'+b.name+'</strong> <span style="color:#3b82f6;font-size:.72rem">매장</span><br><span style="color:#6b7280;font-size:.8rem">'+b.description+'</span></div>').join('')+free.filter(f=>f.status==='active').map(f=>'<div style="border:1px solid #fce7f3;border-radius:8px;padding:.6rem;margin-bottom:.4rem"><strong>'+f.name+'</strong> <span style="color:#ec4899;font-size:.72rem">'+f.jobLabel+'</span><br><span style="color:#6b7280;font-size:.8rem">'+f.tagline+'</span></div>').join('');}
+else if(sel.startsWith('biz:')){const b=biz.find(x=>x.id===sel.slice(4));if(b)el.innerHTML='<h1 style="font-size:1.1rem">'+b.name+'</h1><p style="color:#6b7280">'+b.category+'</p><p>'+b.description+'</p><p>'+b.address+'</p><p>'+b.phone+'</p>';}
+else if(sel.startsWith('free:')){const f=free.find(x=>x.id===sel.slice(5));if(f){const sns=Object.entries(f.sns||{}).filter(([k,v])=>v);el.innerHTML='<div style="text-align:center;padding:1rem"><div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#8b5cf6);margin:0 auto .5rem;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.3rem;font-weight:700">'+f.name[0]+'</div><h1 style="font-size:1.2rem">'+f.name+'</h1><p style="color:#ec4899;font-size:.85rem">'+f.jobLabel+(f.company?' | '+f.company:'')+'</p><p style="color:#6b7280;margin:.5rem 0;font-size:.85rem">'+f.tagline+'</p><p style="font-size:.8rem;margin-bottom:.8rem">활동지역: '+(f.areas||[]).join(', ')+'</p>'+(f.certs?.length?'<div style="margin-bottom:.8rem">'+f.certs.map(c=>'<span style="display:inline-block;background:#f3f4f6;color:#374151;padding:.2rem .5rem;border-radius:4px;font-size:.72rem;margin:.1rem">'+c+'</span>').join('')+'</div>':'')+'<div style="display:flex;flex-direction:column;gap:.4rem;max-width:280px;margin:0 auto">'+sns.map(([k,v])=>'<a href="'+v+'" target="_blank" style="display:block;padding:.55rem;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;text-decoration:none;color:#1f2937;font-size:.82rem;font-weight:500">'+k.toUpperCase()+'</a>').join('')+'</div>'+(f.faq?.length?'<div style="text-align:left;margin-top:1rem"><h3 style="font-size:.9rem;margin-bottom:.4rem">FAQ</h3>'+f.faq.map(x=>'<p style="margin:.3rem 0"><strong>Q: '+x.q+'</strong><br>A: '+x.a+'</p>').join('')+'</div>':'')+'<div style="margin-top:1rem;padding-top:.8rem;border-top:1px solid #e5e7eb;font-size:.65rem;color:#9ca3af">Schema.org: Person + ProfessionalService ('+f.job+')<br>llms.txt | FAQ RichSnippet | SNS sameAs</div></div>';}}}
+// Demo
+function runDemo(){document.getElementById('demoOutput').style.display='block';const con=document.getElementById('demoConsole');con.innerHTML='';const L=[{c:'c-info',t:'=== XIVIX 데모 ==='},{c:'',t:''},{c:'c-dim',t:'[매장] 강남스마일치과'},{c:'c-ok',t:'  Schema: LocalBusiness + Dentist'},{c:'c-ok',t:'  지도: Google/네이버/카카오'},{c:'',t:''},{c:'c-dim',t:'[프리랜서] 김보험프로'},{c:'c-pink',t:'  Schema: Person + InsuranceAgent'},{c:'c-pink',t:'  SNS: 인스타/유튜브/블로그/카카오'},{c:'c-pink',t:'  링크허브 페이지 생성'},{c:'',t:''},{c:'c-dim',t:'[빌드 결과]'},{c:'c-ok',t:'  SEO: Schema.org JSON-LD'},{c:'c-ok',t:'  AEO: llms.txt (AI 크롤러용)'},{c:'c-ok',t:'  GEO: FAQ 리치스니펫'},{c:'c-ok',t:'  C-RANK: 네이버 카페 연동'},{c:'',t:''},{c:'c-dim',t:'[검색 시나리오]'},{c:'',t:''},{c:'c-warn',t:'  "강남 치과" (구글)'},{c:'c-ok',t:'  -> 강남스마일치과 리치 결과'},{c:'',t:''},{c:'c-warn',t:'  "강남 보험설계사 추천" (구글)'},{c:'c-pink',t:'  -> 김보험프로 Person 프로필 노출'},{c:'',t:''},{c:'c-warn',t:'  "좋은 보험설계사?" (ChatGPT)'},{c:'c-pink',t:'  -> llms.txt 기반: MDRT 5회, 고객 800명'},{c:'',t:''},{c:'c-warn',t:'  "변액보험 추천" (네이버)'},{c:'c-pink',t:'  -> C-RANK 카페글 + 블로그 연동'},{c:'',t:''},{c:'c-info',t:'=== 완료 ==='}];let i=0;const iv=setInterval(()=>{if(i>=L.length){clearInterval(iv);return;}con.innerHTML+='<div class="'+L[i].c+'">'+(L[i].t||'&nbsp;')+'</div>';con.scrollTop=con.scrollHeight;i++;},90);}
+function exportJSON(){const blob=new Blob([JSON.stringify({businesses:biz,freelancers:free,config:cfg},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='xivix-export.json';a.click();toast('JSON 내보내기');}
+function doImport(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.businesses){biz=d.businesses;svBiz();}if(d.freelancers){free=d.freelancers;svFree();}if(d.config){cfg={...cfg,...d.config};localStorage.setItem('xivix_cfg2',JSON.stringify(cfg));}renderAll();toast('가져오기 완료');}catch(e){toast('JSON 오류');}};r.readAsText(f);}
+function resetAll(){if(!confirm('모든 데이터 초기화?'))return;localStorage.removeItem('xivix_biz3');localStorage.removeItem('xivix_free');localStorage.removeItem('xivix_cfg2');location.reload();}
+function slugify(s){return s.replace(/[가-힣]+/g,w=>{const m={'치과':'dental','병원':'hospital','식당':'rest','카페':'cafe','보험':'insurance','딜러':'dealer','부동산':'realestate'};for(const[k,v]of Object.entries(m))if(w.includes(k))return v;return w;}).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'item-'+Date.now();}
 function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2500);}
 function closeModal(){document.getElementById('modalOverlay').classList.remove('show');}
-function toggleMap(el){el.classList.toggle('selected');el.querySelector('input').checked=!el.querySelector('input').checked;}
-function switchTab(t,el){document.querySelectorAll('#page-add .tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.getElementById('addTab-paste').style.display=t==='paste'?'block':'none';document.getElementById('addTab-manual').style.display=t==='manual'?'block':'none';}
 document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 renderAll();
 </script>
