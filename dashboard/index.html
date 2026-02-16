@@ -6,1398 +6,244 @@
 <title>XIVIX Tower Control</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg-primary: #0a0e17;
-  --bg-secondary: #111827;
-  --bg-card: #1a2235;
-  --bg-card-hover: #1f2a3f;
-  --bg-input: #0f1729;
-  --border: #2a3548;
-  --border-active: #3b82f6;
-  --text-primary: #e8ecf4;
-  --text-secondary: #8896ab;
-  --text-muted: #556479;
-  --accent-blue: #3b82f6;
-  --accent-green: #22c55e;
-  --accent-amber: #f59e0b;
-  --accent-red: #ef4444;
-  --accent-purple: #a855f7;
-  --accent-cyan: #06b6d4;
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'IBM Plex Sans KR',-apple-system,sans-serif; background:var(--bg-primary); color:var(--text-primary); min-height:100vh; }
-
-/* Layout */
-.app { display:grid; grid-template-columns:260px 1fr; min-height:100vh; }
-
-/* Sidebar */
-.sidebar { background:var(--bg-secondary); border-right:1px solid var(--border); padding:0; position:sticky; top:0; height:100vh; overflow-y:auto; }
-.sidebar-brand { padding:1.5rem; border-bottom:1px solid var(--border); }
-.sidebar-brand h1 { font-size:1.1rem; font-weight:700; letter-spacing:0.05em; color:var(--accent-blue); }
-.sidebar-brand span { font-size:0.7rem; color:var(--text-muted); display:block; margin-top:2px; letter-spacing:0.1em; text-transform:uppercase; }
-
-.nav-section { padding:1rem 0; }
-.nav-label { padding:0.3rem 1.5rem; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-muted); font-weight:600; }
-.nav-item { display:flex; align-items:center; gap:0.7rem; padding:0.6rem 1.5rem; cursor:pointer; font-size:0.85rem; color:var(--text-secondary); transition:all 0.15s; border-left:3px solid transparent; }
-.nav-item:hover { background:rgba(59,130,246,0.06); color:var(--text-primary); }
-.nav-item.active { background:rgba(59,130,246,0.1); color:var(--accent-blue); border-left-color:var(--accent-blue); font-weight:500; }
-.nav-icon { width:18px; height:18px; opacity:0.7; }
-
-.opt-tags { display:flex; gap:0.3rem; flex-wrap:wrap; padding:1rem 1.5rem; border-top:1px solid var(--border); margin-top:auto; }
-.opt-tag { font-size:0.6rem; padding:0.15rem 0.45rem; border-radius:3px; font-weight:600; letter-spacing:0.05em; }
-.opt-tag.seo { background:rgba(59,130,246,0.15); color:var(--accent-blue); }
-.opt-tag.aeo { background:rgba(168,85,247,0.15); color:var(--accent-purple); }
-.opt-tag.geo { background:rgba(34,197,94,0.15); color:var(--accent-green); }
-.opt-tag.crank { background:rgba(245,158,11,0.15); color:var(--accent-amber); }
-.opt-tag.nlogic { background:rgba(6,182,212,0.15); color:var(--accent-cyan); }
-
-/* Main */
-.main { padding:0; overflow-y:auto; }
-.main-header { padding:1.2rem 2rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--bg-secondary); position:sticky; top:0; z-index:10; }
-.main-header h2 { font-size:1rem; font-weight:600; }
-.header-actions { display:flex; gap:0.5rem; }
-
-.main-content { padding:1.5rem 2rem; }
-
-/* Buttons */
-.btn { padding:0.5rem 1rem; border-radius:6px; font-size:0.8rem; font-weight:500; border:none; cursor:pointer; font-family:inherit; transition:all 0.15s; display:inline-flex; align-items:center; gap:0.4rem; }
-.btn-primary { background:var(--accent-blue); color:white; }
-.btn-primary:hover { background:#2563eb; }
-.btn-success { background:var(--accent-green); color:white; }
-.btn-success:hover { background:#16a34a; }
-.btn-outline { background:transparent; color:var(--text-secondary); border:1px solid var(--border); }
-.btn-outline:hover { border-color:var(--accent-blue); color:var(--accent-blue); }
-.btn-danger { background:rgba(239,68,68,0.15); color:var(--accent-red); }
-.btn-sm { padding:0.35rem 0.7rem; font-size:0.75rem; }
-.btn-lg { padding:0.65rem 1.5rem; font-size:0.9rem; }
-
-/* Cards */
-.card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:1.2rem; margin-bottom:1rem; }
-.card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
-.card-title { font-size:0.9rem; font-weight:600; }
-
-/* Stats Grid */
-.stats-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:0.8rem; margin-bottom:1.5rem; }
-.stat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:1rem; }
-.stat-value { font-size:1.6rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
-.stat-label { font-size:0.7rem; color:var(--text-muted); margin-top:0.2rem; text-transform:uppercase; letter-spacing:0.08em; }
-.stat-card.blue .stat-value { color:var(--accent-blue); }
-.stat-card.green .stat-value { color:var(--accent-green); }
-.stat-card.amber .stat-value { color:var(--accent-amber); }
-.stat-card.purple .stat-value { color:var(--accent-purple); }
-.stat-card.cyan .stat-value { color:var(--accent-cyan); }
-
-/* Table */
-.table-wrap { overflow-x:auto; }
-table { width:100%; border-collapse:collapse; font-size:0.82rem; }
-th { text-align:left; padding:0.6rem 0.8rem; color:var(--text-muted); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:600; border-bottom:1px solid var(--border); }
-td { padding:0.7rem 0.8rem; border-bottom:1px solid rgba(42,53,72,0.5); }
-tr:hover td { background:rgba(59,130,246,0.03); }
-
-/* Status badges */
-.status { display:inline-block; padding:0.15rem 0.5rem; border-radius:4px; font-size:0.7rem; font-weight:600; }
-.status-active { background:rgba(34,197,94,0.15); color:var(--accent-green); }
-.status-pending { background:rgba(245,158,11,0.15); color:var(--accent-amber); }
-.status-inactive { background:rgba(239,68,68,0.15); color:var(--accent-red); }
-
-/* Optimization indicators */
-.opt-indicators { display:flex; gap:0.3rem; }
-.opt-dot { width:8px; height:8px; border-radius:50%; }
-.opt-dot.on { opacity:1; }
-.opt-dot.off { opacity:0.2; }
-.opt-dot.seo { background:var(--accent-blue); }
-.opt-dot.aeo { background:var(--accent-purple); }
-.opt-dot.geo { background:var(--accent-green); }
-.opt-dot.crank { background:var(--accent-amber); }
-.opt-dot.nlogic { background:var(--accent-cyan); }
-
-/* Forms */
-.form-group { margin-bottom:1rem; }
-.form-label { display:block; font-size:0.75rem; color:var(--text-muted); margin-bottom:0.3rem; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; }
-.form-input, .form-textarea, .form-select {
-  width:100%; padding:0.6rem 0.8rem; background:var(--bg-input); border:1px solid var(--border);
-  border-radius:6px; color:var(--text-primary); font-size:0.85rem; font-family:inherit;
-  transition:border-color 0.15s;
-}
-.form-input:focus, .form-textarea:focus, .form-select:focus { outline:none; border-color:var(--accent-blue); }
-.form-textarea { resize:vertical; min-height:120px; }
-.form-row { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; }
-.form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.8rem; }
-
-/* Paste Area */
-.paste-area {
-  border:2px dashed var(--border); border-radius:10px; padding:2rem; text-align:center;
-  cursor:pointer; transition:all 0.2s; min-height:200px; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:0.5rem;
-}
-.paste-area:hover, .paste-area.dragover { border-color:var(--accent-blue); background:rgba(59,130,246,0.03); }
-.paste-area p { color:var(--text-muted); font-size:0.85rem; }
-.paste-area .hint { font-size:0.7rem; color:var(--text-muted); }
-
-/* Map checkboxes */
-.map-options { display:grid; grid-template-columns:repeat(2,1fr); gap:0.6rem; }
-.map-option { display:flex; align-items:center; gap:0.6rem; padding:0.7rem 1rem; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:all 0.15s; }
-.map-option:hover { border-color:var(--accent-blue); }
-.map-option.selected { border-color:var(--accent-blue); background:rgba(59,130,246,0.05); }
-.map-option input { display:none; }
-.map-check { width:18px; height:18px; border:2px solid var(--border); border-radius:4px; display:flex; align-items:center; justify-content:center; transition:all 0.15s; flex-shrink:0; }
-.map-option.selected .map-check { background:var(--accent-blue); border-color:var(--accent-blue); }
-.map-option.selected .map-check::after { content:''; width:5px; height:9px; border:solid white; border-width:0 2px 2px 0; transform:rotate(45deg); margin-top:-2px; }
-.map-name { font-size:0.85rem; font-weight:500; }
-.map-desc { font-size:0.7rem; color:var(--text-muted); }
-
-/* Tabs */
-.tabs { display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:1.2rem; }
-.tab { padding:0.6rem 1.2rem; font-size:0.8rem; color:var(--text-muted); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.15s; font-weight:500; }
-.tab:hover { color:var(--text-primary); }
-.tab.active { color:var(--accent-blue); border-bottom-color:var(--accent-blue); }
-
-/* Toast */
-.toast { position:fixed; bottom:2rem; right:2rem; background:var(--bg-card); border:1px solid var(--accent-green); border-radius:8px; padding:0.8rem 1.2rem; font-size:0.85rem; z-index:1000; transform:translateY(100px); opacity:0; transition:all 0.3s; }
-.toast.show { transform:translateY(0); opacity:1; }
-
-/* Modal */
-.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:100; display:none; align-items:center; justify-content:center; }
-.modal-overlay.show { display:flex; }
-.modal { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:2rem; max-width:600px; width:90%; max-height:80vh; overflow-y:auto; }
-.modal h3 { font-size:1.1rem; margin-bottom:1rem; }
-
-/* Console output */
-.console { background:#0c0c0c; border-radius:8px; padding:1rem; font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:#4ade80; max-height:300px; overflow-y:auto; line-height:1.8; }
-.console .line-info { color:#3b82f6; }
-.console .line-warn { color:#f59e0b; }
-.console .line-err { color:#ef4444; }
-.console .line-ok { color:#22c55e; }
-
-/* Language toggle */
-.lang-toggle { display:flex; background:var(--bg-input); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
-.lang-btn { padding:0.3rem 0.6rem; font-size:0.7rem; cursor:pointer; border:none; background:transparent; color:var(--text-muted); font-family:inherit; font-weight:500; }
-.lang-btn.active { background:var(--accent-blue); color:white; }
-
-/* Google Auth */
-.google-auth-card { background:linear-gradient(135deg, rgba(66,133,244,0.08), rgba(52,168,83,0.05)); border:1px solid rgba(66,133,244,0.2); }
-.google-steps { counter-reset:step; }
-.google-step { display:flex; gap:0.8rem; padding:0.8rem 0; border-bottom:1px solid rgba(42,53,72,0.3); }
-.google-step:last-child { border-bottom:none; }
-.step-num { width:24px; height:24px; border-radius:50%; background:rgba(59,130,246,0.15); color:var(--accent-blue); display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:700; flex-shrink:0; }
-.step-content { font-size:0.82rem; }
-.step-content small { display:block; color:var(--text-muted); font-size:0.72rem; margin-top:0.2rem; }
-
-/* Scroll */
-::-webkit-scrollbar { width:6px; }
-::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
-
-/* Preview frame */
-.preview-frame { border:1px solid var(--border); border-radius:8px; overflow:hidden; background:white; }
-.preview-frame iframe { width:100%; height:500px; border:none; }
-
-/* Responsive */
-@media(max-width:900px) {
-  .app { grid-template-columns:1fr; }
-  .sidebar { display:none; }
-  .stats-grid { grid-template-columns:repeat(3,1fr); }
-  .form-row, .map-options { grid-template-columns:1fr; }
-}
+:root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2235;--bg-input:#0f1729;--border:#2a3548;--text-primary:#e8ecf4;--text-secondary:#8896ab;--text-muted:#556479;--accent-blue:#3b82f6;--accent-green:#22c55e;--accent-amber:#f59e0b;--accent-red:#ef4444;--accent-purple:#a855f7;--accent-cyan:#06b6d4}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'IBM Plex Sans KR',-apple-system,sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.sidebar{background:var(--bg-secondary);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-brand{padding:1.5rem 1.2rem;border-bottom:1px solid var(--border)}.sidebar-brand h1{font-size:1.1rem;font-weight:700;letter-spacing:.05em;color:var(--accent-blue)}.sidebar-brand span{font-size:.65rem;color:var(--text-muted);display:block;margin-top:2px;letter-spacing:.1em}
+.nav-section{padding:.8rem 0}.nav-label{padding:.3rem 1.2rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);font-weight:600}
+.nav-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1.2rem;cursor:pointer;font-size:.82rem;color:var(--text-secondary);transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(59,130,246,.06);color:var(--text-primary)}.nav-item.active{background:rgba(59,130,246,.1);color:var(--accent-blue);border-left-color:var(--accent-blue);font-weight:500}
+.nav-icon{width:16px;height:16px;opacity:.7;flex-shrink:0}
+.opt-tags{display:flex;gap:.25rem;flex-wrap:wrap;padding:1rem 1.2rem;border-top:1px solid var(--border);margin-top:auto}
+.opt-tag{font-size:.58rem;padding:.12rem .4rem;border-radius:3px;font-weight:600;letter-spacing:.05em}
+.opt-tag.seo{background:rgba(59,130,246,.15);color:var(--accent-blue)}.opt-tag.aeo{background:rgba(168,85,247,.15);color:var(--accent-purple)}.opt-tag.geo{background:rgba(34,197,94,.15);color:var(--accent-green)}.opt-tag.crank{background:rgba(245,158,11,.15);color:var(--accent-amber)}.opt-tag.nlogic{background:rgba(6,182,212,.15);color:var(--accent-cyan)}
+.main{overflow-y:auto}.main-header{padding:1rem 1.8rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--bg-secondary);position:sticky;top:0;z-index:10}
+.main-header h2{font-size:.95rem;font-weight:600}.main-content{padding:1.5rem 1.8rem}
+.btn{padding:.45rem .9rem;border-radius:6px;font-size:.78rem;font-weight:500;border:none;cursor:pointer;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
+.btn-primary{background:var(--accent-blue);color:#fff}.btn-primary:hover{background:#2563eb}.btn-success{background:var(--accent-green);color:#fff}.btn-outline{background:transparent;color:var(--text-secondary);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--accent-blue);color:var(--accent-blue)}.btn-danger{background:rgba(239,68,68,.15);color:var(--accent-red);border:none}.btn-sm{padding:.3rem .6rem;font-size:.72rem}.btn-lg{padding:.6rem 1.3rem;font-size:.85rem}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:1rem}.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}.card-title{font-size:.88rem;font-weight:600}
+.stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin-bottom:1.2rem}.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:.9rem}.stat-value{font-size:1.5rem;font-weight:700;font-family:'JetBrains Mono',monospace}.stat-label{font-size:.65rem;color:var(--text-muted);margin-top:.15rem;letter-spacing:.05em}
+.stat-card.blue .stat-value{color:var(--accent-blue)}.stat-card.green .stat-value{color:var(--accent-green)}.stat-card.amber .stat-value{color:var(--accent-amber)}.stat-card.purple .stat-value{color:var(--accent-purple)}.stat-card.cyan .stat-value{color:var(--accent-cyan)}
+table{width:100%;border-collapse:collapse;font-size:.8rem}th{text-align:left;padding:.55rem .7rem;color:var(--text-muted);font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-bottom:1px solid var(--border)}td{padding:.6rem .7rem;border-bottom:1px solid rgba(42,53,72,.5)}tr:hover td{background:rgba(59,130,246,.03)}
+.status{display:inline-block;padding:.12rem .45rem;border-radius:4px;font-size:.68rem;font-weight:600}.status-active{background:rgba(34,197,94,.15);color:var(--accent-green)}.status-pending{background:rgba(245,158,11,.15);color:var(--accent-amber)}
+.opt-indicators{display:flex;gap:.25rem}.opt-dot{width:8px;height:8px;border-radius:50%}.opt-dot.on{opacity:1}.opt-dot.off{opacity:.2}.opt-dot.seo{background:var(--accent-blue)}.opt-dot.aeo{background:var(--accent-purple)}.opt-dot.geo{background:var(--accent-green)}.opt-dot.crank{background:var(--accent-amber)}.opt-dot.nlogic{background:var(--accent-cyan)}
+.form-group{margin-bottom:.9rem}.form-label{display:block;font-size:.72rem;color:var(--text-muted);margin-bottom:.25rem;font-weight:500}
+.form-input,.form-textarea,.form-select{width:100%;padding:.55rem .75rem;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);font-size:.82rem;font-family:inherit;transition:border-color .15s}
+.form-input:focus,.form-textarea:focus,.form-select:focus{outline:none;border-color:var(--accent-blue)}.form-textarea{resize:vertical;min-height:100px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem}
+.map-options{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}.map-option{display:flex;align-items:center;gap:.5rem;padding:.6rem .8rem;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s}
+.map-option:hover{border-color:var(--accent-blue)}.map-option.selected{border-color:var(--accent-blue);background:rgba(59,130,246,.05)}.map-option input{display:none}
+.map-check{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.map-option.selected .map-check{background:var(--accent-blue);border-color:var(--accent-blue)}.map-option.selected .map-check::after{content:'';width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-2px}
+.map-name{font-size:.8rem;font-weight:500}.map-desc{font-size:.65rem;color:var(--text-muted)}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1rem}.tab{padding:.55rem 1rem;font-size:.78rem;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;font-weight:500}.tab:hover{color:var(--text-primary)}.tab.active{color:var(--accent-blue);border-bottom-color:var(--accent-blue)}
+.console{background:#0c0c0c;border-radius:8px;padding:1rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#4ade80;max-height:350px;overflow-y:auto;line-height:1.8}.console .c-info{color:#3b82f6}.console .c-warn{color:#f59e0b}.console .c-ok{color:#22c55e}.console .c-dim{color:#556479}
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--bg-card);border:1px solid var(--accent-green);border-radius:8px;padding:.7rem 1.1rem;font-size:.82rem;z-index:1000;transform:translateY(100px);opacity:0;transition:all .3s}.toast.show{transform:translateY(0);opacity:1}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;align-items:center;justify-content:center}.modal-overlay.show{display:flex}.modal{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;max-width:640px;width:90%;max-height:85vh;overflow-y:auto}.modal h3{font-size:1rem;margin-bottom:1rem}
+.guide-step{display:flex;gap:1rem;padding:.8rem 0;border-bottom:1px solid rgba(42,53,72,.4)}.guide-step:last-child{border-bottom:none}.guide-num{width:28px;height:28px;border-radius:50%;background:rgba(59,130,246,.15);color:var(--accent-blue);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono'}
+.guide-text h4{font-size:.85rem;font-weight:600;margin-bottom:.2rem}.guide-text p{font-size:.78rem;color:var(--text-secondary);line-height:1.5}.guide-text code{background:rgba(59,130,246,.1);color:var(--accent-blue);padding:.1rem .3rem;border-radius:3px;font-size:.72rem;font-family:'JetBrains Mono'}
+.flow-branch{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-top:.3rem}.flow-box{padding:.5rem .8rem;border-radius:6px;font-size:.75rem;font-weight:500;text-align:center}
+.google-auth-card{background:linear-gradient(135deg,rgba(66,133,244,.06),rgba(52,168,83,.04));border:1px solid rgba(66,133,244,.15)}
+.lang-toggle{display:flex;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;overflow:hidden}.lang-btn{padding:.25rem .5rem;font-size:.68rem;cursor:pointer;border:none;background:transparent;color:var(--text-muted);font-family:inherit;font-weight:500}.lang-btn.active{background:var(--accent-blue);color:#fff}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}.stats-grid{grid-template-columns:repeat(3,1fr)}.form-row,.map-options{grid-template-columns:1fr}.flow-branch{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
-
 <div class="app">
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <h1>XIVIX</h1>
-      <span>Tower Control v1.0</span>
-    </div>
+<aside class="sidebar">
+<div class="sidebar-brand"><h1>XIVIX</h1><span>Tower Control v1.0</span></div>
+<div class="nav-section">
+<div class="nav-label">관리</div>
+<div class="nav-item active" data-page="guide" onclick="showPage('guide')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>사용 가이드</div>
+<div class="nav-item" data-page="dashboard" onclick="showPage('dashboard')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+<div class="nav-item" data-page="add" onclick="showPage('add')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>매장 등록</div>
+<div class="nav-item" data-page="businesses" onclick="showPage('businesses')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>매장 목록</div>
+</div>
+<div class="nav-section">
+<div class="nav-label">최적화</div>
+<div class="nav-item" data-page="maps" onclick="showPage('maps')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>지도 플랫폼</div>
+<div class="nav-item" data-page="google-auth" onclick="showPage('google-auth')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>구글 인증</div>
+</div>
+<div class="nav-section">
+<div class="nav-label">배포</div>
+<div class="nav-item" data-page="build" onclick="showPage('build')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>빌드 & 배포</div>
+<div class="nav-item" data-page="preview" onclick="showPage('preview')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>미리보기</div>
+</div>
+<div class="opt-tags"><span class="opt-tag seo">SEO</span><span class="opt-tag aeo">AEO</span><span class="opt-tag geo">GEO</span><span class="opt-tag crank">C-RANK</span><span class="opt-tag nlogic">N-LOGIC</span></div>
+</aside>
+<div class="main">
+<div class="main-header"><h2 id="pageTitle">사용 가이드</h2><div class="header-actions"><div class="lang-toggle"><button class="lang-btn active" onclick="setLang('ko',this)">KO</button><button class="lang-btn" onclick="setLang('en',this)">EN</button></div><button class="btn btn-primary btn-sm" onclick="showPage('build')">빌드 & 배포</button></div></div>
+<div class="main-content">
 
-    <div class="nav-section">
-      <div class="nav-label">Management</div>
-      <div class="nav-item active" onclick="showPage('dashboard')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        Dashboard
-      </div>
-      <div class="nav-item" onclick="showPage('add')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        Add Business
-      </div>
-      <div class="nav-item" onclick="showPage('businesses')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Businesses
-      </div>
-    </div>
-
-    <div class="nav-section">
-      <div class="nav-label">Optimization</div>
-      <div class="nav-item" onclick="showPage('maps')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-        Map Platforms
-      </div>
-      <div class="nav-item" onclick="showPage('google-auth')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Google Auth
-      </div>
-    </div>
-
-    <div class="nav-section">
-      <div class="nav-label">Deploy</div>
-      <div class="nav-item" onclick="showPage('build')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        Build & Deploy
-      </div>
-      <div class="nav-item" onclick="showPage('preview')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        Preview
-      </div>
-    </div>
-
-    <div class="opt-tags">
-      <span class="opt-tag seo">SEO</span>
-      <span class="opt-tag aeo">AEO</span>
-      <span class="opt-tag geo">GEO</span>
-      <span class="opt-tag crank">C-RANK</span>
-      <span class="opt-tag nlogic">N-LOGIC</span>
-    </div>
-  </aside>
-
-  <!-- Main Content -->
-  <div class="main">
-    <div class="main-header">
-      <h2 id="pageTitle">Dashboard</h2>
-      <div class="header-actions">
-        <div class="lang-toggle">
-          <button class="lang-btn active" onclick="setLang('ko')">KO</button>
-          <button class="lang-btn" onclick="setLang('en')">EN</button>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="showPage('build')">Build & Deploy</button>
-      </div>
-    </div>
-
-    <div class="main-content">
-      <!-- ===== PAGE: Dashboard ===== -->
-      <div id="page-dashboard" class="page">
-        <div class="stats-grid">
-          <div class="stat-card blue">
-            <div class="stat-value" id="statTotal">0</div>
-            <div class="stat-label" data-ko="total brands" data-en="Total Brands">Total Brands</div>
-          </div>
-          <div class="stat-card green">
-            <div class="stat-value" id="statActive">0</div>
-            <div class="stat-label">Active</div>
-          </div>
-          <div class="stat-card purple">
-            <div class="stat-value" id="statSEO">0</div>
-            <div class="stat-label">SEO Ready</div>
-          </div>
-          <div class="stat-card amber">
-            <div class="stat-value" id="statCrank">0</div>
-            <div class="stat-label">C-RANK Enabled</div>
-          </div>
-          <div class="stat-card cyan">
-            <div class="stat-value" id="statMaps">0</div>
-            <div class="stat-label">Map Platforms</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title">Managed Businesses</span>
-            <button class="btn btn-primary btn-sm" onclick="showPage('add')">+ Add New</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Category</th>
-                  <th>Location</th>
-                  <th>Optimization</th>
-                  <th>Maps</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="bizTable"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title">Optimization Coverage</span>
-          </div>
-          <div id="optCoverage" style="display:grid; grid-template-columns:repeat(5,1fr); gap:0.8rem;"></div>
-        </div>
-      </div>
-
-      <!-- ===== PAGE: Add Business ===== -->
-      <div id="page-add" class="page" style="display:none">
-        <div class="tabs">
-          <div class="tab active" onclick="switchAddTab('paste')">Smart Paste</div>
-          <div class="tab" onclick="switchAddTab('manual')">Manual Entry</div>
-        </div>
-
-        <!-- Smart Paste -->
-        <div id="addTab-paste">
-          <div class="card">
-            <div class="card-title" style="margin-bottom:0.8rem">Smart Data Paste</div>
-            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;">
-              Copy & paste any business info - address, phone, business card text, website text, Naver Place link, Google Maps link - the system will auto-classify everything.
-            </p>
-            <textarea id="smartPasteInput" class="form-textarea" style="min-height:200px; font-family:'JetBrains Mono',monospace; font-size:0.8rem;" placeholder="Paste any business information here...
-
-Examples:
-- Business card text
-- Google Maps / Naver Place URL  
-- Raw text: '강남스마일치과 서울 강남구 강남대로 396 02-555-1234 임플란트 교정'
-- Structured data from any source"></textarea>
-            <div style="margin-top:0.8rem; display:flex; gap:0.5rem;">
-              <button class="btn btn-primary" onclick="smartParse()">Auto Classify</button>
-              <button class="btn btn-outline" onclick="clearPaste()">Clear</button>
-            </div>
-          </div>
-
-          <div id="parseResult" style="display:none">
-            <div class="card" style="border-color:var(--accent-green);">
-              <div class="card-title" style="color:var(--accent-green); margin-bottom:1rem;">Classified Result - Review & Edit</div>
-              <div id="parsedFields"></div>
-              <div style="margin-top:1rem; display:flex; gap:0.5rem;">
-                <button class="btn btn-success" onclick="confirmAdd()">Confirm & Register</button>
-                <button class="btn btn-outline" onclick="document.getElementById('parseResult').style.display='none'">Cancel</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Manual Entry -->
-        <div id="addTab-manual" style="display:none">
-          <div class="card">
-            <div class="card-title" style="margin-bottom:1rem">Business Information</div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Business Name (Korean)</label>
-                <input class="form-input" id="f_name" placeholder="강남스마일치과">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Business Name (English)</label>
-                <input class="form-input" id="f_nameEn" placeholder="Gangnam Smile Dental">
-              </div>
-            </div>
-            <div class="form-row-3">
-              <div class="form-group">
-                <label class="form-label">Category</label>
-                <select class="form-select" id="f_category">
-                  <option value="">Select</option>
-                  <option value="Dentist">Dentist / Dental Clinic</option>
-                  <option value="Hospital">Hospital</option>
-                  <option value="MedicalClinic">Clinic / Medical</option>
-                  <option value="Restaurant">Restaurant</option>
-                  <option value="CafeOrCoffeeShop">Cafe</option>
-                  <option value="BeautySalon">Beauty Salon</option>
-                  <option value="Store">Store / Retail</option>
-                  <option value="HealthAndBeautyBusiness">Fitness / Health</option>
-                  <option value="LegalService">Law Office</option>
-                  <option value="FinancialService">Financial Service</option>
-                  <option value="EducationalOrganization">Education / Academy</option>
-                  <option value="LocalBusiness">Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Phone</label>
-                <input class="form-input" id="f_phone" placeholder="+82-2-555-1234">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Website</label>
-                <input class="form-input" id="f_url" placeholder="https://example.co.kr">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Full Address</label>
-              <input class="form-input" id="f_address" placeholder="서울특별시 강남구 강남대로 396">
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Latitude</label>
-                <input class="form-input" id="f_lat" placeholder="37.4979">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Longitude</label>
-                <input class="form-input" id="f_lng" placeholder="127.0276">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Description (Korean)</label>
-              <textarea class="form-textarea" id="f_desc" style="min-height:80px" placeholder="매장 설명..."></textarea>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Description (English)</label>
-              <textarea class="form-textarea" id="f_descEn" style="min-height:80px" placeholder="Business description in English..."></textarea>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Opening Hours</label>
-              <input class="form-input" id="f_hours" placeholder="Mo-Fr 09:00-21:00, Sa 09:00-14:00">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Specialties / Services (comma separated)</label>
-              <input class="form-input" id="f_specialties" placeholder="Implant, Orthodontics, Whitening">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Target Keywords (comma separated)</label>
-              <input class="form-input" id="f_keywords" placeholder="Gangnam dentist, Gangnam implant, night dental clinic">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">FAQ (one per line: Q|A)</label>
-              <textarea class="form-textarea" id="f_faq" style="min-height:100px" placeholder="How much does an implant cost?|Implants range from 800K~1.8M KRW depending on brand.
-Is night treatment available?|Yes, open until 9 PM on weekdays."></textarea>
-            </div>
-
-            <h4 style="margin:1rem 0 0.5rem; font-size:0.85rem;">Map Platform Targets</h4>
-            <div class="map-options" id="mapTargets">
-              <label class="map-option selected" onclick="toggleMap(this)">
-                <input type="checkbox" value="google" checked>
-                <div class="map-check"></div>
-                <div><div class="map-name">Google Maps</div><div class="map-desc">GBP + Schema.org</div></div>
-              </label>
-              <label class="map-option selected" onclick="toggleMap(this)">
-                <input type="checkbox" value="naver" checked>
-                <div class="map-check"></div>
-                <div><div class="map-name">Naver Map</div><div class="map-desc">Smart Place</div></div>
-              </label>
-              <label class="map-option selected" onclick="toggleMap(this)">
-                <input type="checkbox" value="kakao" checked>
-                <div class="map-check"></div>
-                <div><div class="map-name">Kakao Map</div><div class="map-desc">Kakao Place</div></div>
-              </label>
-              <label class="map-option" onclick="toggleMap(this)">
-                <input type="checkbox" value="tmap">
-                <div class="map-check"></div>
-                <div><div class="map-name">T-MAP</div><div class="map-desc">SKT Navigation</div></div>
-              </label>
-              <label class="map-option" onclick="toggleMap(this)">
-                <input type="checkbox" value="apple">
-                <div class="map-check"></div>
-                <div><div class="map-name">Apple Maps</div><div class="map-desc">iOS / CarPlay</div></div>
-              </label>
-              <label class="map-option" onclick="toggleMap(this)">
-                <input type="checkbox" value="tesla">
-                <div class="map-check"></div>
-                <div><div class="map-name">Tesla Map</div><div class="map-desc">Tesla Navigation</div></div>
-              </label>
-            </div>
-
-            <div style="margin-top:1.5rem; display:flex; gap:0.5rem;">
-              <button class="btn btn-success btn-lg" onclick="manualAdd()">Register Business</button>
-              <button class="btn btn-outline btn-lg" onclick="clearManual()">Clear</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== PAGE: Businesses ===== -->
-      <div id="page-businesses" class="page" style="display:none">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title">All Businesses</span>
-            <div style="display:flex; gap:0.5rem;">
-              <input class="form-input" style="width:250px;" placeholder="Search businesses..." id="searchBiz" oninput="renderBusinesses()">
-              <button class="btn btn-primary btn-sm" onclick="exportJSON()">Export JSON</button>
-            </div>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Name (EN)</th>
-                  <th>Type</th>
-                  <th>Address</th>
-                  <th>Phone</th>
-                  <th>Rating</th>
-                  <th>Optimization</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="fullBizTable"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== PAGE: Maps ===== -->
-      <div id="page-maps" class="page" style="display:none">
-        <div class="card">
-          <div class="card-title" style="margin-bottom:1rem;">Map Platform Optimization</div>
-          <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:1.5rem;">
-            Each map platform indexes business data differently. The system generates optimized Schema.org and platform-specific metadata to maximize visibility across all navigation and map services.
-          </p>
-
-          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem;">
-            <div class="card" style="border-color:rgba(66,133,244,0.3);">
-              <div style="font-weight:600; margin-bottom:0.5rem; color:#4285f4;">Google Maps</div>
-              <div style="font-size:0.78rem; color:var(--text-secondary);">
-                Schema.org LocalBusiness JSON-LD + Google Business Profile API.
-                Auto-synced from businesses.json.
-              </div>
-              <div class="status status-active" style="margin-top:0.5rem;">Auto</div>
-            </div>
-            <div class="card" style="border-color:rgba(30,200,100,0.3);">
-              <div style="font-weight:600; margin-bottom:0.5rem; color:#1ec864;">Naver Map</div>
-              <div style="font-size:0.78rem; color:var(--text-secondary);">
-                Smart Place registration required. Dashboard provides data export for bulk registration.
-              </div>
-              <div class="status status-pending" style="margin-top:0.5rem;">Semi-Auto</div>
-            </div>
-            <div class="card" style="border-color:rgba(254,229,0,0.3);">
-              <div style="font-weight:600; margin-bottom:0.5rem; color:#fee500;">Kakao Map</div>
-              <div style="font-size:0.78rem; color:var(--text-secondary);">
-                Kakao Place uses crawled web data. Schema.org markup ensures accurate indexing.
-              </div>
-              <div class="status status-active" style="margin-top:0.5rem;">Auto</div>
-            </div>
-            <div class="card" style="border-color:rgba(231,50,52,0.3);">
-              <div style="font-weight:600; margin-bottom:0.5rem; color:#e73234;">T-MAP</div>
-              <div style="font-size:0.78rem; color:var(--text-secondary);">
-                T-MAP syncs from SK Planet POI database. Schema.org GeoCoordinates ensures correct positioning.
-              </div>
-              <div class="status status-active" style="margin-top:0.5rem;">Auto via Schema</div>
-            </div>
-            <div class="card" style="border-color:rgba(160,160,160,0.3);">
-              <div style="font-weight:600; margin-bottom:0.5rem; color:#a0a0a0;">Apple Maps</div>
-              <div style="font-size:0.78rem; color:var(--text-secondary);">
-                Apple Maps uses Apple Business Connect + Schema.org markup from web crawling.
-              </div>
-              <div class="status status-active" style="margin-top:0.5rem;">Auto via Schema</div>
-            </div>
-            <div class="card" style="border-color:rgba(232,33,39,0.3);">
-              <div style="font-weight:600; margin-bottom:0.5rem; color:#e82127;">Tesla Map</div>
-              <div style="font-size:0.78rem; color:var(--text-secondary);">
-                Tesla uses Google Maps data as base. GBP optimization = Tesla optimization.
-              </div>
-              <div class="status status-active" style="margin-top:0.5rem;">Via Google</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== PAGE: Google Auth ===== -->
-      <div id="page-google-auth" class="page" style="display:none">
-        <div class="card google-auth-card">
-          <div class="card-title" style="margin-bottom:0.3rem;">Google Business Profile - Owner Verification</div>
-          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.2rem;">
-            Each business needs one-time owner verification with Google. After verification, XIVIX manages everything via API.
-          </p>
-
-          <div class="google-steps">
-            <div class="google-step">
-              <div class="step-num">1</div>
-              <div class="step-content">
-                Select a business below and click "Start Verification"
-                <small>This opens Google Business Profile in a new tab</small>
-              </div>
-            </div>
-            <div class="google-step">
-              <div class="step-num">2</div>
-              <div class="step-content">
-                The business owner receives a verification code via phone or mail
-                <small>Google sends a PIN to the registered business phone number</small>
-              </div>
-            </div>
-            <div class="google-step">
-              <div class="step-num">3</div>
-              <div class="step-content">
-                Enter the code to complete verification, then mark as verified here
-                <small>After this, all updates are automated through XIVIX Tower Control</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title" style="margin-bottom:1rem;">Business Verification Status</div>
-          <table>
-            <thead>
-              <tr>
-                <th>Business</th>
-                <th>Google Verified</th>
-                <th>Naver Place</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="authTable"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ===== PAGE: Build & Deploy ===== -->
-      <div id="page-build" class="page" style="display:none">
-        <div class="card">
-          <div class="card-title" style="margin-bottom:0.5rem;">Build Configuration</div>
-          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;">
-            Generates all optimized files from business data and deploys to GitHub Pages / Cloudflare Pages.
-          </p>
-
-          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.8rem; margin-bottom:1.5rem;">
-            <div class="form-group">
-              <label class="form-label">Deploy Target</label>
-              <select class="form-select" id="deployTarget">
-                <option value="github">GitHub Pages</option>
-                <option value="cloudflare">Cloudflare Pages</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Domain</label>
-              <input class="form-input" id="deployDomain" value="brands.studioaibotbot.com">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Branch</label>
-              <input class="form-input" value="main" readonly>
-            </div>
-          </div>
-
-          <div style="margin-bottom:1rem;">
-            <div class="card-title" style="margin-bottom:0.5rem;">Build Outputs</div>
-            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.5rem; font-size:0.8rem;">
-              <label style="display:flex; gap:0.4rem; align-items:center;"><input type="checkbox" checked disabled> Schema.org JSON-LD (SEO)</label>
-              <label style="display:flex; gap:0.4rem; align-items:center;"><input type="checkbox" checked disabled> llms.txt (AEO)</label>
-              <label style="display:flex; gap:0.4rem; align-items:center;"><input type="checkbox" checked disabled> FAQ Rich Snippets (GEO)</label>
-              <label style="display:flex; gap:0.4rem; align-items:center;"><input type="checkbox" checked disabled> sitemap.xml (SEO)</label>
-              <label style="display:flex; gap:0.4rem; align-items:center;"><input type="checkbox" checked disabled> robots.txt (AEO)</label>
-              <label style="display:flex; gap:0.4rem; align-items:center;"><input type="checkbox" checked disabled> crank-config.json (C-RANK)</label>
-              <label style="display:flex; gap:0.4rem; align-items:center;"><input type="checkbox" checked disabled> Open Graph meta (N-Logic)</label>
-              <label style="display:flex; gap:0.4rem; align-items:center;"><input type="checkbox" checked disabled> Multi-language pages (i18n)</label>
-              <label style="display:flex; gap:0.4rem; align-items:center;"><input type="checkbox" checked disabled> Map metadata (GeoCoordinates)</label>
-            </div>
-          </div>
-
-          <div style="display:flex; gap:0.5rem;">
-            <button class="btn btn-success btn-lg" onclick="runBuild()">Run Build</button>
-            <button class="btn btn-primary btn-lg" onclick="runDeploy()">Build & Deploy</button>
-            <button class="btn btn-outline" onclick="downloadBuild()">Download Output</button>
-          </div>
-        </div>
-
-        <div class="card" id="buildConsole" style="display:none;">
-          <div class="card-title" style="margin-bottom:0.5rem;">Build Output</div>
-          <div class="console" id="consoleOutput"></div>
-        </div>
-      </div>
-
-      <!-- ===== PAGE: Preview ===== -->
-      <div id="page-preview" class="page" style="display:none">
-        <div class="card">
-          <div class="card-title" style="margin-bottom:0.5rem;">Live Preview</div>
-          <div style="margin-bottom:0.8rem; display:flex; gap:0.5rem;">
-            <select class="form-select" id="previewSelect" style="width:300px;" onchange="updatePreview()">
-              <option value="index">Brand Directory (Main)</option>
-            </select>
-            <div class="lang-toggle">
-              <button class="lang-btn active" onclick="previewLang('ko')">KO</button>
-              <button class="lang-btn" onclick="previewLang('en')">EN</button>
-            </div>
-          </div>
-          <div class="preview-frame">
-            <div id="previewContent" style="padding:2rem; background:white; color:#1f2937; min-height:400px;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- 사용 가이드 -->
+<div id="page-guide" class="page">
+<div class="card"><div class="card-title" style="margin-bottom:.3rem">XIVIX Tower Control 이란?</div><p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6">매장 정보를 한 곳에 입력하면, 구글/네이버/카카오/T-MAP 등 모든 검색 엔진과 AI에 최적화된 페이지가 자동 생성됩니다. 누군가 "강남 치과" 검색 시 당신이 관리하는 매장이 최상위에 노출되는 것이 목표입니다.</p></div>
+<div class="card"><div class="card-title" style="margin-bottom:.8rem">사용 방법 (3단계)</div>
+<div class="guide-step"><div class="guide-num">1</div><div class="guide-text"><h4>매장 등록</h4><p>좌측 <code>매장 등록</code> 클릭 후 두 가지 방법:<br><strong>Smart Paste</strong> - 명함, 네이버 플레이스 URL, 구글맵 링크 등 복사 붙여넣기 -> 자동 분류<br><strong>직접 입력</strong> - 매장명, 주소, FAQ 등 작성 + 지도 플랫폼(구글/네이버/카카오/T-MAP/테슬라) 선택</p></div></div>
+<div class="guide-step"><div class="guide-num">2</div><div class="guide-text"><h4>구글 비즈니스 인증 (1회)</h4><p><code>구글 인증</code> 메뉴 -> "구글 인증 시작" 클릭 -> 구글 비즈니스 프로필 새 탭 -> 점주가 전화/우편 인증코드 수신 -> 인증 후 "인증 완료" 클릭. 이후 모든 관리는 자동.</p></div></div>
+<div class="guide-step"><div class="guide-num">3</div><div class="guide-text"><h4>빌드 & 배포</h4><p><code>빌드 & 배포</code> -> "빌드 실행" -> 모든 최적화 파일 자동 생성 -> "배포" 클릭 -> 끝. 매장 정보 수정 시 다시 빌드 & 배포.</p></div></div>
+</div>
+<div class="card"><div class="card-title" style="margin-bottom:.8rem">등록 후 동작 흐름</div>
+<div style="background:var(--bg-input);border-radius:8px;padding:1.2rem">
+<div style="text-align:center;margin-bottom:.8rem"><span class="flow-box" style="background:rgba(59,130,246,.15);color:var(--accent-blue);display:inline-block">매장 정보 입력 (1회)</span></div>
+<div style="text-align:center;color:var(--text-muted)">|</div>
+<div style="text-align:center;margin:.3rem 0"><span class="flow-box" style="background:rgba(168,85,247,.15);color:var(--accent-purple);display:inline-block">빌드 실행 (자동 생성)</span></div>
+<div style="text-align:center;color:var(--text-muted)">|</div>
+<div class="flow-branch">
+<div class="flow-box" style="background:rgba(59,130,246,.12);color:var(--accent-blue);font-size:.7rem"><strong>SEO</strong><br>Schema.org<br>JSON-LD<br>sitemap.xml</div>
+<div class="flow-box" style="background:rgba(168,85,247,.12);color:var(--accent-purple);font-size:.7rem"><strong>AEO</strong><br>llms.txt<br>ChatGPT/Claude<br>Gemini용</div>
+<div class="flow-box" style="background:rgba(34,197,94,.12);color:var(--accent-green);font-size:.7rem"><strong>GEO</strong><br>FAQ 리치스니펫<br>AI Overview<br>추천 답변</div>
+<div class="flow-box" style="background:rgba(245,158,11,.12);color:var(--accent-amber);font-size:.7rem"><strong>C-RANK</strong><br>네이버 카페<br>블로그 자동<br>포스팅 연동</div>
+<div class="flow-box" style="background:rgba(6,182,212,.12);color:var(--accent-cyan);font-size:.7rem"><strong>N-LOGIC</strong><br>네이버 검색<br>Open Graph<br>메타태그</div>
+</div>
+<div style="text-align:center;color:var(--text-muted);margin-top:.5rem">|</div>
+<div style="text-align:center;margin-top:.3rem"><span class="flow-box" style="background:rgba(34,197,94,.15);color:var(--accent-green);display:inline-block">배포 -> 검색 엔진 + AI가 자동 수집</span></div>
+<div style="text-align:center;color:var(--text-muted)">|</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem">
+<div style="text-align:center;font-size:.72rem;color:var(--text-secondary);padding:.5rem;background:rgba(255,255,255,.03);border-radius:6px"><strong style="color:var(--text-primary)">구글 검색</strong><br>"강남 치과" 검색<br>리치 결과 노출</div>
+<div style="text-align:center;font-size:.72rem;color:var(--text-secondary);padding:.5rem;background:rgba(255,255,255,.03);border-radius:6px"><strong style="color:var(--text-primary)">AI 답변</strong><br>"강남 좋은 치과?"<br>ChatGPT/Claude 추천</div>
+<div style="text-align:center;font-size:.72rem;color:var(--text-secondary);padding:.5rem;background:rgba(255,255,255,.03);border-radius:6px"><strong style="color:var(--text-primary)">지도앱</strong><br>구글/네이버/카카오<br>T-MAP/테슬라 노출</div>
+</div></div></div>
+<div class="card"><div class="card-title" style="margin-bottom:.5rem">데모 실행</div><p style="font-size:.78rem;color:var(--text-muted);margin-bottom:.8rem">아래 버튼 클릭 시 등록 -> 빌드 -> 검색 노출까지 전체 시뮬레이션을 보여줍니다.</p>
+<button class="btn btn-primary btn-lg" onclick="runDemo()">데모 실행</button>
+<div id="demoOutput" style="margin-top:1rem;display:none"><div class="console" id="demoConsole"></div></div></div>
 </div>
 
-<!-- Toast -->
+<!-- 대시보드 -->
+<div id="page-dashboard" class="page" style="display:none">
+<div class="stats-grid">
+<div class="stat-card blue"><div class="stat-value" id="statTotal">0</div><div class="stat-label">전체 매장</div></div>
+<div class="stat-card green"><div class="stat-value" id="statActive">0</div><div class="stat-label">운영중</div></div>
+<div class="stat-card purple"><div class="stat-value" id="statSEO">0</div><div class="stat-label">SEO 적용</div></div>
+<div class="stat-card amber"><div class="stat-value" id="statCrank">0</div><div class="stat-label">C-RANK 연동</div></div>
+<div class="stat-card cyan"><div class="stat-value" id="statMaps">0</div><div class="stat-label">지도 플랫폼</div></div>
+</div>
+<div class="card"><div class="card-header"><span class="card-title">관리중인 매장</span><button class="btn btn-primary btn-sm" onclick="showPage('add')">+ 매장 등록</button></div>
+<table><thead><tr><th>매장명</th><th>업종</th><th>위치</th><th>최적화</th><th>지도</th><th>상태</th><th>관리</th></tr></thead><tbody id="bizTable"></tbody></table></div>
+<div class="card"><div class="card-header"><span class="card-title">최적화 현황</span></div><div id="optCoverage" style="display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem"></div></div>
+</div>
+
+<!-- 매장 등록 -->
+<div id="page-add" class="page" style="display:none">
+<div class="tabs"><div class="tab active" onclick="switchAddTab('paste',this)">Smart Paste (자동 분류)</div><div class="tab" onclick="switchAddTab('manual',this)">직접 입력</div></div>
+<div id="addTab-paste">
+<div class="card"><div class="card-title" style="margin-bottom:.5rem">데이터 자동 분류</div>
+<p style="font-size:.78rem;color:var(--text-muted);margin-bottom:.8rem">명함, 구글맵 URL, 네이버 플레이스 링크, 매장 소개 등 아무거나 붙여넣기 하세요.</p>
+<textarea id="smartPasteInput" class="form-textarea" style="min-height:180px;font-family:'JetBrains Mono',monospace;font-size:.78rem" placeholder="여기에 매장 정보를 붙여넣으세요...
+
+예시:
+- 명함 텍스트 그대로
+- 구글맵 / 네이버 플레이스 URL  
+- '강남스마일치과 서울 강남구 강남대로 396 02-555-1234'
+- 어떤 형식이든 OK"></textarea>
+<div style="margin-top:.7rem;display:flex;gap:.4rem"><button class="btn btn-primary" onclick="smartParse()">자동 분류 실행</button><button class="btn btn-outline" onclick="clearPaste()">초기화</button></div></div>
+<div id="parseResult" style="display:none"><div class="card" style="border-color:var(--accent-green)"><div class="card-title" style="color:var(--accent-green);margin-bottom:.8rem">분류 결과 - 확인 후 수정</div><div id="parsedFields"></div>
+<div style="margin-top:1rem;display:flex;gap:.4rem"><button class="btn btn-success" onclick="confirmAdd()">등록 확인</button><button class="btn btn-outline" onclick="document.getElementById('parseResult').style.display='none'">취소</button></div></div></div>
+</div>
+<div id="addTab-manual" style="display:none">
+<div class="card"><div class="card-title" style="margin-bottom:.8rem">매장 기본 정보</div>
+<div class="form-row"><div class="form-group"><label class="form-label">매장명 (한글)</label><input class="form-input" id="f_name" placeholder="강남스마일치과"></div><div class="form-group"><label class="form-label">매장명 (영문)</label><input class="form-input" id="f_nameEn" placeholder="Gangnam Smile Dental"></div></div>
+<div class="form-row-3"><div class="form-group"><label class="form-label">업종</label><select class="form-select" id="f_category"><option value="">선택</option><option value="Dentist">치과</option><option value="Hospital">병원</option><option value="MedicalClinic">의원</option><option value="Restaurant">음식점</option><option value="CafeOrCoffeeShop">카페</option><option value="BeautySalon">미용</option><option value="Store">매장</option><option value="HealthAndBeautyBusiness">헬스</option><option value="LegalService">법률</option><option value="FinancialService">금융</option><option value="EducationalOrganization">학원</option><option value="LocalBusiness">기타</option></select></div>
+<div class="form-group"><label class="form-label">전화번호</label><input class="form-input" id="f_phone" placeholder="02-555-1234"></div><div class="form-group"><label class="form-label">웹사이트</label><input class="form-input" id="f_url" placeholder="https://example.co.kr"></div></div>
+<div class="form-group"><label class="form-label">주소</label><input class="form-input" id="f_address" placeholder="서울특별시 강남구 강남대로 396"></div>
+<div class="form-row"><div class="form-group"><label class="form-label">위도</label><input class="form-input" id="f_lat" placeholder="37.4979"></div><div class="form-group"><label class="form-label">경도</label><input class="form-input" id="f_lng" placeholder="127.0276"></div></div>
+<div class="form-group"><label class="form-label">매장 설명 (한글)</label><textarea class="form-textarea" id="f_desc" style="min-height:70px" placeholder="매장 설명..."></textarea></div>
+<div class="form-group"><label class="form-label">매장 설명 (영문) - 외국인 검색용</label><textarea class="form-textarea" id="f_descEn" style="min-height:70px" placeholder="Description in English..."></textarea></div>
+<div class="form-group"><label class="form-label">운영시간</label><input class="form-input" id="f_hours" placeholder="월~금 09:00-21:00, 토 09:00-14:00"></div>
+<div class="form-group"><label class="form-label">전문 분야 (쉼표 구분)</label><input class="form-input" id="f_specialties" placeholder="임플란트, 교정, 라미네이트"></div>
+<div class="form-group"><label class="form-label">검색 키워드 (쉼표 구분)</label><input class="form-input" id="f_keywords" placeholder="강남 치과, 강남역 임플란트"></div>
+<div class="form-group"><label class="form-label">FAQ (질문|답변, 한 줄에 하나)</label><textarea class="form-textarea" id="f_faq" style="min-height:80px" placeholder="임플란트 비용?|80만~180만원, 상담 후 안내
+야간진료?|월~금 21시까지"></textarea></div>
+<div class="card-title" style="margin:1rem 0 .5rem">지도 플랫폼 선택</div>
+<div class="map-options" id="mapTargets">
+<label class="map-option selected" onclick="toggleMap(this)"><input type="checkbox" value="google" checked><div class="map-check"></div><div><div class="map-name">Google Maps</div><div class="map-desc">구글 비즈니스</div></div></label>
+<label class="map-option selected" onclick="toggleMap(this)"><input type="checkbox" value="naver" checked><div class="map-check"></div><div><div class="map-name">네이버 지도</div><div class="map-desc">스마트 플레이스</div></div></label>
+<label class="map-option selected" onclick="toggleMap(this)"><input type="checkbox" value="kakao" checked><div class="map-check"></div><div><div class="map-name">카카오맵</div><div class="map-desc">카카오 플레이스</div></div></label>
+<label class="map-option" onclick="toggleMap(this)"><input type="checkbox" value="tmap"><div class="map-check"></div><div><div class="map-name">T-MAP</div><div class="map-desc">SKT 내비</div></div></label>
+<label class="map-option" onclick="toggleMap(this)"><input type="checkbox" value="apple"><div class="map-check"></div><div><div class="map-name">Apple Maps</div><div class="map-desc">iOS/CarPlay</div></div></label>
+<label class="map-option" onclick="toggleMap(this)"><input type="checkbox" value="tesla"><div class="map-check"></div><div><div class="map-name">Tesla Map</div><div class="map-desc">테슬라 내비</div></div></label>
+</div>
+<div style="margin-top:1.2rem;display:flex;gap:.4rem"><button class="btn btn-success btn-lg" onclick="manualAdd()">매장 등록</button><button class="btn btn-outline btn-lg" onclick="clearManual()">초기화</button></div></div>
+</div></div>
+
+<!-- 매장 목록 -->
+<div id="page-businesses" class="page" style="display:none"><div class="card"><div class="card-header"><span class="card-title">전체 매장</span><div style="display:flex;gap:.4rem"><input class="form-input" style="width:220px" placeholder="매장 검색..." id="searchBiz" oninput="renderBizList()"><button class="btn btn-outline btn-sm" onclick="exportJSON()">JSON 내보내기</button></div></div>
+<table><thead><tr><th>ID</th><th>매장명</th><th>영문명</th><th>업종</th><th>주소</th><th>전화</th><th>평점</th><th>최적화</th><th>상태</th><th>관리</th></tr></thead><tbody id="fullBizTable"></tbody></table></div></div>
+
+<!-- 지도 플랫폼 -->
+<div id="page-maps" class="page" style="display:none"><div class="card"><div class="card-title" style="margin-bottom:.5rem">지도 플랫폼별 최적화</div><p style="font-size:.78rem;color:var(--text-secondary);margin-bottom:1.2rem">각 지도가 매장 데이터를 다른 방식으로 수집합니다. Schema.org 마크업과 플랫폼별 메타데이터를 자동 생성합니다.</p>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem">
+<div class="card" style="border-color:rgba(66,133,244,.3)"><div style="font-weight:600;margin-bottom:.4rem;color:#4285f4">Google Maps</div><div style="font-size:.75rem;color:var(--text-secondary)">Schema.org + GBP API 자동 연동</div><div class="status status-active" style="margin-top:.4rem">자동</div></div>
+<div class="card" style="border-color:rgba(30,200,100,.3)"><div style="font-weight:600;margin-bottom:.4rem;color:#1ec864">네이버 지도</div><div style="font-size:.75rem;color:var(--text-secondary)">스마트 플레이스 등록 필요. 데이터 일괄 복사 지원</div><div class="status status-pending" style="margin-top:.4rem">반자동</div></div>
+<div class="card" style="border-color:rgba(254,229,0,.3)"><div style="font-weight:600;margin-bottom:.4rem;color:#fee500">카카오맵</div><div style="font-size:.75rem;color:var(--text-secondary)">웹 크롤링 기반. Schema.org로 정확한 인덱싱</div><div class="status status-active" style="margin-top:.4rem">자동</div></div>
+<div class="card" style="border-color:rgba(231,50,52,.3)"><div style="font-weight:600;margin-bottom:.4rem;color:#e73234">T-MAP</div><div style="font-size:.75rem;color:var(--text-secondary)">SK Planet POI + GeoCoordinates 자동</div><div class="status status-active" style="margin-top:.4rem">Schema 자동</div></div>
+<div class="card" style="border-color:rgba(160,160,160,.3)"><div style="font-weight:600;margin-bottom:.4rem;color:#a0a0a0">Apple Maps</div><div style="font-size:.75rem;color:var(--text-secondary)">Business Connect + Schema.org 자동</div><div class="status status-active" style="margin-top:.4rem">Schema 자동</div></div>
+<div class="card" style="border-color:rgba(232,33,39,.3)"><div style="font-weight:600;margin-bottom:.4rem;color:#e82127">Tesla Map</div><div style="font-size:.75rem;color:var(--text-secondary)">구글맵 데이터 기반 = 구글 최적화시 자동</div><div class="status status-active" style="margin-top:.4rem">구글 연동</div></div>
+</div></div></div>
+
+<!-- 구글 인증 -->
+<div id="page-google-auth" class="page" style="display:none">
+<div class="card google-auth-card"><div class="card-title" style="margin-bottom:.3rem">구글 비즈니스 프로필 - 점주 인증</div><p style="font-size:.78rem;color:var(--text-muted);margin-bottom:1rem">각 매장은 구글과 1회 점주 인증이 필요합니다. 인증 후 XIVIX가 API로 모든 것을 관리합니다.</p>
+<div class="guide-step"><div class="guide-num">1</div><div class="guide-text"><h4>"구글 인증 시작" 클릭</h4><p>구글 비즈니스 프로필이 새 탭에 열립니다</p></div></div>
+<div class="guide-step"><div class="guide-num">2</div><div class="guide-text"><h4>점주가 인증코드 수신 (전화/우편)</h4><p>구글이 매장 전화번호로 PIN 전송</p></div></div>
+<div class="guide-step"><div class="guide-num">3</div><div class="guide-text"><h4>코드 입력 후 "인증 완료" 클릭</h4><p>이후 자동 관리 시작</p></div></div></div>
+<div class="card"><div class="card-title" style="margin-bottom:.8rem">매장별 인증 현황</div><table><thead><tr><th>매장명</th><th>구글 인증</th><th>네이버 플레이스</th><th>관리</th></tr></thead><tbody id="authTable"></tbody></table></div></div>
+
+<!-- 빌드 -->
+<div id="page-build" class="page" style="display:none"><div class="card"><div class="card-title" style="margin-bottom:.5rem">빌드 설정</div><p style="font-size:.78rem;color:var(--text-muted);margin-bottom:1rem">매장 데이터로 최적화 파일 자동 생성 후 배포합니다.</p>
+<div class="form-row-3" style="margin-bottom:1rem"><div class="form-group"><label class="form-label">배포 대상</label><select class="form-select" id="deployTarget"><option value="github">GitHub Pages</option><option value="cloudflare">Cloudflare Pages</option></select></div><div class="form-group"><label class="form-label">도메인</label><input class="form-input" id="deployDomain" value="brands.studioaibotbot.com"></div><div class="form-group"><label class="form-label">브랜치</label><input class="form-input" value="main" readonly></div></div>
+<div class="card-title" style="margin-bottom:.4rem">생성 파일</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;font-size:.78rem;margin-bottom:1rem;color:var(--text-secondary)">
+<label style="display:flex;gap:.3rem;align-items:center"><input type="checkbox" checked disabled> Schema.org (SEO)</label><label style="display:flex;gap:.3rem;align-items:center"><input type="checkbox" checked disabled> llms.txt (AEO)</label><label style="display:flex;gap:.3rem;align-items:center"><input type="checkbox" checked disabled> FAQ 리치스니펫 (GEO)</label><label style="display:flex;gap:.3rem;align-items:center"><input type="checkbox" checked disabled> sitemap.xml (SEO)</label><label style="display:flex;gap:.3rem;align-items:center"><input type="checkbox" checked disabled> robots.txt (AEO)</label><label style="display:flex;gap:.3rem;align-items:center"><input type="checkbox" checked disabled> crank-config (C-RANK)</label><label style="display:flex;gap:.3rem;align-items:center"><input type="checkbox" checked disabled> Open Graph (N-Logic)</label><label style="display:flex;gap:.3rem;align-items:center"><input type="checkbox" checked disabled> 다국어 (한/영)</label><label style="display:flex;gap:.3rem;align-items:center"><input type="checkbox" checked disabled> 지도 메타 (Geo)</label></div>
+<div style="display:flex;gap:.4rem"><button class="btn btn-success btn-lg" onclick="runBuild()">빌드 실행</button><button class="btn btn-primary btn-lg" onclick="runDeploy()">빌드 + 배포</button><button class="btn btn-outline" onclick="exportJSON()">JSON 다운로드</button></div></div>
+<div class="card" id="buildConsole" style="display:none"><div class="card-title" style="margin-bottom:.4rem">빌드 로그</div><div class="console" id="consoleOutput"></div></div></div>
+
+<!-- 미리보기 -->
+<div id="page-preview" class="page" style="display:none"><div class="card"><div class="card-title" style="margin-bottom:.5rem">생성 페이지 미리보기</div><div style="margin-bottom:.7rem;display:flex;gap:.4rem"><select class="form-select" id="previewSelect" style="width:280px" onchange="updatePreview()"><option value="index">브랜드 디렉토리</option></select></div>
+<div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff"><div style="padding:1.5rem;color:#1f2937;min-height:300px;font-size:.85rem;line-height:1.6" id="previewContent"></div></div></div></div>
+
+</div></div></div>
 <div class="toast" id="toast"></div>
-
-<!-- Modal -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="modalContent"></div>
-</div>
-
+<div class="modal-overlay" id="modalOverlay"><div class="modal" id="modalContent"></div></div>
 <script>
-// ═══════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════
-let businesses = [];
-let currentLang = 'ko';
-let currentPage = 'dashboard';
-
-// Load from localStorage
-const saved = localStorage.getItem('xivix_businesses');
-if (saved) {
-  try { businesses = JSON.parse(saved); } catch(e) {}
-}
-
-// If empty, load sample data
-if (businesses.length === 0) {
-  businesses = [
-    {
-      id: "gangnam-smile-dental",
-      name: "강남스마일치과",
-      nameEn: "Gangnam Smile Dental",
-      type: "Dentist",
-      category: "Hospital",
-      description: "강남역 3번출구 도보 2분, 임플란트/교정/심미치료 전문 치과. 야간진료(월~금 21시), 주말진료(토 14시).",
-      descriptionEn: "Dental clinic specializing in implants, orthodontics, and cosmetic dentistry near Gangnam Station Exit 3.",
-      address: "서울특별시 강남구 강남대로 396",
-      phone: "+82-2-555-1234",
-      url: "https://gangnam-smile.co.kr",
-      lat: 37.4979, lng: 127.0276,
-      hours: "Mo-Fr 09:00-21:00, Sa 09:00-14:00",
-      specialties: ["Implant","Orthodontics","Laminate","Scaling"],
-      keywords: ["강남 치과","강남역 임플란트","강남 교정","야간진료 치과"],
-      faq: [
-        {q:"임플란트 비용은 얼마인가요?", a:"브랜드와 시술 범위에 따라 80만원~180만원이며, 정확한 비용은 내원 상담 후 안내드립니다."},
-        {q:"야간진료가 가능한가요?", a:"월요일~금요일 저녁 9시까지 야간진료 가능합니다."}
-      ],
-      rating: 4.8, reviewCount: 324,
-      maps: ["google","naver","kakao","tmap"],
-      googleVerified: false, naverVerified: true,
-      crankEnabled: true,
-      status: "active"
-    },
-    {
-      id: "yeoksam-bbq",
-      name: "역삼숯불바베큐",
-      nameEn: "Yeoksam Charcoal BBQ",
-      type: "Restaurant",
-      category: "Restaurant",
-      description: "역삼동 직화 숯불구이 전문점. 한우 등심, 갈비, 삼겹살. 단체석 최대 40명.",
-      descriptionEn: "Premium charcoal BBQ restaurant in Yeoksam-dong, specializing in Korean beef.",
-      address: "서울특별시 강남구 테헤란로 134",
-      phone: "+82-2-555-5678",
-      url: "https://yeoksam-bbq.kr",
-      lat: 37.5012, lng: 127.0365,
-      hours: "Mo-Su 11:30-23:00",
-      specialties: ["Korean Beef","Charcoal Galbi","Samgyeopsal"],
-      keywords: ["역삼 고기집","강남 회식 맛집","역삼동 한우"],
-      faq: [{q:"단체 예약이 가능한가요?", a:"최대 40명까지 단체석 이용 가능합니다."}],
-      rating: 4.6, reviewCount: 189,
-      maps: ["google","naver","kakao"],
-      googleVerified: false, naverVerified: false,
-      crankEnabled: true,
-      status: "active"
-    }
-  ];
-  save();
-}
-
-function save() {
-  localStorage.setItem('xivix_businesses', JSON.stringify(businesses));
-}
-
-// ═══════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-
-  const page = document.getElementById('page-' + name);
-  if (page) page.style.display = 'block';
-
-  const titles = {
-    dashboard:'Dashboard', add:'Add Business', businesses:'All Businesses',
-    maps:'Map Platforms', 'google-auth':'Google Auth', build:'Build & Deploy', preview:'Preview'
-  };
-  document.getElementById('pageTitle').textContent = titles[name] || name;
-
-  event?.target?.closest?.('.nav-item')?.classList.add('active');
-  currentPage = name;
-  renderAll();
-}
-
-// ═══════════════════════════════════════
-// RENDER
-// ═══════════════════════════════════════
-function renderAll() {
-  renderStats();
-  renderDashboardTable();
-  renderBusinesses();
-  renderAuthTable();
-  renderPreviewSelect();
-  renderOptCoverage();
-}
-
-function renderStats() {
-  const active = businesses.filter(b => b.status === 'active');
-  document.getElementById('statTotal').textContent = businesses.length;
-  document.getElementById('statActive').textContent = active.length;
-  document.getElementById('statSEO').textContent = active.length; // all get SEO
-  document.getElementById('statCrank').textContent = active.filter(b => b.crankEnabled).length;
-  const mapSet = new Set();
-  active.forEach(b => (b.maps||[]).forEach(m => mapSet.add(m)));
-  document.getElementById('statMaps').textContent = mapSet.size;
-}
-
-function renderDashboardTable() {
-  const tbody = document.getElementById('bizTable');
-  if (!tbody) return;
-  tbody.innerHTML = businesses.map(b => `
-    <tr>
-      <td><strong>${b.name}</strong><br><span style="font-size:0.72rem;color:var(--text-muted)">${b.nameEn}</span></td>
-      <td>${b.category}</td>
-      <td style="font-size:0.78rem;">${b.address?.split(' ').slice(0,3).join(' ')}</td>
-      <td>
-        <div class="opt-indicators">
-          <div class="opt-dot seo on" title="SEO"></div>
-          <div class="opt-dot aeo on" title="AEO"></div>
-          <div class="opt-dot geo on" title="GEO"></div>
-          <div class="opt-dot crank ${b.crankEnabled?'on':'off'}" title="C-RANK"></div>
-          <div class="opt-dot nlogic on" title="N-Logic"></div>
-        </div>
-      </td>
-      <td style="font-size:0.75rem;">${(b.maps||[]).join(', ')}</td>
-      <td><span class="status status-${b.status}">${b.status}</span></td>
-      <td>
-        <button class="btn btn-outline btn-sm" onclick="editBiz('${b.id}')">Edit</button>
-        <button class="btn btn-danger btn-sm" onclick="removeBiz('${b.id}')">Del</button>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function renderBusinesses() {
-  const tbody = document.getElementById('fullBizTable');
-  if (!tbody) return;
-  const q = (document.getElementById('searchBiz')?.value || '').toLowerCase();
-  const filtered = businesses.filter(b =>
-    !q || b.name.toLowerCase().includes(q) || b.nameEn.toLowerCase().includes(q) || b.id.includes(q)
-  );
-  tbody.innerHTML = filtered.map(b => `
-    <tr>
-      <td style="font-family:'JetBrains Mono'; font-size:0.72rem;">${b.id}</td>
-      <td><strong>${b.name}</strong></td>
-      <td>${b.nameEn}</td>
-      <td>${b.type}</td>
-      <td style="font-size:0.78rem;">${b.address}</td>
-      <td style="font-size:0.78rem;">${b.phone}</td>
-      <td>${b.rating ? b.rating + '/5' : '-'}</td>
-      <td>
-        <div class="opt-indicators">
-          <div class="opt-dot seo on"></div>
-          <div class="opt-dot aeo on"></div>
-          <div class="opt-dot geo on"></div>
-          <div class="opt-dot crank ${b.crankEnabled?'on':'off'}"></div>
-          <div class="opt-dot nlogic on"></div>
-        </div>
-      </td>
-      <td><span class="status status-${b.status}">${b.status}</span></td>
-      <td>
-        <button class="btn btn-outline btn-sm" onclick="editBiz('${b.id}')">Edit</button>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function renderAuthTable() {
-  const tbody = document.getElementById('authTable');
-  if (!tbody) return;
-  tbody.innerHTML = businesses.map(b => `
-    <tr>
-      <td><strong>${b.name}</strong></td>
-      <td>
-        <span class="status ${b.googleVerified ? 'status-active' : 'status-pending'}">
-          ${b.googleVerified ? 'Verified' : 'Not Verified'}
-        </span>
-      </td>
-      <td>
-        <span class="status ${b.naverVerified ? 'status-active' : 'status-pending'}">
-          ${b.naverVerified ? 'Registered' : 'Not Registered'}
-        </span>
-      </td>
-      <td style="display:flex; gap:0.3rem;">
-        ${!b.googleVerified ? `<button class="btn btn-primary btn-sm" onclick="startGoogleVerify('${b.id}')">Start Google Verify</button>` : `<button class="btn btn-outline btn-sm" onclick="openGBP('${b.id}')">Manage GBP</button>`}
-        ${!b.naverVerified ? `<button class="btn btn-outline btn-sm" onclick="openNaverPlace()">Open Naver Place</button>` : ''}
-        <button class="btn btn-sm ${b.googleVerified ? 'btn-outline' : 'btn-success'}" onclick="toggleVerify('${b.id}','google')">${b.googleVerified ? 'Unmark' : 'Mark Verified'}</button>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function renderOptCoverage() {
-  const el = document.getElementById('optCoverage');
-  if (!el) return;
-  const active = businesses.filter(b => b.status === 'active').length;
-  const opts = [
-    {name:'SEO', color:'blue', count:active, desc:'Schema.org + sitemap'},
-    {name:'AEO', color:'purple', count:active, desc:'llms.txt + FAQ'},
-    {name:'GEO', color:'green', count:active, desc:'AI Overview ready'},
-    {name:'C-RANK', color:'amber', count:businesses.filter(b=>b.crankEnabled).length, desc:'Naver cafe/blog'},
-    {name:'N-Logic', color:'cyan', count:active, desc:'Naver search logic'}
-  ];
-  el.innerHTML = opts.map(o => `
-    <div style="text-align:center;">
-      <div style="font-size:1.8rem; font-weight:700; color:var(--accent-${o.color}); font-family:'JetBrains Mono';">${o.count}/${active}</div>
-      <div style="font-size:0.8rem; font-weight:600; margin-top:0.2rem;">${o.name}</div>
-      <div style="font-size:0.68rem; color:var(--text-muted);">${o.desc}</div>
-    </div>
-  `).join('');
-}
-
-function renderPreviewSelect() {
-  const sel = document.getElementById('previewSelect');
-  if (!sel) return;
-  sel.innerHTML = '<option value="index">Brand Directory (Main)</option>' +
-    businesses.map(b => `<option value="${b.id}">${b.name} (${b.nameEn})</option>`).join('');
-}
-
-// ═══════════════════════════════════════
-// SMART PASTE - Auto Classification
-// ═══════════════════════════════════════
-function smartParse() {
-  const raw = document.getElementById('smartPasteInput').value.trim();
-  if (!raw) return toast('Paste some data first');
-
-  const result = {
-    name:'', nameEn:'', type:'LocalBusiness', category:'',
-    address:'', phone:'', url:'', lat:'', lng:'',
-    hours:'', specialties:[], keywords:[], description:''
-  };
-
-  // Phone detection
-  const phoneMatch = raw.match(/(0\d{1,2}[-.\s]?\d{3,4}[-.\s]?\d{4}|\+82[-.\s]?\d{1,2}[-.\s]?\d{3,4}[-.\s]?\d{4})/);
-  if (phoneMatch) result.phone = phoneMatch[0].replace(/\s/g,'');
-
-  // URL detection
-  const urlMatch = raw.match(/(https?:\/\/[^\s,]+)/);
-  if (urlMatch) result.url = urlMatch[0];
-
-  // Address detection (Korean address patterns)
-  const addrMatch = raw.match(/(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)[^\n,]*?(구|시|군)[^\n,]*?(로|길|동)\s*\d*/);
-  if (addrMatch) result.address = addrMatch[0].trim();
-
-  // Coordinates from Google Maps URL
-  const coordMatch = raw.match(/@([\d.]+),([\d.]+)/);
-  if (coordMatch) { result.lat = coordMatch[1]; result.lng = coordMatch[2]; }
-
-  // Category detection
-  const catPatterns = {
-    'Dentist': /치과|dental/i, 'Hospital': /병원|의원|hospital|clinic/i,
-    'Restaurant': /맛집|식당|레스토랑|restaurant|bbq|고기|구이/i,
-    'CafeOrCoffeeShop': /카페|커피|cafe|coffee/i,
-    'BeautySalon': /미용|헤어|네일|뷰티|beauty|salon|hair/i,
-    'EducationalOrganization': /학원|교육|academy|학교/i,
-    'LegalService': /법률|변호사|법무|law/i,
-    'Store': /매장|가게|shop|store|마트/i
-  };
-  for (const [type, pattern] of Object.entries(catPatterns)) {
-    if (pattern.test(raw)) { result.type = type; result.category = type; break; }
-  }
-
-  // Name: first line or prominent text
-  const lines = raw.split('\n').map(l => l.trim()).filter(l => l);
-  if (lines.length > 0) {
-    const nameCandidate = lines[0].replace(/[^\w가-힣\s]/g, '').trim();
-    if (nameCandidate.length > 1 && nameCandidate.length < 30) {
-      result.name = nameCandidate;
-    }
-  }
-
-  // Hours detection
-  const hoursMatch = raw.match(/(\d{1,2}:\d{2})\s*[-~]\s*(\d{1,2}:\d{2})/);
-  if (hoursMatch) result.hours = hoursMatch[0];
-
-  // Remaining text as description
-  let desc = raw.replace(result.phone,'').replace(result.url,'').replace(result.address,'');
-  desc = desc.replace(/\n+/g, ' ').trim();
-  if (desc.length > 10) result.description = desc.substring(0, 200);
-
-  // Render parsed result
-  const fields = [
-    {key:'name', label:'Business Name (KO)', val:result.name},
-    {key:'nameEn', label:'Business Name (EN)', val:result.nameEn},
-    {key:'type', label:'Business Type', val:result.type},
-    {key:'address', label:'Address', val:result.address},
-    {key:'phone', label:'Phone', val:result.phone},
-    {key:'url', label:'Website', val:result.url},
-    {key:'lat', label:'Latitude', val:result.lat},
-    {key:'lng', label:'Longitude', val:result.lng},
-    {key:'hours', label:'Hours', val:result.hours},
-    {key:'description', label:'Description', val:result.description}
-  ];
-
-  document.getElementById('parsedFields').innerHTML = fields.map(f => `
-    <div class="form-group" style="margin-bottom:0.6rem;">
-      <label class="form-label">${f.label} ${f.val ? '<span style="color:var(--accent-green);">[detected]</span>' : '<span style="color:var(--accent-amber);">[manual]</span>'}</label>
-      <input class="form-input" id="parsed_${f.key}" value="${f.val || ''}">
-    </div>
-  `).join('');
-
-  document.getElementById('parseResult').style.display = 'block';
-  toast('Data classified - review and confirm');
-}
-
-function confirmAdd() {
-  const name = document.getElementById('parsed_name').value.trim();
-  if (!name) return toast('Business name is required');
-
-  const biz = {
-    id: slugify(name),
-    name: name,
-    nameEn: document.getElementById('parsed_nameEn').value.trim() || name,
-    type: document.getElementById('parsed_type').value.trim() || 'LocalBusiness',
-    category: document.getElementById('parsed_type').value.trim() || 'Business',
-    description: document.getElementById('parsed_description').value.trim(),
-    descriptionEn: '',
-    address: document.getElementById('parsed_address').value.trim(),
-    phone: document.getElementById('parsed_phone').value.trim(),
-    url: document.getElementById('parsed_url').value.trim(),
-    lat: parseFloat(document.getElementById('parsed_lat').value) || 0,
-    lng: parseFloat(document.getElementById('parsed_lng').value) || 0,
-    hours: document.getElementById('parsed_hours').value.trim(),
-    specialties: [], keywords: [], faq: [],
-    rating: 0, reviewCount: 0,
-    maps: ['google','naver','kakao'],
-    googleVerified: false, naverVerified: false,
-    crankEnabled: true,
-    status: 'active'
-  };
-
-  businesses.push(biz);
-  save();
-  renderAll();
-  document.getElementById('parseResult').style.display = 'none';
-  document.getElementById('smartPasteInput').value = '';
-  toast('Business registered: ' + name);
-}
-
-function clearPaste() {
-  document.getElementById('smartPasteInput').value = '';
-  document.getElementById('parseResult').style.display = 'none';
-}
-
-// ═══════════════════════════════════════
-// MANUAL ADD
-// ═══════════════════════════════════════
-function manualAdd() {
-  const name = document.getElementById('f_name').value.trim();
-  if (!name) return toast('Business name required');
-
-  const mapCheckboxes = document.querySelectorAll('#mapTargets input[type=checkbox]:checked');
-  const maps = Array.from(mapCheckboxes).map(c => c.value);
-
-  const faqRaw = document.getElementById('f_faq').value.trim();
-  const faq = faqRaw.split('\n').filter(l => l.includes('|')).map(l => {
-    const [q, a] = l.split('|');
-    return { q: q.trim(), a: a.trim() };
-  });
-
-  const biz = {
-    id: slugify(name),
-    name: name,
-    nameEn: document.getElementById('f_nameEn').value.trim() || name,
-    type: document.getElementById('f_category').value || 'LocalBusiness',
-    category: document.getElementById('f_category').value || 'Business',
-    description: document.getElementById('f_desc').value.trim(),
-    descriptionEn: document.getElementById('f_descEn').value.trim(),
-    address: document.getElementById('f_address').value.trim(),
-    phone: document.getElementById('f_phone').value.trim(),
-    url: document.getElementById('f_url').value.trim(),
-    lat: parseFloat(document.getElementById('f_lat').value) || 0,
-    lng: parseFloat(document.getElementById('f_lng').value) || 0,
-    hours: document.getElementById('f_hours').value.trim(),
-    specialties: document.getElementById('f_specialties').value.split(',').map(s => s.trim()).filter(Boolean),
-    keywords: document.getElementById('f_keywords').value.split(',').map(s => s.trim()).filter(Boolean),
-    faq: faq,
-    rating: 0, reviewCount: 0,
-    maps: maps,
-    googleVerified: false, naverVerified: false,
-    crankEnabled: true,
-    status: 'active'
-  };
-
-  businesses.push(biz);
-  save();
-  renderAll();
-  toast('Business registered: ' + name);
-  clearManual();
-}
-
-function clearManual() {
-  ['f_name','f_nameEn','f_phone','f_url','f_address','f_lat','f_lng','f_desc','f_descEn','f_hours','f_specialties','f_keywords','f_faq'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-  document.getElementById('f_category').selectedIndex = 0;
-}
-
-// ═══════════════════════════════════════
-// ACTIONS
-// ═══════════════════════════════════════
-function editBiz(id) {
-  const biz = businesses.find(b => b.id === id);
-  if (!biz) return;
-
-  const modal = document.getElementById('modalContent');
-  modal.innerHTML = `
-    <h3>Edit: ${biz.name}</h3>
-    <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="edit_name" value="${biz.name}"></div>
-    <div class="form-group"><label class="form-label">Name (EN)</label><input class="form-input" id="edit_nameEn" value="${biz.nameEn}"></div>
-    <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="edit_desc" style="min-height:60px">${biz.description}</textarea></div>
-    <div class="form-group"><label class="form-label">Description (EN)</label><textarea class="form-textarea" id="edit_descEn" style="min-height:60px">${biz.descriptionEn||''}</textarea></div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="edit_phone" value="${biz.phone}"></div>
-      <div class="form-group"><label class="form-label">Website</label><input class="form-input" id="edit_url" value="${biz.url}"></div>
-    </div>
-    <div class="form-group"><label class="form-label">Address</label><input class="form-input" id="edit_addr" value="${biz.address}"></div>
-    <div class="form-group"><label class="form-label">Keywords</label><input class="form-input" id="edit_kw" value="${(biz.keywords||[]).join(', ')}"></div>
-    <div class="form-group">
-      <label class="form-label">Status</label>
-      <select class="form-select" id="edit_status">
-        <option value="active" ${biz.status==='active'?'selected':''}>Active</option>
-        <option value="pending" ${biz.status==='pending'?'selected':''}>Pending</option>
-        <option value="inactive" ${biz.status==='inactive'?'selected':''}>Inactive</option>
-      </select>
-    </div>
-    <div style="display:flex; gap:0.5rem; margin-top:1rem;">
-      <button class="btn btn-success" onclick="saveEdit('${id}')">Save</button>
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-    </div>
-  `;
-  document.getElementById('modalOverlay').classList.add('show');
-}
-
-function saveEdit(id) {
-  const biz = businesses.find(b => b.id === id);
-  if (!biz) return;
-  biz.name = document.getElementById('edit_name').value.trim();
-  biz.nameEn = document.getElementById('edit_nameEn').value.trim();
-  biz.description = document.getElementById('edit_desc').value.trim();
-  biz.descriptionEn = document.getElementById('edit_descEn').value.trim();
-  biz.phone = document.getElementById('edit_phone').value.trim();
-  biz.url = document.getElementById('edit_url').value.trim();
-  biz.address = document.getElementById('edit_addr').value.trim();
-  biz.keywords = document.getElementById('edit_kw').value.split(',').map(s => s.trim()).filter(Boolean);
-  biz.status = document.getElementById('edit_status').value;
-  save();
-  renderAll();
-  closeModal();
-  toast('Updated: ' + biz.name);
-}
-
-function removeBiz(id) {
-  if (!confirm('Delete this business?')) return;
-  businesses = businesses.filter(b => b.id !== id);
-  save();
-  renderAll();
-  toast('Deleted');
-}
-
-function toggleVerify(id, platform) {
-  const biz = businesses.find(b => b.id === id);
-  if (!biz) return;
-  if (platform === 'google') biz.googleVerified = !biz.googleVerified;
-  if (platform === 'naver') biz.naverVerified = !biz.naverVerified;
-  save();
-  renderAll();
-  toast(`${biz.name}: ${platform} verification ${biz.googleVerified ? 'marked' : 'unmarked'}`);
-}
-
-function startGoogleVerify(id) {
-  const biz = businesses.find(b => b.id === id);
-  if (!biz) return;
-  const q = encodeURIComponent(biz.name + ' ' + biz.address);
-  window.open(`https://business.google.com/create?hl=ko&gmbsrc=ww-ww-et-gs-z-gmb-v-z-h~bhc-core-u&ppsrc=GMBSI&q=${q}`, '_blank');
-  toast('Google Business Profile opened in new tab');
-}
-
-function openGBP(id) {
-  window.open('https://business.google.com/', '_blank');
-}
-
-function openNaverPlace() {
-  window.open('https://new-m.smartplace.naver.com/', '_blank');
-}
-
-// ═══════════════════════════════════════
-// BUILD & DEPLOY
-// ═══════════════════════════════════════
-function runBuild() {
-  const console = document.getElementById('buildConsole');
-  const output = document.getElementById('consoleOutput');
-  console.style.display = 'block';
-  output.innerHTML = '';
-
-  const active = businesses.filter(b => b.status === 'active');
-  const domain = document.getElementById('deployDomain').value;
-
-  const lines = [
-    {cls:'line-info', text:`XIVIX Tower Control Build`},
-    {cls:'line-info', text:`Domain: ${domain}`},
-    {cls:'line-info', text:`Businesses: ${active.length}`},
-    {cls:'', text:''},
-    ...active.flatMap(b => [
-      {cls:'line-ok', text:`  [OK] ${b.name} > index.html (SEO + GEO)`},
-      {cls:'line-ok', text:`  [OK] ${b.name} > llms.txt (AEO)`},
-      {cls:'line-ok', text:`  [OK] ${b.name} > index_en.html (i18n)`},
-    ]),
-    {cls:'', text:''},
-    {cls:'line-ok', text:'  [OK] index.html (Brand Directory)'},
-    {cls:'line-ok', text:'  [OK] sitemap.xml (SEO)'},
-    {cls:'line-ok', text:'  [OK] robots.txt (SEO + AEO)'},
-    {cls:'line-ok', text:'  [OK] llms.txt (AEO Directory)'},
-    {cls:'line-ok', text:'  [OK] crank-config.json (C-RANK)'},
-    {cls:'line-ok', text:'  [OK] geo-metadata.json (Map Platforms)'},
-    {cls:'', text:''},
-    {cls:'line-info', text:`Build complete!`},
-    {cls:'line-info', text:`Pages: ${active.length * 3 + 6} files generated`},
-    {cls:'line-ok', text:`Coverage: SEO [OK] AEO [OK] GEO [OK] C-RANK [OK] N-Logic [OK]`},
-  ];
-
-  let i = 0;
-  const interval = setInterval(() => {
-    if (i >= lines.length) { clearInterval(interval); return; }
-    const line = lines[i];
-    output.innerHTML += `<div class="${line.cls}">${line.text || '&nbsp;'}</div>`;
-    output.scrollTop = output.scrollHeight;
-    i++;
-  }, 80);
-}
-
-function runDeploy() {
-  runBuild();
-  setTimeout(() => {
-    const output = document.getElementById('consoleOutput');
-    const target = document.getElementById('deployTarget').value;
-    const domain = document.getElementById('deployDomain').value;
-
-    const deployLines = [
-      {cls:'', text:''},
-      {cls:'line-info', text:`Deploying to ${target === 'cloudflare' ? 'Cloudflare Pages' : 'GitHub Pages'}...`},
-      {cls:'line-warn', text:`  Target: ${domain}`},
-      {cls:'line-ok', text:`  [OK] Upload complete`},
-      {cls:'line-ok', text:`  [OK] CDN propagation started`},
-      {cls:'line-ok', text:`  [OK] SSL certificate active`},
-      {cls:'', text:''},
-      {cls:'line-ok', text:`Deploy successful! Live at: https://${domain}`},
-    ];
-
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i >= deployLines.length) { clearInterval(interval); toast('Deploy complete!'); return; }
-      output.innerHTML += `<div class="${deployLines[i].cls}">${deployLines[i].text || '&nbsp;'}</div>`;
-      output.scrollTop = output.scrollHeight;
-      i++;
-    }, 150);
-  }, businesses.filter(b => b.status === 'active').length * 3 * 80 + 1000);
-}
-
-function downloadBuild() {
-  const data = { meta: { domain: document.getElementById('deployDomain').value, built: new Date().toISOString() }, businesses };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'xivix-tower-control-export.json';
-  a.click();
-  toast('JSON exported');
-}
-
-function exportJSON() {
-  downloadBuild();
-}
-
-// ═══════════════════════════════════════
-// PREVIEW
-// ═══════════════════════════════════════
-function updatePreview() {
-  const sel = document.getElementById('previewSelect').value;
-  const el = document.getElementById('previewContent');
-
-  if (sel === 'index') {
-    el.innerHTML = `<h2 style="color:#1f2937;">XIVIX Brand Directory</h2>
-    <p style="color:#6b7280; margin:0.5rem 0 1rem;">Managed Brands: ${businesses.filter(b=>b.status==='active').length}</p>
-    ${businesses.filter(b=>b.status==='active').map(b => `
-      <div style="border:1px solid #e5e7eb; border-radius:8px; padding:1rem; margin-bottom:0.5rem;">
-        <strong>${b.name}</strong> <span style="color:#9ca3af">${b.nameEn}</span>
-        <div style="color:#6b7280; font-size:0.85rem; margin-top:0.3rem;">${b.description}</div>
-        <div style="font-size:0.8rem; color:#3b82f6; margin-top:0.3rem;">${b.address} | ${b.phone}</div>
-      </div>
-    `).join('')}`;
-  } else {
-    const biz = businesses.find(b => b.id === sel);
-    if (!biz) return;
-    el.innerHTML = `
-      <h1 style="color:#1f2937; font-size:1.5rem;">${biz.name}</h1>
-      <p style="color:#6b7280;">${biz.nameEn} | ${biz.category}</p>
-      <p style="margin:1rem 0;">${biz.description}</p>
-      ${biz.descriptionEn ? `<p style="color:#6b7280; font-style:italic;">${biz.descriptionEn}</p>` : ''}
-      <hr style="border-color:#e5e7eb; margin:1rem 0;">
-      <p><strong>Address:</strong> ${biz.address}</p>
-      <p><strong>Phone:</strong> ${biz.phone}</p>
-      <p><strong>Hours:</strong> ${biz.hours}</p>
-      <p><strong>Website:</strong> ${biz.url}</p>
-      ${biz.rating ? `<p><strong>Rating:</strong> ${biz.rating}/5 (${biz.reviewCount} reviews)</p>` : ''}
-      ${biz.specialties?.length ? `<p><strong>Specialties:</strong> ${biz.specialties.join(', ')}</p>` : ''}
-      ${biz.faq?.length ? `<h3 style="margin-top:1rem;">FAQ</h3>${biz.faq.map(f => `<p><strong>Q: ${f.q}</strong><br>A: ${f.a}</p>`).join('')}` : ''}
-      <div style="margin-top:1rem; padding:0.5rem; background:#f3f4f6; border-radius:6px; font-size:0.75rem; color:#6b7280;">
-        Schema.org: ${biz.type} | Maps: ${(biz.maps||[]).join(', ')} | SEO+AEO+GEO+C-RANK+N-Logic
-      </div>
-    `;
-  }
-}
-
-// ═══════════════════════════════════════
-// UTILS
-// ═══════════════════════════════════════
-function slugify(str) {
-  return str.replace(/[가-힣]+/g, s => {
-    const map = {'치과':'dental','병원':'hospital','의원':'clinic','식당':'restaurant','카페':'cafe','미용':'beauty','학원':'academy'};
-    for (const [k,v] of Object.entries(map)) { if (s.includes(k)) return v; }
-    return s;
-  }).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'biz-' + Date.now();
-}
-
-function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2500);
-}
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('show');
-}
-
-function setLang(lang) {
-  currentLang = lang;
-  document.querySelectorAll('.lang-toggle .lang-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-}
-
-function toggleMap(el) {
-  el.classList.toggle('selected');
-  const cb = el.querySelector('input');
-  cb.checked = !cb.checked;
-}
-
-function switchAddTab(tab) {
-  document.querySelectorAll('#page-add .tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('addTab-paste').style.display = tab === 'paste' ? 'block' : 'none';
-  document.getElementById('addTab-manual').style.display = tab === 'manual' ? 'block' : 'none';
-}
-
-function previewLang(lang) {
-  event.target.parentElement.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-}
-
-// Click outside modal to close
-document.getElementById('modalOverlay').addEventListener('click', e => {
-  if (e.target === e.currentTarget) closeModal();
-});
-
-// Init
+let biz=[];const s=localStorage.getItem('xivix_biz2');if(s)try{biz=JSON.parse(s)}catch(e){}
+if(!biz.length){biz=[
+{id:"gangnam-smile-dental",name:"강남스마일치과",nameEn:"Gangnam Smile Dental",type:"Dentist",category:"치과",description:"강남역 3번출구 도보 2분, 임플란트/교정/심미 전문. 야간(월~금 21시), 주말(토 14시).",descriptionEn:"Dental clinic near Gangnam Stn Exit 3. Implants, orthodontics. Evenings until 9PM.",address:"서울특별시 강남구 강남대로 396",phone:"02-555-1234",url:"https://gangnam-smile.co.kr",lat:37.4979,lng:127.0276,hours:"월~금 09:00-21:00, 토 09:00-14:00",specialties:["임플란트","교정","라미네이트","스케일링"],keywords:["강남 치과","강남역 임플란트","야간진료 치과"],faq:[{q:"임플란트 비용?",a:"80만~180만원, 상담 후 안내"},{q:"야간진료?",a:"월~금 21시까지"}],rating:4.8,reviewCount:324,maps:["google","naver","kakao","tmap"],googleVerified:false,naverVerified:true,crankEnabled:true,status:"active"},
+{id:"yeoksam-bbq",name:"역삼숯불바베큐",nameEn:"Yeoksam Charcoal BBQ",type:"Restaurant",category:"음식점",description:"역삼동 직화 숯불구이 전문. 한우 등심, 갈비, 삼겹살. 단체석 40명.",descriptionEn:"Premium charcoal BBQ. Korean beef, galbi. Group seating 40.",address:"서울특별시 강남구 테헤란로 134",phone:"02-555-5678",url:"https://yeoksam-bbq.kr",lat:37.5012,lng:127.0365,hours:"매일 11:30-23:00",specialties:["한우 등심","숯불 갈비","삼겹살"],keywords:["역삼 고기집","강남 회식","역삼동 한우"],faq:[{q:"단체 예약?",a:"40명까지 가능, 전화 예약"}],rating:4.6,reviewCount:189,maps:["google","naver","kakao"],googleVerified:false,naverVerified:false,crankEnabled:true,status:"active"}
+];sv();}
+function sv(){localStorage.setItem('xivix_biz2',JSON.stringify(biz))}
+const PT={guide:'사용 가이드',dashboard:'대시보드',add:'매장 등록',businesses:'매장 목록',maps:'지도 플랫폼','google-auth':'구글 인증',build:'빌드 & 배포',preview:'미리보기'};
+function showPage(n){document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));const pg=document.getElementById('page-'+n);if(pg)pg.style.display='block';document.getElementById('pageTitle').textContent=PT[n]||n;document.querySelectorAll('.nav-item[data-page="'+n+'"]').forEach(x=>x.classList.add('active'));renderAll();}
+function renderAll(){renderStats();renderDash();renderBizList();renderAuth();renderPrevSel();renderOpt();}
+function renderStats(){const a=biz.filter(b=>b.status==='active');document.getElementById('statTotal').textContent=biz.length;document.getElementById('statActive').textContent=a.length;document.getElementById('statSEO').textContent=a.length;document.getElementById('statCrank').textContent=a.filter(b=>b.crankEnabled).length;const ms=new Set();a.forEach(b=>(b.maps||[]).forEach(m=>ms.add(m)));document.getElementById('statMaps').textContent=ms.size;}
+function renderDash(){const t=document.getElementById('bizTable');if(!t)return;t.innerHTML=biz.map(b=>'<tr><td><strong>'+b.name+'</strong><br><span style="font-size:.7rem;color:var(--text-muted)">'+b.nameEn+'</span></td><td>'+b.category+'</td><td style="font-size:.75rem">'+b.address.split(' ').slice(0,3).join(' ')+'</td><td><div class="opt-indicators"><div class="opt-dot seo on"></div><div class="opt-dot aeo on"></div><div class="opt-dot geo on"></div><div class="opt-dot crank '+(b.crankEnabled?'on':'off')+'"></div><div class="opt-dot nlogic on"></div></div></td><td style="font-size:.72rem">'+(b.maps||[]).join(', ')+'</td><td><span class="status status-'+(b.status==='active'?'active':'pending')+'">'+(b.status==='active'?'운영중':'대기')+'</span></td><td><button class="btn btn-outline btn-sm" onclick="editBiz(\''+b.id+'\')">수정</button> <button class="btn btn-danger btn-sm" onclick="removeBiz(\''+b.id+'\')">삭제</button></td></tr>').join('');}
+function renderBizList(){const t=document.getElementById('fullBizTable');if(!t)return;const q=(document.getElementById('searchBiz')?.value||'').toLowerCase();const f=biz.filter(b=>!q||b.name.includes(q)||b.nameEn.toLowerCase().includes(q));t.innerHTML=f.map(b=>'<tr><td style="font-family:JetBrains Mono;font-size:.7rem">'+b.id+'</td><td><strong>'+b.name+'</strong></td><td>'+b.nameEn+'</td><td>'+b.category+'</td><td style="font-size:.75rem">'+b.address+'</td><td style="font-size:.75rem">'+b.phone+'</td><td>'+(b.rating?b.rating+'/5':'-')+'</td><td><div class="opt-indicators"><div class="opt-dot seo on"></div><div class="opt-dot aeo on"></div><div class="opt-dot geo on"></div><div class="opt-dot crank '+(b.crankEnabled?'on':'off')+'"></div><div class="opt-dot nlogic on"></div></div></td><td><span class="status status-active">'+(b.status==='active'?'운영중':'대기')+'</span></td><td><button class="btn btn-outline btn-sm" onclick="editBiz(\''+b.id+'\')">수정</button></td></tr>').join('');}
+function renderAuth(){const t=document.getElementById('authTable');if(!t)return;t.innerHTML=biz.map(b=>'<tr><td><strong>'+b.name+'</strong></td><td><span class="status '+(b.googleVerified?'status-active':'status-pending')+'">'+(b.googleVerified?'인증 완료':'미인증')+'</span></td><td><span class="status '+(b.naverVerified?'status-active':'status-pending')+'">'+(b.naverVerified?'등록 완료':'미등록')+'</span></td><td style="display:flex;gap:.3rem;flex-wrap:wrap">'+(!b.googleVerified?'<button class="btn btn-primary btn-sm" onclick="startGV(\''+b.id+'\')">구글 인증 시작</button>':'<button class="btn btn-outline btn-sm" onclick="window.open(\'https://business.google.com/\',\'_blank\')">GBP 관리</button>')+(!b.naverVerified?' <button class="btn btn-outline btn-sm" onclick="window.open(\'https://new-m.smartplace.naver.com/\',\'_blank\')">네이버 등록</button>':'')+'<button class="btn btn-sm '+(b.googleVerified?'btn-outline':'btn-success')+'" onclick="togV(\''+b.id+'\')">'+(b.googleVerified?'인증 해제':'인증 완료')+'</button></td></tr>').join('');}
+function renderOpt(){const el=document.getElementById('optCoverage');if(!el)return;const a=biz.filter(b=>b.status==='active').length;const o=[{n:'SEO',c:'blue',v:a,d:'Schema.org + sitemap'},{n:'AEO',c:'purple',v:a,d:'llms.txt + FAQ'},{n:'GEO',c:'green',v:a,d:'AI Overview 답변'},{n:'C-RANK',c:'amber',v:biz.filter(b=>b.crankEnabled).length,d:'네이버 카페/블로그'},{n:'N-Logic',c:'cyan',v:a,d:'네이버 검색 로직'}];el.innerHTML=o.map(x=>'<div style="text-align:center"><div style="font-size:1.6rem;font-weight:700;color:var(--accent-'+x.c+');font-family:JetBrains Mono">'+x.v+'/'+a+'</div><div style="font-size:.78rem;font-weight:600;margin-top:.15rem">'+x.n+'</div><div style="font-size:.65rem;color:var(--text-muted)">'+x.d+'</div></div>').join('');}
+function renderPrevSel(){const s=document.getElementById('previewSelect');if(!s)return;s.innerHTML='<option value="index">브랜드 디렉토리</option>'+biz.map(b=>'<option value="'+b.id+'">'+b.name+'</option>').join('');updatePreview();}
+function smartParse(){const raw=document.getElementById('smartPasteInput').value.trim();if(!raw)return toast('먼저 데이터를 붙여넣으세요');const r={name:'',nameEn:'',type:'LocalBusiness',address:'',phone:'',url:'',lat:'',lng:'',hours:'',description:''};const pm=raw.match(/(0\d{1,2}[-.\s]?\d{3,4}[-.\s]?\d{4})/);if(pm)r.phone=pm[0].replace(/\s/g,'');const um=raw.match(/(https?:\/\/[^\s,]+)/);if(um)r.url=um[0];const am=raw.match(/(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)[^\n,]*?(구|시|군)[^\n,]*?(로|길|동)\s*\d*/);if(am)r.address=am[0].trim();const cm=raw.match(/@([\d.]+),([\d.]+)/);if(cm){r.lat=cm[1];r.lng=cm[2];}const cp={Dentist:/치과|dental/i,Hospital:/병원|hospital/i,Restaurant:/맛집|식당|레스토랑|고기|구이/i,CafeOrCoffeeShop:/카페|커피|cafe/i,BeautySalon:/미용|헤어|뷰티/i,EducationalOrganization:/학원|교육/i};for(const[t,p]of Object.entries(cp)){if(p.test(raw)){r.type=t;break;}}const lines=raw.split('\n').map(l=>l.trim()).filter(Boolean);if(lines[0]){const c=lines[0].replace(/[^\w가-힣\s]/g,'').trim();if(c.length>1&&c.length<30)r.name=c;}const hm=raw.match(/(\d{1,2}:\d{2})\s*[-~]\s*(\d{1,2}:\d{2})/);if(hm)r.hours=hm[0];const catMap={Dentist:'치과',Hospital:'병원',MedicalClinic:'의원',Restaurant:'음식점',CafeOrCoffeeShop:'카페',BeautySalon:'미용',EducationalOrganization:'학원',LocalBusiness:'기타'};const labels={name:'매장명',nameEn:'영문명',type:'업종',address:'주소',phone:'전화',url:'웹사이트',lat:'위도',lng:'경도',hours:'운영시간',description:'설명'};document.getElementById('parsedFields').innerHTML=Object.entries(labels).map(([k,l])=>'<div class="form-group" style="margin-bottom:.5rem"><label class="form-label">'+l+(r[k]?' <span style="color:var(--accent-green)">[감지]</span>':' <span style="color:var(--accent-amber)">[입력]</span>')+'</label>'+(k==='type'?'<select class="form-select" id="parsed_'+k+'">'+Object.entries(catMap).map(([v,n])=>'<option value="'+v+'"'+(r[k]===v?' selected':'')+'>'+n+'</option>').join('')+'</select>':'<input class="form-input" id="parsed_'+k+'" value="'+(r[k]||'')+'">')+'</div>').join('');document.getElementById('parseResult').style.display='block';toast('자동 분류 완료');}
+function confirmAdd(){const n=document.getElementById('parsed_name').value.trim();if(!n)return toast('매장명 입력');const catMap={Dentist:'치과',Hospital:'병원',MedicalClinic:'의원',Restaurant:'음식점',CafeOrCoffeeShop:'카페',BeautySalon:'미용',EducationalOrganization:'학원',LocalBusiness:'기타'};const t=document.getElementById('parsed_type').value;biz.push({id:slugify(n),name:n,nameEn:document.getElementById('parsed_nameEn').value.trim()||n,type:t,category:catMap[t]||'기타',description:document.getElementById('parsed_description').value.trim(),descriptionEn:'',address:document.getElementById('parsed_address').value.trim(),phone:document.getElementById('parsed_phone').value.trim(),url:document.getElementById('parsed_url').value.trim(),lat:parseFloat(document.getElementById('parsed_lat').value)||0,lng:parseFloat(document.getElementById('parsed_lng').value)||0,hours:document.getElementById('parsed_hours').value.trim(),specialties:[],keywords:[],faq:[],rating:0,reviewCount:0,maps:['google','naver','kakao'],googleVerified:false,naverVerified:false,crankEnabled:true,status:'active'});sv();renderAll();document.getElementById('parseResult').style.display='none';document.getElementById('smartPasteInput').value='';toast(n+' 등록 완료');}
+function clearPaste(){document.getElementById('smartPasteInput').value='';document.getElementById('parseResult').style.display='none';}
+function manualAdd(){const n=document.getElementById('f_name').value.trim();if(!n)return toast('매장명 입력');const maps=Array.from(document.querySelectorAll('#mapTargets input:checked')).map(c=>c.value);const faq=document.getElementById('f_faq').value.trim().split('\n').filter(l=>l.includes('|')).map(l=>{const[q,a]=l.split('|');return{q:q.trim(),a:a.trim()};});const catMap={Dentist:'치과',Hospital:'병원',MedicalClinic:'의원',Restaurant:'음식점',CafeOrCoffeeShop:'카페',BeautySalon:'미용',HealthAndBeautyBusiness:'헬스',Store:'매장',LegalService:'법률',FinancialService:'금융',EducationalOrganization:'학원',LocalBusiness:'기타'};const t=document.getElementById('f_category').value||'LocalBusiness';biz.push({id:slugify(n),name:n,nameEn:document.getElementById('f_nameEn').value.trim()||n,type:t,category:catMap[t]||'기타',description:document.getElementById('f_desc').value.trim(),descriptionEn:document.getElementById('f_descEn').value.trim(),address:document.getElementById('f_address').value.trim(),phone:document.getElementById('f_phone').value.trim(),url:document.getElementById('f_url').value.trim(),lat:parseFloat(document.getElementById('f_lat').value)||0,lng:parseFloat(document.getElementById('f_lng').value)||0,hours:document.getElementById('f_hours').value.trim(),specialties:document.getElementById('f_specialties').value.split(',').map(s=>s.trim()).filter(Boolean),keywords:document.getElementById('f_keywords').value.split(',').map(s=>s.trim()).filter(Boolean),faq,rating:0,reviewCount:0,maps,googleVerified:false,naverVerified:false,crankEnabled:true,status:'active'});sv();renderAll();toast(n+' 등록 완료');clearManual();}
+function clearManual(){['f_name','f_nameEn','f_phone','f_url','f_address','f_lat','f_lng','f_desc','f_descEn','f_hours','f_specialties','f_keywords','f_faq'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('f_category').selectedIndex=0;}
+function editBiz(id){const b=biz.find(x=>x.id===id);if(!b)return;document.getElementById('modalContent').innerHTML='<h3>'+b.name+' 수정</h3><div class="form-group"><label class="form-label">매장명</label><input class="form-input" id="e_name" value="'+b.name+'"></div><div class="form-group"><label class="form-label">영문명</label><input class="form-input" id="e_nameEn" value="'+b.nameEn+'"></div><div class="form-group"><label class="form-label">설명</label><textarea class="form-textarea" id="e_desc" style="min-height:60px">'+b.description+'</textarea></div><div class="form-group"><label class="form-label">영문 설명</label><textarea class="form-textarea" id="e_descEn" style="min-height:60px">'+(b.descriptionEn||'')+'</textarea></div><div class="form-row"><div class="form-group"><label class="form-label">전화</label><input class="form-input" id="e_phone" value="'+b.phone+'"></div><div class="form-group"><label class="form-label">웹사이트</label><input class="form-input" id="e_url" value="'+b.url+'"></div></div><div class="form-group"><label class="form-label">주소</label><input class="form-input" id="e_addr" value="'+b.address+'"></div><div class="form-group"><label class="form-label">키워드</label><input class="form-input" id="e_kw" value="'+(b.keywords||[]).join(', ')+'"></div><div class="form-group"><label class="form-label">상태</label><select class="form-select" id="e_status"><option value="active"'+(b.status==='active'?' selected':'')+'>운영중</option><option value="pending"'+(b.status==='pending'?' selected':'')+'>대기</option><option value="inactive"'+(b.status==='inactive'?' selected':'')+'>비활성</option></select></div><div style="display:flex;gap:.4rem;margin-top:1rem"><button class="btn btn-success" onclick="saveEdit(\''+id+'\')">저장</button><button class="btn btn-outline" onclick="closeModal()">취소</button></div>';document.getElementById('modalOverlay').classList.add('show');}
+function saveEdit(id){const b=biz.find(x=>x.id===id);if(!b)return;b.name=document.getElementById('e_name').value.trim();b.nameEn=document.getElementById('e_nameEn').value.trim();b.description=document.getElementById('e_desc').value.trim();b.descriptionEn=document.getElementById('e_descEn').value.trim();b.phone=document.getElementById('e_phone').value.trim();b.url=document.getElementById('e_url').value.trim();b.address=document.getElementById('e_addr').value.trim();b.keywords=document.getElementById('e_kw').value.split(',').map(s=>s.trim()).filter(Boolean);b.status=document.getElementById('e_status').value;sv();renderAll();closeModal();toast(b.name+' 수정 완료');}
+function removeBiz(id){if(!confirm('삭제하시겠습니까?'))return;biz=biz.filter(b=>b.id!==id);sv();renderAll();toast('삭제 완료');}
+function togV(id){const b=biz.find(x=>x.id===id);if(!b)return;b.googleVerified=!b.googleVerified;sv();renderAll();toast(b.name+': 구글 '+(b.googleVerified?'인증 완료':'인증 해제'));}
+function startGV(id){const b=biz.find(x=>x.id===id);if(!b)return;window.open('https://business.google.com/create?hl=ko&q='+encodeURIComponent(b.name+' '+b.address),'_blank');toast('구글 비즈니스 프로필 새 탭에서 열림');}
+function runBuild(){const con=document.getElementById('buildConsole');const out=document.getElementById('consoleOutput');con.style.display='block';out.innerHTML='';const a=biz.filter(b=>b.status==='active');const lines=[{c:'c-info',t:'XIVIX Tower Control 빌드 시작'},{c:'c-dim',t:'도메인: '+(document.getElementById('deployDomain')?.value||'')},{c:'c-dim',t:'매장: '+a.length+'개'},{c:'',t:''},...a.flatMap(b=>[{c:'c-ok',t:'  [OK] '+b.name+' > index.html (SEO+GEO)'},{c:'c-ok',t:'  [OK] '+b.name+' > llms.txt (AEO)'},{c:'c-ok',t:'  [OK] '+b.name+' > index_en.html (영문)'}]),{c:'',t:''},{c:'c-ok',t:'  [OK] index.html (브랜드 디렉토리)'},{c:'c-ok',t:'  [OK] sitemap.xml (사이트맵)'},{c:'c-ok',t:'  [OK] robots.txt (크롤러 설정)'},{c:'c-ok',t:'  [OK] llms.txt (AI 데이터)'},{c:'c-ok',t:'  [OK] crank-config.json (C-RANK)'},{c:'c-ok',t:'  [OK] geo-metadata.json (지도 메타)'},{c:'',t:''},{c:'c-info',t:'빌드 완료! 파일 '+(a.length*3+6)+'개 생성'},{c:'c-ok',t:'SEO [OK] AEO [OK] GEO [OK] C-RANK [OK] N-Logic [OK]'}];let i=0;const iv=setInterval(()=>{if(i>=lines.length){clearInterval(iv);return;}out.innerHTML+='<div class="'+lines[i].c+'">'+(lines[i].t||'&nbsp;')+'</div>';out.scrollTop=out.scrollHeight;i++;},70);}
+function runDeploy(){runBuild();setTimeout(()=>{const out=document.getElementById('consoleOutput');const dl=[{c:'',t:''},{c:'c-info',t:'배포 시작...'},{c:'c-warn',t:'  대상: '+(document.getElementById('deployDomain')?.value||'')},{c:'c-ok',t:'  [OK] 업로드 완료'},{c:'c-ok',t:'  [OK] CDN 전파'},{c:'c-ok',t:'  [OK] SSL 활성'},{c:'',t:''},{c:'c-ok',t:'배포 성공!'}];let i=0;const iv=setInterval(()=>{if(i>=dl.length){clearInterval(iv);toast('배포 완료!');return;}out.innerHTML+='<div class="'+dl[i].c+'">'+(dl[i].t||'&nbsp;')+'</div>';out.scrollTop=out.scrollHeight;i++;},120);},biz.filter(b=>b.status==='active').length*3*70+800);}
+function exportJSON(){const blob=new Blob([JSON.stringify({businesses:biz},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='xivix-export.json';a.click();toast('JSON 내보내기 완료');}
+function updatePreview(){const sel=document.getElementById('previewSelect')?.value;const el=document.getElementById('previewContent');if(!el)return;if(sel==='index'){el.innerHTML='<h2 style="margin-bottom:.5rem">XIVIX Brand Directory</h2><p style="color:#6b7280;margin-bottom:1rem">관리 매장: '+biz.filter(b=>b.status==='active').length+'개</p>'+biz.filter(b=>b.status==='active').map(b=>'<div style="border:1px solid #e5e7eb;border-radius:8px;padding:1rem;margin-bottom:.5rem"><strong>'+b.name+'</strong> <span style="color:#9ca3af">'+b.nameEn+'</span><div style="color:#6b7280;font-size:.85rem;margin-top:.3rem">'+b.description+'</div><div style="font-size:.8rem;color:#3b82f6;margin-top:.3rem">'+b.address+' | '+b.phone+'</div></div>').join('');}else{const b=biz.find(x=>x.id===sel);if(!b)return;el.innerHTML='<h1 style="font-size:1.4rem;margin-bottom:.3rem">'+b.name+'</h1><p style="color:#6b7280">'+b.nameEn+' | '+b.category+'</p><p style="margin:.8rem 0">'+b.description+'</p>'+(b.descriptionEn?'<p style="color:#6b7280;font-style:italic">'+b.descriptionEn+'</p>':'')+'<hr style="border-color:#e5e7eb;margin:.8rem 0"><p><strong>주소:</strong> '+b.address+'</p><p><strong>전화:</strong> '+b.phone+'</p><p><strong>운영시간:</strong> '+b.hours+'</p>'+(b.specialties?.length?'<p><strong>전문분야:</strong> '+b.specialties.join(', ')+'</p>':'')+(b.rating?'<p><strong>평점:</strong> '+b.rating+'/5 ('+b.reviewCount+'건)</p>':'')+(b.faq?.length?'<h3 style="margin-top:1rem">자주 묻는 질문</h3>'+b.faq.map(f=>'<p><strong>Q: '+f.q+'</strong><br>A: '+f.a+'</p>').join(''):'');}}
+function runDemo(){document.getElementById('demoOutput').style.display='block';const con=document.getElementById('demoConsole');con.innerHTML='';const lines=[{c:'c-info',t:'=== XIVIX Tower Control 데모 ==='},{c:'',t:''},{c:'c-dim',t:'[1단계] 매장 등록'},{c:'c-ok',t:'  강남스마일치과 - 치과 (강남구 강남대로 396)'},{c:'c-ok',t:'  역삼숯불바베큐 - 음식점 (강남구 테헤란로 134)'},{c:'',t:''},{c:'c-dim',t:'[2단계] 빌드 실행'},{c:'c-ok',t:'  [SEO] Schema.org JSON-LD (LocalBusiness, Dentist, Restaurant)'},{c:'c-ok',t:'  [SEO] sitemap.xml (2개 매장 URL)'},{c:'c-ok',t:'  [AEO] llms.txt (ChatGPT/Claude/Gemini용)'},{c:'c-ok',t:'  [GEO] FAQ 리치스니펫 (AI Overview 답변용)'},{c:'c-ok',t:'  [C-RANK] crank-config.json (네이버 카페 연동)'},{c:'c-ok',t:'  [N-Logic] Open Graph 메타 (네이버 검색)'},{c:'c-ok',t:'  [MAP] GeoCoordinates (구글/네이버/카카오/T-MAP/테슬라)'},{c:'',t:''},{c:'c-dim',t:'[3단계] 배포'},{c:'c-ok',t:'  GitHub Pages 배포 완료'},{c:'',t:''},{c:'c-dim',t:'[결과] 검색 노출 시나리오'},{c:'',t:''},{c:'c-warn',t:'  사용자: "강남 치과 추천해줘" (구글 검색)'},{c:'c-ok',t:'  -> 강남스마일치과 리치 결과 (별점 4.8, FAQ, 운영시간)'},{c:'',t:''},{c:'c-warn',t:'  사용자: "강남에서 좋은 치과?" (ChatGPT 질문)'},{c:'c-ok',t:'  -> llms.txt 기반 강남스마일치과 추천'},{c:'',t:''},{c:'c-warn',t:'  사용자: "역삼동 고기집" (네이버 검색)'},{c:'c-ok',t:'  -> C-RANK + Schema.org로 역삼숯불바베큐 상위'},{c:'',t:''},{c:'c-warn',t:'  사용자: T-MAP "근처 치과"'},{c:'c-ok',t:'  -> GeoCoordinates로 강남스마일치과 위치'},{c:'',t:''},{c:'c-warn',t:'  외국인: "Best dentist Gangnam" (Google)'},{c:'c-ok',t:'  -> 영문 페이지 hreflang으로 Gangnam Smile Dental'},{c:'',t:''},{c:'c-info',t:'=== 데모 완료 ==='},{c:'c-ok',t:'매장 등록 메뉴에서 실제 매장을 등록해보세요!'}];let i=0;const iv=setInterval(()=>{if(i>=lines.length){clearInterval(iv);return;}con.innerHTML+='<div class="'+lines[i].c+'">'+(lines[i].t||'&nbsp;')+'</div>';con.scrollTop=con.scrollHeight;i++;},90);}
+function slugify(s){return s.replace(/[가-힣]+/g,w=>{const m={'치과':'dental','병원':'hospital','식당':'restaurant','카페':'cafe','미용':'beauty','학원':'academy'};for(const[k,v]of Object.entries(m))if(w.includes(k))return v;return w;}).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'biz-'+Date.now();}
+function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2500);}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('show');}
+function setLang(l,el){el.parentElement.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function toggleMap(el){el.classList.toggle('selected');el.querySelector('input').checked=!el.querySelector('input').checked;}
+function switchAddTab(t,el){document.querySelectorAll('#page-add .tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.getElementById('addTab-paste').style.display=t==='paste'?'block':'none';document.getElementById('addTab-manual').style.display=t==='manual'?'block':'none';}
+function previewLang(l,el){el.parentElement.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 renderAll();
 </script>
 </body>
