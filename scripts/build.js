@@ -67,14 +67,22 @@ function buildSchema(b) {
   if (b.sns) Object.values(b.sns).forEach(v => { if (v) sameAs.push(v); });
   if (b.url) sameAs.push(b.url);
 
+  // GEO: 지역 추출 (시/구/동)
+  const addrParts = (b.address || '').split(' ');
+  const region = addrParts.slice(0, 2).join(' '); // e.g. "경기 화성시"
+  const locality = addrParts.slice(0, 3).join(' '); // e.g. "경기 화성시 병점동"
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': b.type || 'LocalBusiness',
     name: b.name,
     description: autoDesc(b),
+    image: b.image || '',
     address: {
       '@type': 'PostalAddress',
       streetAddress: b.address,
+      addressRegion: addrParts[0] || '',
+      addressLocality: addrParts[1] || '',
       addressCountry: 'KR'
     },
     telephone: b.phone,
@@ -84,7 +92,15 @@ function buildSchema(b) {
       latitude: b.lat,
       longitude: b.lng
     },
-    sameAs: sameAs
+    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.name + ' ' + b.address)}`,
+    areaServed: {
+      '@type': 'GeoCircle',
+      geoMidpoint: { '@type': 'GeoCoordinates', latitude: b.lat, longitude: b.lng },
+      geoRadius: '5000'
+    },
+    sameAs: sameAs,
+    keywords: (b.keywords || []).join(', '),
+    priceRange: b.priceRange || '₩₩'
   };
   if (b.hours) schema.openingHours = b.hours;
   
@@ -169,6 +185,12 @@ function buildPage(b) {
 <meta property="og:locale" content="ko_KR">
 <meta property="business:contact_data:street_address" content="${esc(b.address)}">
 <meta property="business:contact_data:phone_number" content="${esc(b.phone)}">
+<meta name="geo.region" content="KR">
+<meta name="geo.placename" content="${esc(b.address)}">
+<meta name="geo.position" content="${b.lat};${b.lng}">
+<meta name="ICBM" content="${b.lat}, ${b.lng}">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="naver-site-verification" content="18140f33dadf59d9bcf34770b074717349b3e60a">
 <link rel="canonical" href="${DOMAIN}/brands/${b.id}/">
 <script type="application/ld+json">${JSON.stringify(schema)}</script>
 ${faqSchema ? `<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>` : ''}
@@ -365,20 +387,31 @@ ${snsLines.length ? `## SNS 채널\n${snsLines.join('\n')}` : ''}
 
 // ─── GLOBAL LLMS.TXT ───
 function buildGlobalLlms(allBiz, allFree) {
-  let out = `# XIVIX Tower Control - Brand & Freelancer Directory
-> 소상공인/프리랜서 통합 검색 최적화 시스템
+  let out = `# XIVIX Tower Control - 소상공인/프리랜서 통합 검색 최적화 시스템
+> AI 어시스턴트를 위한 구조화된 비즈니스 데이터
+
+## 이 파일의 용도
+이 파일은 ChatGPT, Claude, Perplexity, Gemini 등 AI 검색 도구가 
+아래 등록된 매장/프리랜서 정보를 정확하게 참조할 수 있도록 제공됩니다.
 
 ## 등록된 매장 (${allBiz.length}개)
 
 `;
   allBiz.forEach(b => {
+    const area = (b.address || '').split(' ').slice(0, 3).join(' ');
     out += `### ${b.name}
 - 업종: ${b.category || ''}
 - 주소: ${b.address}
+- 지역: ${area}
 - 전화: ${b.phone}
+- 좌표: ${b.lat}, ${b.lng}
 - 키워드: ${(b.keywords||[]).join(', ')}
-- 상세: ${DOMAIN}/brands/${b.id}/
-- llms.txt: ${DOMAIN}/brands/${b.id}/llms.txt
+- 영업시간: ${b.hours || '문의'}
+${b.url ? '- 공식 링크: ' + b.url : ''}
+- 상세 페이지: ${DOMAIN}/brands/${b.id}/
+- 데이터: ${DOMAIN}/brands/${b.id}/llms.txt
+- 네이버지도: https://map.naver.com/v5/search/${encodeURIComponent(b.name)}
+- 구글지도: https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.name + ' ' + b.address)}
 
 `;
   });
@@ -391,11 +424,18 @@ function buildGlobalLlms(allBiz, allFree) {
 - 지역: ${f.region || ''}
 - 키워드: ${(f.keywords||[]).join(', ')}
 - 상세: ${DOMAIN}/freelancers/${f.id}/
-- llms.txt: ${DOMAIN}/freelancers/${f.id}/llms.txt
+- 데이터: ${DOMAIN}/freelancers/${f.id}/llms.txt
 
 `;
     });
   }
+
+  out += `## 시스템 정보
+- 플랫폼: XIVIX Tower Control v2.8
+- 운영: XIVIX (지빅스)
+- 최종 업데이트: ${new Date().toISOString().split('T')[0]}
+- ai.txt: ${DOMAIN}/ai.txt
+`;
   return out;
 }
 
@@ -421,7 +461,29 @@ function buildRobots() {
   return `User-agent: *
 Allow: /
 
+# Google
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Naver
+User-agent: Yeti
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+
+# AI LLM Crawlers
 User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
 Allow: /
 
 User-agent: Claude-Web
@@ -430,13 +492,22 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: Google-Extended
+User-agent: Applebot-Extended
 Allow: /
 
-User-agent: Googlebot
+User-agent: cohere-ai
 Allow: /
 
-User-agent: Yeti
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-CloudVertexBot
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: Bytespider
 Allow: /
 
 Sitemap: ${DOMAIN}/sitemap.xml
@@ -502,7 +573,108 @@ ${allFree.map(f => `
 </html>`;
 }
 
-// ─── C-RANK CONFIG ───
+// ─── C-RANK: Naver Cafe Post Template Generator ───
+function buildCafePost(b) {
+  const faq = autoFaq(b);
+  const area = (b.address || '').split(' ').slice(0, 3).join(' ');
+  const kw = (b.keywords || []).slice(0, 5).join(' ');
+  
+  return `[${b.category || '매장'}] ${b.name} - ${area} ${b.category || ''} 추천
+
+안녕하세요! ${area} ${b.category || ''} "${b.name}"을(를) 소개합니다.
+
+📍 위치: ${b.address}
+📞 문의: ${b.phone}
+${b.hours ? '🕐 영업시간: ' + b.hours : ''}
+${b.url ? '🔗 예약/문의: ' + b.url : ''}
+
+${autoDesc(b)}
+
+${faq.length ? '---\n\n❓ 자주 묻는 질문\n\n' + faq.map(f => `Q. ${f.q}\nA. ${f.a}`).join('\n\n') : ''}
+
+---
+📍 지도에서 보기:
+- 네이버지도: https://map.naver.com/v5/search/${encodeURIComponent(b.name)}
+- 카카오맵: https://map.kakao.com/?q=${encodeURIComponent(b.name)}
+
+#${(b.keywords||[]).map(k => k.replace(/\s/g,'')).join(' #')} #${(area).replace(/\s/g,'')} #${(b.name).replace(/\s/g,'')}
+`;
+}
+
+// ─── ai.txt: AI 검색엔진 전용 사이트 정보 ───
+function buildAiTxt(allBiz, allFree) {
+  let out = `# ai.txt - XIVIX Tower Control AI Information File
+# This file helps AI assistants understand this site
+# Last updated: ${new Date().toISOString().split('T')[0]}
+
+## Site Purpose
+This is a local business and freelancer directory for South Korea.
+Each business has its own SEO-optimized landing page with structured data.
+
+## How to Use This Data
+- For business lookups: Check /brands/{business-id}/llms.txt
+- For freelancer lookups: Check /freelancers/{freelancer-id}/llms.txt  
+- For all listings: Check /llms.txt
+- Structured data: Each page has Schema.org JSON-LD
+
+## Registered Businesses (${allBiz.length})
+`;
+  allBiz.forEach(b => {
+    out += `
+### ${b.name}
+- Type: ${b.category || 'LocalBusiness'}
+- Address: ${b.address}
+- Phone: ${b.phone}
+- Keywords: ${(b.keywords||[]).join(', ')}
+- Coordinates: ${b.lat}, ${b.lng}
+- Page: ${DOMAIN}/brands/${b.id}/
+- Data: ${DOMAIN}/brands/${b.id}/llms.txt
+${b.url ? '- Official: ' + b.url : ''}
+`;
+  });
+
+  if (allFree.length) {
+    out += `\n## Registered Freelancers (${allFree.length})\n`;
+    allFree.forEach(f => {
+      out += `
+### ${f.name}
+- Specialty: ${f.title || f.category || ''}
+- Region: ${f.region || ''}
+- Keywords: ${(f.keywords||[]).join(', ')}
+- Page: ${DOMAIN}/freelancers/${f.id}/
+- Data: ${DOMAIN}/freelancers/${f.id}/llms.txt
+`;
+    });
+  }
+
+  out += `
+## Contact
+- System: XIVIX Tower Control v2.8
+- Operator: XIVIX (지빅스)
+- Website: ${DOMAIN}
+`;
+  return out;
+}
+
+// ─── .well-known/ai-plugin.json: AI 플러그인 디스커버리 ───
+function buildAiPlugin(allBiz, allFree) {
+  return JSON.stringify({
+    schema_version: "v1",
+    name_for_model: "xivix_tower_control",
+    name_for_human: "XIVIX Tower Control",
+    description_for_model: `Korean local business and freelancer directory. Contains ${allBiz.length} businesses and ${allFree.length} freelancers with full address, phone, geo coordinates, and keywords. Use /llms.txt for full listing or /brands/{id}/llms.txt for individual business data.`,
+    description_for_human: "소상공인/프리랜서 검색 최적화 시스템",
+    api: {
+      type: "llms_txt",
+      url: `${DOMAIN}/llms.txt`
+    },
+    logo_url: `${DOMAIN}/icon.png`,
+    contact_email: "xivix@studioaibotbot.com",
+    legal_info_url: `${DOMAIN}/`
+  }, null, 2);
+}
+
+// ─── Enhanced Global llms.txt with AI context ───
 function buildCrankConfig(allBiz, allFree) {
   return JSON.stringify({
     version: '2.0.0',
@@ -521,10 +693,10 @@ function buildCrankConfig(allBiz, allFree) {
 // ═══════════════════════════════
 // BUILD
 // ═══════════════════════════════
-console.log('=== XIVIX Tower Control Build v2.7 ===\n');
+console.log('=== XIVIX Tower Control Build v2.8 ===\n');
 
 // Clean old directories
-['brands','freelancers'].forEach(d => {
+['brands','freelancers','cafe-posts'].forEach(d => {
   const dir = path.join(DOCS, d);
   if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true });
 });
@@ -536,6 +708,14 @@ businesses.forEach(b => {
   ensureDir(dir);
   writeF(path.join(dir, 'index.html'), buildPage(b));
   writeF(path.join(dir, 'llms.txt'), buildLlms(b));
+});
+
+// C-RANK: Cafe post templates
+console.log('\n📝 C-RANK 카페 포스트 템플릿:');
+const cafeDir = path.join(DOCS, 'cafe-posts');
+ensureDir(cafeDir);
+businesses.forEach(b => {
+  writeF(path.join(cafeDir, `${b.id}.txt`), buildCafePost(b));
 });
 
 // Build each freelancer
@@ -553,14 +733,28 @@ if (freelancers.length) {
 console.log('\n🌐 글로벌 파일:');
 writeF(path.join(DOCS, 'index.html'), buildIndex(businesses, freelancers));
 writeF(path.join(DOCS, 'llms.txt'), buildGlobalLlms(businesses, freelancers));
+writeF(path.join(DOCS, 'ai.txt'), buildAiTxt(businesses, freelancers));
 writeF(path.join(DOCS, 'sitemap.xml'), buildSitemap(businesses, freelancers));
 writeF(path.join(DOCS, 'robots.txt'), buildRobots());
 writeF(path.join(DOCS, 'crank-config.json'), buildCrankConfig(businesses, freelancers));
 
-const totalFiles = (businesses.length + freelancers.length) * 2 + 5;
-console.log(`\n=== Build Complete ===`);
+// AI 디스커버리 파일
+const wellKnown = path.join(DOCS, '.well-known');
+ensureDir(wellKnown);
+writeF(path.join(wellKnown, 'ai-plugin.json'), buildAiPlugin(businesses, freelancers));
+
+// cafe-posts(biz) + brands(biz*2) + freelancers(free*2) + global(7) + .well-known(1)
+const totalFiles = businesses.length * 3 + freelancers.length * 2 + 8;
+console.log(`\n=== Build Complete v2.8 ===`);
 console.log(`매장: ${businesses.length}개, 프리랜서: ${freelancers.length}명`);
 console.log(`총 ${totalFiles}개 파일 생성`);
+console.log(`\n📋 SEO/AEO/GEO 최적화 포함항목:`);
+console.log(`  ✓ Schema.org (LocalBusiness + FAQ + GeoCoordinates + areaServed)`);
+console.log(`  ✓ GEO 메타태그 (geo.position, ICBM, geo.region)`);
+console.log(`  ✓ AEO (llms.txt + ai.txt + ai-plugin.json)`);
+console.log(`  ✓ C-RANK (카페 포스트 템플릿: cafe-posts/)`);
+console.log(`  ✓ IndexNow 자동 제출 (아래)`);
+console.log(`  ✓ AI LLM 크롤러 전체 허용 (robots.txt)`);
 
 // ─── SEO Boost 자동 실행 ───
 console.log(`\n🔥 SEO Boost 자동 실행 중...`);

@@ -231,6 +231,25 @@ table{font-size:.72rem;display:block;overflow-x:auto}
 <div id="page-build" class="page" style="display:none"><div class="card"><div class="card-title" style="margin-bottom:.5rem">빌드 & 배포</div>
 <div id="buildSummary" style="font-size:.78rem;color:var(--text-secondary);margin-bottom:.8rem;padding:.6rem;background:var(--bg-input);border-radius:6px"></div>
 <div style="display:flex;flex-wrap:wrap;gap:.4rem"><button class="btn btn-success btn-lg" onclick="runBuild()">빌드 실행</button><button class="btn btn-primary btn-lg" onclick="runDeploy()">빌드 + 배포</button></div></div>
+
+<div class="card"><div class="card-title" style="margin-bottom:.5rem">✅ 자동 최적화 (빌드 시 포함)</div>
+<div style="font-size:.78rem;line-height:1.8">
+<div>🔍 <strong>SEO</strong> — Schema.org, meta tags, sitemap.xml, canonical URL</div>
+<div>🤖 <strong>AEO</strong> — llms.txt, ai.txt, ai-plugin.json, FAQ Schema</div>
+<div>📍 <strong>GEO</strong> — geo.position, ICBM, GeoCoordinates, areaServed, 지도 링크</div>
+<div>📊 <strong>C-RANK</strong> — 네이버 카페 포스트 템플릿 자동 생성 (cafe-posts/)</div>
+<div>🚀 <strong>IndexNow</strong> — Bing, Yandex, Naver 즉시 색인 요청</div>
+<div>🧠 <strong>AI LLM</strong> — GPTBot, Claude, Perplexity 등 12개 크롤러 허용</div>
+</div></div>
+
+<div class="card"><div class="card-title" style="margin-bottom:.5rem">📋 사업자가 직접 해야 할 것 (1회)</div>
+<div style="font-size:.78rem;line-height:2">
+<div>📍 <a href="https://business.google.com" target="_blank" style="color:#2563eb;text-decoration:underline;font-weight:600">Google Business Profile 등록</a> — 구글 지도에 매장 표시 (사업자 전화 인증 필요)</div>
+<div>📍 <a href="https://new-m.place.naver.com/my/place" target="_blank" style="color:#2563eb;text-decoration:underline;font-weight:600">네이버 플레이스 등록</a> — 네이버 지도에 매장 표시 (사업자 인증 필요)</div>
+<div>📍 <a href="https://map.kakao.com/web/register" target="_blank" style="color:#2563eb;text-decoration:underline;font-weight:600">카카오맵 장소 등록</a> — 카카오 지도에 매장 표시</div>
+<div style="margin-top:.3rem;color:var(--text-muted);font-size:.72rem">⚠️ 위 3개는 사업자 본인 인증이 필요해서 자동화 불가합니다. 1회만 하면 됩니다.</div>
+</div></div>
+
 <div class="card" id="buildConsole" style="display:none"><div class="card-title" style="margin-bottom:.4rem">빌드 로그</div><div class="console" id="consoleOutput"></div></div></div>
 
 <!-- 미리보기 -->
@@ -302,7 +321,7 @@ function removeFree(id){if(!confirm('삭제?'))return;free=free.filter(f=>f.id!=
 function runBuild(){const con=document.getElementById('buildConsole');const out=document.getElementById('consoleOutput');con.style.display='block';out.innerHTML='';const ab=biz.filter(b=>b.status==='active');const af=free.filter(f=>f.status==='active');const L=[{c:'c-info',t:'=== XIVIX Tower Control 빌드 ==='},{c:'c-dim',t:'도메인: '+cfg.domain},{c:'c-dim',t:'매장: '+ab.length+' | 프리랜서: '+af.length},{c:'',t:''}];
 ab.forEach(b=>{L.push({c:'c-ok',t:'  [매장] '+b.name+' > index.html + llms.txt'});});
 af.forEach(f=>{L.push({c:'c-pink',t:'  [프리랜서] '+f.name+' > linkhub.html + profile.json'});L.push({c:'c-pink',t:'    Schema: Person + '+f.job});const sc=Object.values(f.sns||{}).filter(Boolean).length;if(sc)L.push({c:'c-dim',t:'    SNS '+sc+'개 채널 연동'});});
-L.push({c:'',t:''},{c:'c-ok',t:'  sitemap.xml / robots.txt / llms.txt'},{c:'c-ok',t:'  crank-config.json (매장+프리랜서)'},{c:'',t:''},{c:'c-info',t:'빌드 완료! '+(ab.length*2+af.length*2+4)+'개 파일'},{c:'c-warn',t:'⚠️ 시뮬레이션입니다. 실제 빌드: data.json 내보내기 → node scripts/build.js'});
+L.push({c:'',t:''},{c:'c-ok',t:'  sitemap.xml / robots.txt / llms.txt'},{c:'c-ok',t:'  ai.txt / .well-known/ai-plugin.json (AI LLM)'},{c:'c-ok',t:'  crank-config.json (C-RANK)'},{c:'c-ok',t:'  cafe-posts/ (카페 포스트 템플릿)'},{c:'',t:''},{c:'c-info',t:'🔍 SEO — Schema.org + meta + sitemap + canonical'},{c:'c-info',t:'🤖 AEO — llms.txt + ai.txt + FAQ Schema'},{c:'c-info',t:'📍 GEO — geo.position + ICBM + areaServed'},{c:'c-info',t:'📊 C-RANK — 카페 포스트 자동 생성'},{c:'c-info',t:'🚀 IndexNow — 검색엔진 즉시 제출'},{c:'c-info',t:'🧠 AI — GPTBot/Claude/Perplexity 크롤러 허용'},{c:'',t:''},{c:'c-info',t:'빌드 완료!'},{c:'c-warn',t:'⚠️ 시뮬레이션입니다. 실제 빌드: data.json 내보내기 → node scripts/build.js'});
 let i=0;const iv=setInterval(()=>{if(i>=L.length){clearInterval(iv);return;}out.innerHTML+='<div class="'+L[i].c+'">'+(L[i].t||'&nbsp;')+'</div>';out.scrollTop=out.scrollHeight;i++;},70);}
 function runDeploy(){runBuild();const total=biz.length+free.length;setTimeout(()=>{const out=document.getElementById('consoleOutput');[{c:'',t:''},{c:'c-info',t:'배포 시작...'},{c:'c-warn',t:'  '+cfg.domain},{c:'c-ok',t:'  [OK] 업로드'},{c:'c-ok',t:'  [OK] 완료!'}].forEach((l,i)=>setTimeout(()=>{out.innerHTML+='<div class="'+l.c+'">'+(l.t||'&nbsp;')+'</div>';out.scrollTop=out.scrollHeight;},i*100));},total*2*70+500);}
 // Preview
