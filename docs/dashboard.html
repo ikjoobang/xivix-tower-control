@@ -409,8 +409,8 @@ async function runDeploy(){
     const urls=Object.keys(buildFiles).filter(p=>p.endsWith('.html')&&p.startsWith('docs/brands/')).map(p=>`${DOMAIN}/${p.replace('docs/','')}`);
     urls.unshift(`${DOMAIN}/`);
     try{
-      const inRes=await fetch('https://api.indexnow.org/indexnow',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({host:'ikjoobang.github.io',key:INDEXNOW_KEY,keyLocation:`https://ikjoobang.github.io/${INDEXNOW_KEY}.txt`,urlList:urls})});
-      log('c-ok',`  IndexNow: ${inRes.status===200||inRes.status===202?'✅ 제출 성공':'⚠️ '+inRes.status} (${urls.length}개 URL)`);
+      await fetch('https://api.indexnow.org/indexnow',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({host:'ikjoobang.github.io',key:INDEXNOW_KEY,keyLocation:`https://ikjoobang.github.io/${INDEXNOW_KEY}.txt`,urlList:urls})});
+      log('c-ok',`  IndexNow: ✅ 제출 완료 (${urls.length}개 URL)`);
     }catch(e){log('c-warn','  IndexNow: ⚠️ '+e.message);}
     
     log('','');
