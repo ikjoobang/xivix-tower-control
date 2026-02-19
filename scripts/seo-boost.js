@@ -191,8 +191,6 @@ async function main() {
 
   // 검색엔진 제출
   await submitIndexNow(urls);
-  await pingGoogle();
-  await pingBing();
 
   // 리포트 생성
   await generateReport(urls);
@@ -201,8 +199,7 @@ async function main() {
   console.log('║   ✅ SEO Boost 완료!                  ║');
   console.log('║                                      ║');
   console.log('║   IndexNow → Bing/Yandex/Naver 제출  ║');
-  console.log('║   Google  → Sitemap Ping 완료        ║');
-  console.log('║   Bing    → Sitemap Ping 완료        ║');
+  console.log('║   Google  → Search Console 자동 크롤  ║');
   console.log('║                                      ║');
   console.log('║   색인 반영: 24~48시간 소요           ║');
   console.log('║   다음: GitHub Desktop Commit & Push  ║');
