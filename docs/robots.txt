@@ -13,4 +13,10 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
 Sitemap: https://ikjoobang.github.io/xivix-tower-control/sitemap.xml

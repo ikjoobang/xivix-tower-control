@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "updated": "2026-02-16T10:09:37.869Z",
+  "version": "2.0.0",
+  "updated": "2026-02-19T08:34:46.888Z",
   "businesses": [
     {
       "id": "raon-beauty",
@@ -19,19 +19,7 @@
         "안녕동눈썹"
       ],
       "crankEnabled": true
-    },
-    {
-      "id": "gangnam-dental",
-      "name": "강남스마일치과",
-      "category": "치과",
-      "keywords": [
-        "강남 치과",
-        "강남역 치과",
-        "임플란트",
-        "교정",
-        "강남 임플란트"
-      ],
-      "crankEnabled": true
     }
-  ]
+  ],
+  "freelancers": []
 }

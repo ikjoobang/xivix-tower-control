@@ -1,21 +1,13 @@
-# XIVIX Tower Control - Brand Directory
+# XIVIX Tower Control - Brand & Freelancer Directory
 > 소상공인/프리랜서 통합 검색 최적화 시스템
 
-## 등록된 매장 (2개)
+## 등록된 매장 (1개)
 
 ### 라온뷰티
 - 업종: 피부/미용
-- 주소: 경기 화성시 병점구 용주로 91층
+- 주소: 경기 화성시 병점동 안녕로 91
 - 전화: 031-235-5726
 - 키워드: 라온뷰티, 안녕동피부, 병점피부관리, 병점모공각화증, 병점여드름, 동탄여드름, 병점여드름관리, 화성피부, 안녕동피부관리, 안녕동눈썹
 - 상세: https://ikjoobang.github.io/xivix-tower-control/brands/raon-beauty/
 - llms.txt: https://ikjoobang.github.io/xivix-tower-control/brands/raon-beauty/llms.txt
-
-### 강남스마일치과
-- 업종: 치과
-- 주소: 서울 강남구 강남대로 396
-- 전화: 02-555-1234
-- 키워드: 강남 치과, 강남역 치과, 임플란트, 교정, 강남 임플란트
-- 상세: https://ikjoobang.github.io/xivix-tower-control/brands/gangnam-dental/
-- llms.txt: https://ikjoobang.github.io/xivix-tower-control/brands/gangnam-dental/llms.txt
 
