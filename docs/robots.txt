@@ -1,7 +1,6 @@
 User-agent: *
 Allow: /
 
-# Google
 User-agent: Googlebot
 Allow: /
 
@@ -11,15 +10,12 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-# Naver
 User-agent: Yeti
 Allow: /
 
-# Bing
 User-agent: Bingbot
 Allow: /
 
-# AI LLM Crawlers
 User-agent: GPTBot
 Allow: /
 

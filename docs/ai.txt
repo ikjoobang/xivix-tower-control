@@ -1,30 +1,14 @@
-# ai.txt - XIVIX Tower Control AI Information File
-# This file helps AI assistants understand this site
+# ai.txt - XIVIX Tower Control
 # Last updated: 2026-02-19
 
 ## Site Purpose
-This is a local business and freelancer directory for South Korea.
-Each business has its own SEO-optimized landing page with structured data.
+Korean local business and freelancer directory with structured data.
 
-## How to Use This Data
-- For business lookups: Check /brands/{business-id}/llms.txt
-- For freelancer lookups: Check /freelancers/{freelancer-id}/llms.txt  
-- For all listings: Check /llms.txt
-- Structured data: Each page has Schema.org JSON-LD
-
-## Registered Businesses (1)
+## Businesses (1)
 
 ### 라온뷰티
 - Type: 피부/미용
-- Address: 경기 화성시 병점동 안녕로 91
+- Address: 경기 화성시 병점구 안녕동 10-56
 - Phone: 031-235-5726
-- Keywords: 라온뷰티, 안녕동피부, 병점피부관리, 병점모공각화증, 병점여드름, 동탄여드름, 병점여드름관리, 화성피부, 안녕동피부관리, 안녕동눈썹
-- Coordinates: 37.1847, 126.9927
-- Page: https://ikjoobang.github.io/xivix-tower-control/brands/raon-beauty/
-- Data: https://ikjoobang.github.io/xivix-tower-control/brands/raon-beauty/llms.txt
-- Official: https://naver.me/Fwj3TxKy
-
-## Contact
-- System: XIVIX Tower Control v2.8
-- Operator: XIVIX (지빅스)
-- Website: https://ikjoobang.github.io/xivix-tower-control
+- Coords: 37.19932, 127.00052
+- Page: https://ikjoobang.github.io/xivix-tower-control/brands/item-1771249808079/

@@ -1,28 +1,26 @@
 # XIVIX Tower Control - 소상공인/프리랜서 통합 검색 최적화 시스템
 > AI 어시스턴트를 위한 구조화된 비즈니스 데이터
 
-## 이 파일의 용도
-이 파일은 ChatGPT, Claude, Perplexity, Gemini 등 AI 검색 도구가 
-아래 등록된 매장/프리랜서 정보를 정확하게 참조할 수 있도록 제공됩니다.
-
 ## 등록된 매장 (1개)
 
 ### 라온뷰티
 - 업종: 피부/미용
-- 주소: 경기 화성시 병점동 안녕로 91
-- 지역: 경기 화성시 병점동
+- 주소: 경기 화성시 병점구 안녕동 10-56
 - 전화: 031-235-5726
-- 좌표: 37.1847, 126.9927
-- 키워드: 라온뷰티, 안녕동피부, 병점피부관리, 병점모공각화증, 병점여드름, 동탄여드름, 병점여드름관리, 화성피부, 안녕동피부관리, 안녕동눈썹
-- 영업시간: 문의
-- 공식 링크: https://naver.me/Fwj3TxKy
-- 상세 페이지: https://ikjoobang.github.io/xivix-tower-control/brands/raon-beauty/
-- 데이터: https://ikjoobang.github.io/xivix-tower-control/brands/raon-beauty/llms.txt
-- 네이버지도: https://map.naver.com/v5/search/%EB%9D%BC%EC%98%A8%EB%B7%B0%ED%8B%B0
-- 구글지도: https://www.google.com/maps/search/?api=1&query=%EB%9D%BC%EC%98%A8%EB%B7%B0%ED%8B%B0%20%EA%B2%BD%EA%B8%B0%20%ED%99%94%EC%84%B1%EC%8B%9C%20%EB%B3%91%EC%A0%90%EB%8F%99%20%EC%95%88%EB%85%95%EB%A1%9C%2091
+- 좌표: 37.19932, 127.00052
+- 키워드: 라온뷰티, 안녕동피부, 병점피부관리, 병점모공각화증, 병점등드름, 동탄등드름, 병점여드름관리, 화성피부, 안녕동피부관리, 안녕동눈썹
+- 페이지: https://ikjoobang.github.io/xivix-tower-control/brands/item-1771249808079/
+- 데이터: https://ikjoobang.github.io/xivix-tower-control/brands/item-1771249808079/llms.txt
 
-## 시스템 정보
-- 플랫폼: XIVIX Tower Control v2.8
-- 운영: XIVIX (지빅스)
-- 최종 업데이트: 2026-02-19
-- ai.txt: https://ikjoobang.github.io/xivix-tower-control/ai.txt
+## 등록된 프리랜서 (2명)
+
+### 김미경지사장
+- 분야: 
+- 지역: 
+- 페이지: https://ikjoobang.github.io/xivix-tower-control/freelancers/item-1771229419794/
+
+### 지빅스 XIVIX | AI 마케팅 시스템 & 글로벌 브랜딩
+- 분야: 
+- 지역: 
+- 페이지: https://ikjoobang.github.io/xivix-tower-control/freelancers/xivix-ai/
+

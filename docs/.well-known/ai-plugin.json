@@ -2,13 +2,10 @@
   "schema_version": "v1",
   "name_for_model": "xivix_tower_control",
   "name_for_human": "XIVIX Tower Control",
-  "description_for_model": "Korean local business and freelancer directory. Contains 1 businesses and 0 freelancers with full address, phone, geo coordinates, and keywords. Use /llms.txt for full listing or /brands/{id}/llms.txt for individual business data.",
-  "description_for_human": "소상공인/프리랜서 검색 최적화 시스템",
+  "description_for_model": "Korean local business directory. 1 businesses, 2 freelancers. Use /llms.txt for data.",
+  "description_for_human": "소상공인/프리랜서 검색 최적화",
   "api": {
     "type": "llms_txt",
     "url": "https://ikjoobang.github.io/xivix-tower-control/llms.txt"
-  },
-  "logo_url": "https://ikjoobang.github.io/xivix-tower-control/icon.png",
-  "contact_email": "xivix@studioaibotbot.com",
-  "legal_info_url": "https://ikjoobang.github.io/xivix-tower-control/"
+  }
 }
