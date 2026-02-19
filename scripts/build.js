@@ -561,4 +561,14 @@ const totalFiles = (businesses.length + freelancers.length) * 2 + 5;
 console.log(`\n=== Build Complete ===`);
 console.log(`매장: ${businesses.length}개, 프리랜서: ${freelancers.length}명`);
 console.log(`총 ${totalFiles}개 파일 생성`);
-console.log(`\n다음 단계: GitHub Desktop에서 Commit & Push`);
+
+// ─── SEO Boost 자동 실행 ───
+console.log(`\n🔥 SEO Boost 자동 실행 중...`);
+const { main: seoBoost } = require('./seo-boost');
+seoBoost().then(() => {
+  console.log(`\n다음 단계: GitHub Desktop에서 Commit & Push`);
+}).catch(err => {
+  console.log(`\n⚠️ SEO Boost 실패 (빌드는 완료됨): ${err.message}`);
+  console.log(`수동 실행: node scripts/seo-boost.js`);
+  console.log(`\n다음 단계: GitHub Desktop에서 Commit & Push`);
+});
